@@ -1,0 +1,275 @@
+@model Nop.Admin.Models.Reservations.ReservationListModel
+
+@{
+    var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
+
+    //page title
+    ViewBag.Title = T("Admin.Reservations").Text;
+    //active menu item (system name)
+    Html.SetActiveMenuItemSystemName("Reservations");
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            @T("Admin.Reservations")
+        </h1>
+        <div class="pull-right">
+            <!-----START: Codechages done by (na-sdxcorp\ADas)---------------->
+            <div class="btn-group">
+                <button type="submit" class="btn btn-success" name="exportexcel-all">
+                    <i class="fa fa-file-excel-o"></i>
+                    Reservation Report
+                </button>
+            </div>
+        </div>
+    </div>
+    
+            <div class="content">
+                <div class="form-horizontal">
+                    <div class="panel-group">
+                        <div class="panel panel-default panel-search">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                @Html.NopLabelFor(model => model.StartDate)
+                                            </div>
+                                            <div class="col-md-8">
+                                                @Html.NopEditorFor(model => model.StartDate)
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                @Html.NopLabelFor(model => model.EndDate)
+                                            </div>
+                                            <div class="col-md-8">
+                                                @Html.NopEditorFor(model => model.EndDate)
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <div class="label-wrapper">
+                                                    @Html.Label("Product Name")
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                @Html.NopEditorFor(model => model.ProductName)
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <div class="label-wrapper">
+                                                    @Html.Label("Reservation Status")
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                @Html.NopEditorFor(model => model.Status)
+                                            </div>
+                                            <div class="col-md-4">
+                                                **Check In/Fulfilled
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                @Html.NopLabelFor(model => model.OrderId)
+                                            </div>
+                                            <div class="col-md-6">
+                                                @Html.NopEditorFor(model => model.OrderId)
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                @Html.NopLabelFor(model => model.BillingLastName)
+                                            </div>
+                                            <div class="col-md-6">
+                                                @Html.NopEditorFor(model => model.BillingLastName)
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <div class="label-wrapper">
+                                                    @Html.Label("Time Slot")
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                @Html.NopEditorFor(model => model.TimeSlot)
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-7 col-md-offset-5">
+                                        <button type="button" id="search-reservations" class="btn btn-primary btn-search">
+                                            <i class="fa fa-search"></i>
+                                            @T("Admin.Common.Search")
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div id="reservations-grid"></div>
+                                <script>
+                            $(document).ready(function() {
+                                $("#reservations-grid").kendoGrid({
+                                    dataSource: {
+                                        type: "json",
+                                        transport: {
+                                            read: {
+                                                url: "@Html.Raw(Url.Action("ReservationsList", "Reservations"))",
+                                                type: "POST",
+                                                dataType: "json",
+                                                data: additionalData
+                                            }
+                                        },
+                                        schema: {
+                                            data: "Data",
+                                            total: "Total",
+                                            errors: "Errors"
+                                        },
+                                        requestEnd: function (e) {
+                                            if (e.type == "read") {
+                                                var response = e.response;
+                                                if (response) {
+                                                    //store extra data
+                                                    reportAggregates = e.response["ExtraData"];
+                                                }
+                                            }
+                                        },
+                                        error: function(e) {
+                                            display_kendoui_grid_error(e);
+                                            // Cancel the changes
+                                            this.cancelChanges();
+                                        },
+                                        pageSize: @(defaultGridPageSize),
+                                        serverPaging: true,
+                                        serverFiltering: true,
+                                        serverSorting: true
+                                    },
+                                    pageable: {
+                                        refresh: true,
+                                        pageSizes: [@(gridPageSizes)]
+                                    },
+                                    editable: {
+                                        confirmation: "@T("Admin.Common.DeleteConfirmation")",
+                                        mode: "inline"
+                                    },
+                                    scrollable: false,
+                                    columns: [
+
+                                        {
+                                            field: "OrderId",
+                                            title: "OrderId",
+                                            width: 80
+                                        },
+                                        {
+                                            field: "PaymentStatus",
+                                            title: "Payment Status",
+                                            width: 80
+                                        },
+                                        {
+                                            field: "ProductName",
+                                            title: "Product Name",
+                                            width: 100
+                                        },
+                                        {
+                                            field: "ReservationDate",
+                                            title: "Reservation Date",
+                                            width: 120
+                                        },
+                                        {
+                                            field: "ReservedTimeSlot",
+                                            title: "Reservation Time",
+                                            width: 100
+                                        },
+                                        {
+                                            field: "ReservedUnits",
+                                            title: "Reserved Units",
+                                            width: 100
+                                        },
+                                        {
+                                            field: "CustomerFullName",
+                                            title: "CustomerName",
+                                            width: 200
+                                        },
+                                        {
+                                            field: "CustomerEmail",
+                                            title: "Customer Email",
+                                            width: 200
+                                        },
+                                        {
+                                            field: "OrderTotal",
+                                            title: "Order Total",
+                                            width: 100,
+                                        },
+                                        {
+                                            field: "OrderId",
+                                            title: "View",
+                                            width: 100,
+                                            template:"<a href='@Server.UrlDecode(Url.Action("Edit", "Order", new { Id = "#=OrderId#" }))' target='_blank'>View</a >"
+                                        },
+                                        {
+                                            field: "OrderId",
+                                            title: "Check In",
+                                            width: 100,
+                                            template: function(dataItem) {
+                                                if(!dataItem.IsFulfilled)
+                                                {
+                                                    var orderItemId = dataItem.OrderItemId;
+                                                    var hrefData ="@Server.UrlDecode(Url.Action("FulfillOrderItem", "Reservations", new { OrderItemId = "#OrderItemId#" }))";
+                                                    hrefData = hrefData.replace("#OrderItemId#",orderItemId);
+                                                    return "<a href="+hrefData+">Check In</a>";
+                                                }
+                                                else
+                                                {
+                                                    return "<span>Fulfilled</span>";
+                                                }
+                                            }
+                                        },
+                                    ]
+                                } );
+                            });
+                                </script>
+
+                                <script type="text/javascript">
+                            var selectedIds = [];
+                            var reportAggregates = "";
+
+                            $(document).ready(function () {
+                                //search button
+                                $('#search-reservations').click(function () {
+                                    var grid = $('#reservations-grid').data('kendoGrid');
+                                    grid.dataSource.page(1);
+                                    return false;
+                                });
+                            });
+
+                            function additionalData() {
+                                var data = {
+                                    StartDate: $('#@Html.FieldIdFor(model => model.StartDate)').val(),
+                                    EndDate: $('#@Html.FieldIdFor(model => model.EndDate)').val(),
+                                    BillingLastName: $('#@Html.FieldIdFor(model => model.BillingLastName)').val(),
+                                    OrderId: $('#@Html.FieldIdFor(model => model.OrderId)').val(),
+                                    ProductName: $('#@Html.FieldIdFor(model => model.ProductName)').val(),
+                                    TimeSlot: $('#@Html.FieldIdFor(model => model.TimeSlot)').val(),
+                                    Status: $('#@Html.FieldIdFor(model => model.Status)').val()
+                                };
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
+                                </script>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }

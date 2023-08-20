@@ -1,0 +1,121 @@
+﻿@model SAPSettingsModel
+
+@{
+    //page title
+    ViewBag.Title = T("Admin.Configuration.Settings.SAP").Text;
+    //active menu item (system name)
+    Html.SetActiveMenuItemSystemName("SAP settings");
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            @T("Admin.Configuration.Settings.SAP")
+        </h1>
+        <div class="pull-right">
+            <button type="submit" name="test" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.Test")
+            </button>
+            &nbsp;
+            <button type="submit" name="save" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.Save")
+            </button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(false)
+
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.Protocol)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDropDownList("Protocol", Model.Protocols)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.Hostname)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.Hostname)
+                                @Html.ValidationMessageFor(model => model.Hostname)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.Password)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.Password)
+                                @Html.ValidationMessageFor(model => model.Password)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.PortNumber)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.PortNumber)
+                                @Html.ValidationMessageFor(model => model.PortNumber)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.SshHostKeyFingerprint)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.SshHostKeyFingerprint)
+                                @Html.ValidationMessageFor(model => model.SshHostKeyFingerprint)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.localPath)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.localPath)
+                                @Html.ValidationMessageFor(model => model.localPath)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.remotePath)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.remotePath)
+                                @Html.ValidationMessageFor(model => model.remotePath)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.remove)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.remove)
+                                @Html.ValidationMessageFor(model => model.remove)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.TestOutput)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDisplayFor(model => model.TestOutput)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

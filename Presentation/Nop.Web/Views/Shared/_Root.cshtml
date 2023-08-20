@@ -1,0 +1,79 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.Head.cshtml";
+}
+
+@using Nop.Core.Infrastructure;
+@Html.Widget("body_start_html_tag_after")
+@Html.Partial("_Notifications")
+@Html.Action("JavaScriptDisabledWarning", "Common")
+@Html.Partial("OldInternetExplorerWarning")
+
+@{
+
+    var checkUrl = Request.Url.Host;
+
+}
+
+<div class="master-wrapper-page">
+    @Html.Action("AdminHeaderLinks", "Common")
+    @Html.Partial("Header")
+    <script type="text/javascript">
+        AjaxCart.init(false, '.header-links .cart-qty', '.header-links .wishlist-qty', '#flyout-cart');
+    </script>
+    <div class="header-menu">
+        @Html.Action("TopMenu", "Catalog")
+    </div>
+    <div id="content" class="master-wrapper-content">
+        @Html.Widget("content_before")
+
+        @if (IsSectionDefined("Breadcrumb"))
+        {
+            @RenderSection("Breadcrumb")
+        }
+        <div class="master-column-wrapper">
+            @RenderBody()
+        </div>
+        @if (!checkUrl.Contains("cpsfacilitiesblog") && !checkUrl.Contains("blog-binghamton"))
+        {
+            if (!EngineContext.Current.Resolve<Nop.Core.IStoreContext>().CurrentStore.Name.Contains("Dietetic Internship"))
+            {
+                <div id="title">
+                    <strong>*All products from our catalog may contain or be prepared with equipment that is also used to prepare products containing wheat, soy, milk, eggs, peanuts, tree nuts, fish, shellfish and gluten. Please contact us before ordering if you have any questions about any of our selections.</strong>
+                    <br />
+                    <br />
+
+                    <div id="contactusid" style="text-align: center;">
+                        <strong>
+                            Please <a href="/contactus" title="Contact Us" style="text-decoration: underline; color: blue">contact us</a> if you need to request a refund. &nbsp;
+                            @if (EngineContext.Current.Resolve<Nop.Core.IStoreContext>().CurrentStore.IsContractShippingEnabled == false ||
+                             EngineContext.Current.Resolve<Nop.Core.IStoreContext>().CurrentStore.IsTieredShippingEnabled == false ||
+                             EngineContext.Current.Resolve<Nop.Core.IStoreContext>().CurrentStore.IsInterOfficeDeliveryEnabled == false)
+                            {
+                                if (checkUrl.Contains("vanguard.pa"))
+                                {
+                                    <span> All refunds for non - student meal plans will be resolved within 72 hours. Please note that this site is intended for Vanguard crewmembers, not external consumers. For client and prospect gifts, please continue to use the Client and prospect gift program through your designated Vanguard representative.</span>
+
+                                }
+                                else
+                                {
+                                    <span> All refunds for non - student meal plans will be resolved within 72 hours.</span>
+
+                                }
+                            }
+                            else
+                            {
+                                <span> All refunds will be resolved within 72 hours.</span>
+                            }
+                        </strong>
+                    </div>
+
+                    <br />
+                </div>
+            }
+        }
+        @Html.Widget("content_after")
+    </div>
+    @Html.Action("Footer", "Common")
+</div>
+@Html.Action("EuCookieLaw", "Common")
+@Html.Widget("body_end_html_tag_before")

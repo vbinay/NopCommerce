@@ -1,0 +1,9 @@
+﻿Group: Widgets
+FriendlyName: Admin Security
+SystemName: Widgets.AdminSecurity
+Version: 1.00
+SupportedVersions: 3.80
+Author: SodexoMyWay team
+DisplayOrder: 1
+FileName: Nop.Plugin.Widgets.AdminSecurity.dll
+Description: This plugin will restrict the access of the store admins to only the stores where they are mapped

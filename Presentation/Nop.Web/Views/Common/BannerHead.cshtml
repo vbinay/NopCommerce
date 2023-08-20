@@ -1,0 +1,7 @@
+﻿@model Nop.Web.Models.Common.BannerHeadModel
+@{
+    foreach(String html in Model.Head)
+    {
+        Html.AddHeadCustomParts(html);
+    }
+}

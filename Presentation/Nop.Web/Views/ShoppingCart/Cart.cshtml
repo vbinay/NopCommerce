@@ -1,0 +1,48 @@
+﻿@model ShoppingCartModel
+@using Nop.Web.Models.Checkout
+@using Nop.Web.Models.ShoppingCart;
+@using Nop.Core.Infrastructure;
+@using Nop.Core.Domain.Common;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.ShoppingCart").Text);
+    //page class
+    Html.AppendPageCssClassParts("html-shopping-cart-page");
+    var breadcrumbDelimiter = EngineContext.Current.Resolve<CommonSettings>().BreadcrumbDelimiter;
+}
+<div class="breadcrumb">
+    <ul>
+
+        <li>
+            <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="@Url.RouteUrl("HomePage")" itemprop="url">
+                    <span itemprop="title">@T("Products.Breadcrumb.Top")</span>
+                </a>
+            </span>
+            <span class="delimiter">@breadcrumbDelimiter</span>
+        </li>
+        <li>
+            <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+
+                <span itemprop="title">Cart</span>
+
+            </span>
+
+        </li>
+
+    </ul>
+</div>
+@if (!Model.OnePageCheckoutEnabled)
+{
+    @Html.Action("CheckoutProgress", "Checkout", new { step = CheckoutProgressStep.Cart })
+}
+<div class="page shopping-cart-page">
+    <div class="page-title">
+        <h1>@T("ShoppingCart")</h1>
+    </div>
+    <div class="page-body">
+        @Html.Partial("OrderSummary", Model)
+    </div>
+</div>

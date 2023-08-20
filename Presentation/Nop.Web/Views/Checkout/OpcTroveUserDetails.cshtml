@@ -1,0 +1,164 @@
+﻿@using Nop.Core
+@using Nop.Core.Infrastructure;
+@model UIResponseVieModel
+
+<form action="" id="co-payment-info-form-trove">
+    <div class="edit-address">
+        <div class="col-md-6"><input type="radio" name="paymentType" value="rdTrovePayment">Campus Wallet(Campus Card & Bring Your Own Credit Card)</div>
+        <div class="col-md-6"><input type="radio" name="paymentType" value="rdFDCCPayment">Pay with Credit Card</div>
+        <input type="hidden" id="hdnSelectedPaymentType" name="hdnSelectedPaymentType">
+        <input type="hidden" id="hdnSelectedCardName" name="hdnSelectedCardName">
+        <input type="hidden" id="hdnSelectedAccountName" name="hdnSelectedAccountName">
+        <input type="hidden" id="hdnSelectedPaymentOption" name="hdnSelectedPaymentOption">
+        <div id="troveUserLogin">
+            <div id="auth" style='margin-top:25px;margin-left: 10px ;text-align:left;background-color: gainsboro'></div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div id="troveUserDetails"></div>
+    </div>
+
+</form>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#troveUserDetails').empty();
+        $('#troveUserLogin').hide();
+        $('#trovePurchaseSubscribe').hide();
+        var institutionId =  @Model.Customer.InstitutionId;
+
+        var user = {
+            firstName: '@Model.Customer.FirstName',
+            lastName: '@Model.Customer.LastName',
+            email: '@Model.Customer.Email',
+            phone: '@Model.Customer.Phone',
+            institutionId: '@Model.Customer.InstitutionId',
+        };
+        try {
+            var auth = new Auth(user);
+            auth.onSuccess = function (data) {
+                $('#auth').hide();
+                $('#troveUserDetails').show();
+                var urlTrove = '@(EngineContext.Current.Resolve<Nop.Core.IWebHelper>().GetStoreLocation())checkout/PayTrove/'
+                var realId = data.realId;
+                console.log(data.realId);
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    data: { 'realId': realId },
+                    url: urlTrove,
+                    dataType: 'json',
+                    success: function (Data) {
+                        $('#troveUserDetails').html(Data);
+                        $('#troveUserDetails').show();
+                        $('#troveUserLogin').hide();
+                    },
+                    error: function (xhr) {
+                        console.log('error');
+                        console.log(xhr);
+                    }
+                });
+            }
+            auth.onError = function (message) {
+                $('#auth-result').empty();
+            }
+
+            auth.load("#auth");
+        }
+        catch (Error) {
+            console.log(Error);
+        }
+       //Pay using Trove
+        $("#payTrove").click(function (e) {
+
+            $('#trovePurchaseSubscribe').hide();
+            $("#hdnSelectedPaymentType").val("TrovePayment");
+           var urlTrove = '@(EngineContext.Current.Resolve<Nop.Core.IWebHelper>().GetStoreLocation())checkout/PayTrove/'
+            e.preventDefault();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                data: JSON.stringify($(this.form).serialize()),
+                url: urlTrove,
+                dataType: 'json',
+                success: function (Data) {
+                            console.log(Data);
+                            $('#troveUserDetails').html(Data);
+                            $('#troveUserDetails').show();
+                            $('#troveUserLogin').hide();
+                         },
+                error: function (xhr) {
+                            console.log('error');
+                            console.log(xhr);
+                         }
+                     });
+        });
+
+
+        //Subscribe using Trove
+        $("#troveSubscription").click(function (e) {
+                e.preventDefault();
+            $.ajax({
+                cache: false,
+                type: 'GET',
+                headers: {
+                    'Access-Control-Allow-Origin': 'http://localhost:45545',
+                    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+                },
+                dataType: 'jsonp',
+                url: '@(EngineContext.Current.Resolve<Nop.Core.IWebHelper>().GetStoreLocation())checkout/SubscribeTrove/', //'https://api-test.ingress.systems/api/Partner/Authorization?PartnerUserId=a6c3453e-2e6e-48ae-8210-3eba759101f3&PartnerId=1',
+                dataType: 'json',
+                crossDomain:true,
+                success: function (Data) {
+                            console.log(Data);
+                         },
+                error: function (xhr) {
+                            console.log('error');
+                            console.log(xhr);
+                         }
+                     });
+                         });
+    });
+    $('input[type=radio][name=paymentType]').change(function () {
+
+        //Customize Trove Iframe for BITE account creation and login.
+        $('div.logo img').attr('src', '');
+        $('#auth').attr('style', 'margin-top:10px;margin-left: 10px ;text-align:left;margin-bottom:10px;');
+        $("#auth").css('background-color', '#DDDDDD');
+        $("#instructions").attr('style', 'margin-bottom: 10px;');
+        $("#instructions section p").attr('style', 'padding-top: 20px;');
+        $("#instructions section p").text("Your BITE profile is created.Please link your meal plan to BITE.");
+        $("article.not-registered h4").attr('style', 'padding-top: 10px;');
+        $("article.not-registered h4").text(" ");
+        $("article.not-registered li").text(" ");
+        $("article.not-registered a.link").attr('style', 'background-color: none; border: none;color: none;padding: 1px 10px; text-align: center;text - decoration: none; display: inline - block;font-size: 16px;border-radius: 4px');
+        $("article.not-registered a.link").text(" ");
+        $("article.registered h4").attr('style', '');
+        $("article.registered h4").attr('style', 'padding-top: 10px;');
+        $("article.registered h4").text(" ");
+        $("article.registered p").attr('style', '');
+        $("article.registered p").text("Once you have registered your campus card, follow these steps:");
+        $("article.keep-in-mind h4").attr('style', '');
+        $("article.keep-in-mind h4").attr('style', 'padding-top: 10px;font-weight:bold;border:none;color:black; text-align:center;text-decoration:none; display: inline-block;font-size:16px;');
+        $("article.keep-in-mind h4").text("Additional Information -");
+        $("#instructions section button").attr('style', '');
+        $("#instructions section button").attr('style', 'background-color:white; border:none;color:black; text-align:center;text-decoration:none; display: inline-block;font-size:16px;border-radius:4px;display:flex;margin:auto');
+        $("#instructions section button").text("BITE Login");
+        //Customize Trove Iframe for BITE account creation and login.
+
+        if (this.value == 'rdTrovePayment') {
+            $('#troveUserLogin').show();
+        }
+        else if (this.value == 'rdFDCCPayment') {            
+            $("#hdnSelectedPaymentType").val("FirstDataPayment");
+            $('#troveUserLogin').hide();
+            $('#troveUserDetails').empty();
+            $('#troveUserDetails').hide();
+        }
+    });
+</script>
+
+
+
+

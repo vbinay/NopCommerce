@@ -1,0 +1,251 @@
+﻿@{
+    Layout = "";
+}
+
+@model ConfigurationModel
+@using Nop.Plugin.Payments.Bambora.Models;
+@using Nop.Web.Framework;
+
+<script>
+    $(document).ready(function () {
+        bindBootstrapTabSelectEvent('configure-firstdata');
+    });
+</script>
+
+@using (Html.BeginForm())
+{
+    <div class="content">
+        <div class="form-horizontal">
+            <div id="configure-firstdata" class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    @Html.RenderBootstrapTabHeader("tab-configure", @T("BitShift.Plugin.FirstData.Configure"), true)
+                    @Html.RenderBootstrapTabHeader("tab-store", @T("BitShift.Plugin.FirstData.Stores"))
+                </ul>
+                <div class="tab-content">
+                    @Html.RenderBootstrapTabContent("tab-configure", @TabGlobal(), true)
+                    @Html.RenderBootstrapTabContent("tab-store", @TabStores())
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@helper TabGlobal()
+{
+    @*<p>@T("BitShift.Plugin.FirstData.Notes")</p>*@
+    <p>@Html.ValidationSummary(false)</p>
+    <div class="content">
+        <div class="form-horizontal">
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                @Html.NopLabelFor(model => model.SandboxURL)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.SandboxURL)
+                                @Html.ValidationMessageFor(model => model.SandboxURL)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                @Html.NopLabelFor(model => model.ProductionURL)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.ProductionURL)
+                                @Html.ValidationMessageFor(model => model.ProductionURL)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                @Html.NopLabelFor(model => model.ApprovedRedirectUrl)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.ApprovedRedirectUrl)
+                                @Html.ValidationMessageFor(model => model.ApprovedRedirectUrl)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                @Html.NopLabelFor(model => model.RejectedRedirectUrl)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.RejectedRedirectUrl)
+                                @Html.ValidationMessageFor(model => model.RejectedRedirectUrl)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <input type="submit" id="save" name="save" class="btn btn-info" value="@T("Admin.Common.Save")" />
+                            </div>
+                            <div class="col-md-9">
+                                <span style="color:@(Model.SavedSuccessfully ? "#009900" : "990000")">
+                                    @Model.SaveMessage
+                                    @Html.AntiForgeryToken()
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="panel-title">
+                            License Keys
+                        </div>
+                        <div id="licenseKeys">
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2">Type</div>
+                                <div class="col-md-2">Host</div>
+                                <div class="col-md-4">Key</div>
+                            </div>
+                            @foreach (var license in Model.LicenseKeys)
+                    {
+                    <div class="form-group" data-id="LicenseRow_@(license.Id)">
+                        <div class="col-md-1">
+                            <img src="/Plugins/Bitshift.Payments.FirstData/Content/Images/ico-delete.gif" id="DeleteKey_@(license.Id)" data-id="@(license.Id)" />
+                        </div>
+                        <div class="col-md-2">
+                            @license.Type
+                        </div>
+                        <div class="col-md-2">
+                            @license.Host
+                        </div>
+                        <div class="col-md-4">
+                            @license.LicenseKey
+                        </div>
+                    </div>
+                    }
+                        </div>
+
+                        <div class="form-group margin-t-20">
+                            <div class="col-md-9">
+                                <input type="button" class="btn btn-info pull-left margin-r-10" id="addLicenseKey" value="Add License Key" />
+                                @Html.TextBox("newLicenseKey", "", new { @class = "form-control text-box single-line", style = "width:500px;" })
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#addLicenseKey").click(function () {
+                $.post("@(Url.RouteUrl("Plugin.Payments.FirstData.AddKey"))", { licenseKey: $("#newLicenseKey").val() }, function (html) {
+                    $(html).appendTo("#licenseKeys");
+                    rebindDeleteKeys();
+                    $("#newLicenseKey").val("");
+                });
+            });
+            rebindDeleteKeys();
+        });
+
+        function rebindDeleteKeys() {
+            $(".delete img").unbind("click").click(function () {
+                $.post("@(Url.RouteUrl("Plugin.Payments.FirstData.DeleteKey"))", { id: $(this).data("id") }, function (id) {
+                    $("#LicenseRow_" + id).remove();
+                });
+            });
+        }
+    </script>
+}
+
+@helper TabStores()
+{
+    <p>@T("BitShift.Plugin.FirstData.StoreNotes")</p>
+    <div class="content">
+        <div class="form-horizontal">
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <div class="label-wrapper">
+                                    <label class="control-label" title="" for="StoreName">Store</label>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDropDownList("Stores", Model.Stores)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="store-settings-content">
+                @Html.Action("GetStoreSettings", new { storeId = 0 })
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <input type="button" id="saveStoreSettings" class="btn btn-info" value="@T("Admin.Common.Save")" />
+                </div>
+                <div class="col-md-9" id="saveStoreMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Stores").val(0);
+            $("#Stores").change(refreshForm);
+            $("#revertStoreSettings").click(revertToDefaultSettings);
+            $("#saveStoreSettings").click(function () {
+                debugger;
+                var model = {
+                    StoreID: $("#Stores").val(),
+                    UseSandbox: $("#UseSandbox").is(":checked"),
+                    MerchantId: $("#MerchantId").val(),
+                    PaymentApiKey: $("#PaymentApiKey").val(),
+                    ReportingApiKey: $("#ReportingApiKey").val(),
+                    ProfilesApiKey: $("#ProfilesApiKey").val(),
+                    HashKey: $("#HashKey").val()
+                    //PaymentPageID: $("#PaymentPageID").val(),
+                    //TransactionKey: $("#TransactionKey").val(),
+                    //ResponseKey: $("#ResponseKey").val(),
+                    //AdditionalFee: $("#AdditionalFee").val(),
+                    //AdditionalFeePercentage: $("#AdditionalFeePercentage").is(":checked"),
+                    //EnableRecurringPayments: $("#EnableRecurringPayments").is(":checked"),
+                    //EnableCardSaving: $("#EnableCardSaving").is(":checked"),
+                    //EnablePurchaseOrderNumber: $("#EnablePurchaseOrderNumber").is(":checked")
+                };
+                $.post("@Url.RouteUrl("Plugin.Payments.Bambora.SaveStoreSettings")", model, function (result) {
+                    if (result == "success") {
+                        //refreshForm();
+                        $("#saveStoreMessage").html("@T("BitShift.Plugin.FirstData.StoreSettingsSaved")").css("color", "#009900").fadeOut(5000, function () {
+                            $(this).html("");
+                            $(this).show();
+                        });
+                    }
+                    else {
+                        $("#saveStoreMessage").html(result).css("color", "#990000").fadeOut(5000, function () {
+                            $(this).html("");
+                            $(this).show();
+                        });
+                    }
+                });
+            });
+        });
+
+        function revertToDefaultSettings(storeId) {
+            $.post("@Url.RouteUrl("Plugin.Payments.FirstData.RevertStoreSettings")", { storeId: $("#Stores").val() }, function () {
+                refreshForm();
+            })
+        }
+
+        function refreshForm() {
+            $.get("@Url.RouteUrl("Plugin.Payments.Bambora.GetStoreSettings")", { storeId: $("#Stores").val() }, function (result) {
+                $("#store-settings-content").html(result);
+                $("#revertStoreSettings").click(revertToDefaultSettings);
+            });
+        }
+    </script>
+}
+
+<style>
+    .delete img:hover {
+        cursor: pointer;
+    }
+</style>

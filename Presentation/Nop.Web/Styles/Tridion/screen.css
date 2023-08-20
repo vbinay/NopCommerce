@@ -1,0 +1,62 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+    /*background: url(https://images.sodexomyway.com/Images/bg.jpg) no-repeat scroll center top white;*/
+    background: url(https://images.sodexomyway.com/Images/bg.jpg) no-repeat;
+}
+.header-upper {
+    color: #ffffff;
+    border-bottom: none;
+}
+.header-lower {
+    color: #ffffff;
+    padding: 10px 0;
+}
+
+#topcartlink {
+    background-color: transparent;
+}
+#topcartlink a {
+    background: url('../Tridion/images/shopping-bag-white.png') left center no-repeat;
+}
+.header-menu {
+    background-color: #ffffff;
+    margin-bottom: 0;
+}
+.master-wrapper-content {
+    background-color: #ffffff;
+    padding-top: 30px;
+    width: 95%;
+}
+@media (min-width: 1001px) {
+    .header-menu {
+        padding-left: 10px; 
+        padding-right: 10px; 
+    }
+    .search-box {
+        max-width: 200px;
+        text-align: left;
+    }
+
+    .master-wrapper-content {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+    }
+}
+@media (max-width: 1000px) {
+    .header-menu {
+        width: 95%;
+        max-width: none;
+    }
+}
+@media(min-width: 1001px) {
+    .master-wrapper-content {
+        width: 980px;
+    }
+}
+@media(min-width: 1367px) {
+    .master-wrapper-content {
+        width: 1200px;
+    }
+}

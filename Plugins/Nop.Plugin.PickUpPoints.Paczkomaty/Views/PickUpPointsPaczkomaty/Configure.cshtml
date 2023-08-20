@@ -1,0 +1,51 @@
+﻿@{
+    Layout = "";
+}
+@model Nop.Plugin.PickUpPoints.Paczkomaty.Models.ConfigurationModel
+@using Nop.Web.Framework;
+@Html.Action("StoreScopeConfiguration", "Setting", new { area = "Admin" })
+@using (Html.BeginForm())
+{
+
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.ShowNearestThreePoints_OverrideForStore, model => model.ShowNearestThreePoints, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.ShowNearestThreePoints):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.ShowNearestThreePoints)
+                @Html.ValidationMessageFor(model => model.ShowNearestThreePoints)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.Fee_OverrideForStore, model => model.Fee, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.Fee):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Fee)
+                @Html.ValidationMessageFor(model => model.Fee)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.MaxWeight_OverrideForStore, model => model.MaxWeight, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.MaxWeight):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.MaxWeight)
+                @Html.ValidationMessageFor(model => model.MaxWeight)
+            </td>
+        </tr>
+    </table>
+
+    <table class="adminContent">
+        <tr>
+            <td colspan="2">
+                <input type="submit" name="save" class="k-button" value="@T("Admin.Common.Save")" />
+                <input type="submit" name="refresh" class="k-button" value="@T("Plugins.PickUpPoints.Paczkomaty.RefreshButton")" />
+            </td>
+        </tr>
+    </table>
+}

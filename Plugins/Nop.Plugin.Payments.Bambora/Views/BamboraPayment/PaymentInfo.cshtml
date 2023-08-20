@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "";
+}
+@model Nop.Plugin.Payments.Bambora.Models.PaymentInfoModel
+@using Nop.Web.Framework;
+
+
+@*<script type="text/javascript">
+        $('<style type="text/css">@@import url("/Plugins/Bitshift.Payments.FirstData/Content/style.css")</style>').appendTo("head");
+    </script>*@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+@if (Model.UseHostedPage)
+{
+    <div id="payment-error"></div>
+    if (!string.IsNullOrEmpty(Model.Url))
+    {
+       
+        <iframe id="payment" scrolling="no" style="width: 54%;height:713px; border-style:hidden" src="@Model.Url"></iframe>
+    }
+<style>
+    .checkout-page .button-1.payment-info-next-step-button {
+        display: none;
+    }
+</style>
+}
+

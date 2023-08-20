@@ -1,0 +1,554 @@
+﻿@model StagingListModel
+
+@{	// NU-32
+
+    var defaultGridPageSize = 1000;
+    var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
+
+    //page title
+    ViewBag.Title = "Staging Helper - Local List";
+    //active menu item (system name)
+    //Html.SetActiveMenuItemSystemName("Staging");
+}
+
+<style>
+    .k-grid .k-alt {
+        background-color: lightblue; /* specify the alternate background-color */
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            Staging Helper - Local Products
+        </h1>
+        <div class="pull-right">
+            <div class="btn-group">
+                <button type="button" id="process-selected" class="btn bg-green">
+                    <i class="fa fa-check-square-o"></i>
+                    Save
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="form-horizontal">
+            <div class="panel-group">
+                <div class="panel panel-default panel-search">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group" @(Model.AvailableStores.SelectionIsNotPossible() ? Html.Raw("style=\"display:none\"") : null)>
+                                    <div class="col-md-4">
+                                        Store:
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopDropDownList("SearchStoreId", Model.AvailableStores)
+                                    </div>
+                                </div>
+                                <div class="form-group" @(Model.AvailableStores.SelectionIsNotPossible() ? Html.Raw("style=\"display:none\"") : null)>
+                                    <div class="col-md-4">
+                                        Published:
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopDropDownList("Published", Model.AvailablePublish)
+                                    </div>
+                                </div>
+                                @*<div class="form-group" @(Model.AvailableMaster.SelectionIsNotPossible() ? Html.Raw("style=\"display:none\"") : null)>
+            <div class="col-md-4">
+                Published:
+            </div>
+            <div class="col-md-8">
+                @Html.NopDropDownList("MasterProductId", Model.AvailableMaster)
+            </div>
+        </div>
+        <div class="form-group" @(Model.AvailableWarehouses.SelectionIsNotPossible() ? Html.Raw("style=\"display:none\"") : null)>
+                <div class="col-md-4">
+                    @Html.NopLabelFor(model => model.ProductId)
+                </div>
+                <div class="col-md-8">
+                    <input type="text" id="search-product-name" autocomplete="off" class="form-control" />
+                </div>
+            </div>*@
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7 col-md-offset-5">
+                                <button type="button" id="search-mealplans" class="btn btn-primary btn-search">
+                                    <i class="fa fa-search"></i>
+                                    @T("Admin.Common.Search")
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="mealplans-grid"></div>
+
+                        <script>
+                            
+
+                            function getTaxCategoryName(value) {
+                                value = getEmptyOrObjectId(value);
+                                   
+                            @for(int i = 0; i < Model.AvailableTaxCategories.Count; i++)
+                            {
+                                var productAttributeItem = Model.AvailableTaxCategories[i];
+                                    <text>
+                                    if(@productAttributeItem.Value == value)
+                                    {
+                                        return "@(Html.Raw(HttpUtility.JavaScriptStringEncode(productAttributeItem.Text)))";
+                                    }
+                                    </text>
+                            }
+                        }
+
+                            function getGlCodeName(value) {
+                                value = getEmptyOrObjectId(value);
+                          @for (int i = 0; i < Model.AvailableGLCodes.Count; i++)
+                            {
+                                var productAttributeItem = Model.AvailableGLCodes[i];
+                                   <text>
+                                   if(@productAttributeItem.Value == value)
+                                   {
+                                       return "@(Html.Raw(HttpUtility.JavaScriptStringEncode(productAttributeItem.Text)))";
+                                   }
+                                   </text>
+                            }
+                          }
+
+
+                            function getMasterName(value) {
+                                value = getEmptyOrObjectId(value);
+                       @for (int i = 0; i < Model.AvailableMasterMealPlans.Count; i++)
+                                {
+                                    var productAttributeItem = Model.AvailableMasterMealPlans[i];
+                                <text>
+                                if(@productAttributeItem.Value == value)
+                                {
+                                    return "@(Html.Raw(HttpUtility.JavaScriptStringEncode(productAttributeItem.Text)))";
+                       }
+                            </text>
+                            }
+                            }
+
+
+    var selectedIds=[];
+    $(document).ready(function() {
+
+        $("#mealplans-grid").kendoGrid({
+            dataSource: {
+
+                type: "json",
+                transport: {
+                    read: {
+                        url: "@Html.Raw(Url.Action("StagingProductList", "Staging"))",
+                        type: "POST",
+                        dataType: "json",
+                        data: additionalData
+                    },
+                    update: {
+                        url: "@Html.Raw(Url.Action("UpdateProductList", "Staging"))",
+                        dataType: "jsonp" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    total: "Total",
+                    errors: "Errors",
+                    model: {
+                        id:"ProductId",
+                        fields: {
+                            ProductId: {
+                                //this field will not be editable (default value is true)
+                                editable: false
+                            },
+                            Name: {
+                                //this field will not be editable (default value is true)
+                                editable: false
+                            },
+                            ShortDescription: {
+                                editable: false
+                            },
+                            FullDescription: {
+                                //this field will not be editable (default value is true)
+                                editable: false
+                            },
+                            Price: {
+                                //this field will not be editable (default value is true)
+                                editable: false
+                            },
+                            Published: {
+                                //this field will not be editable (default value is true)
+                                editable: false
+                            }
+                        }
+                    },
+                },
+                error: function(e) {
+                    display_kendoui_grid_error(e);          
+                    // Cancel the changes
+                    this.cancelChanges();
+                },
+                requestEnd: function (e) {
+                    if (e.type === "update") {
+                        // reload from server after update to get server data instend of
+                        // text from user input
+                        this.read();
+                    }
+                },
+                pageSize: @(defaultGridPageSize),
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true
+            },
+
+
+            pageable: {
+                refresh: true,
+                pageSizes: [@(gridPageSizes)]
+            },
+            edit: function(e) {
+             
+                if (e.model.isNew()) {
+                    //little hack here
+                    //pre-select the first value of kendoui dropdownlist datasource
+                    //for some reasons (maybe, bug) it always sends 0
+                    //if no value has been selected (changed) in the dropdownlist
+                    if (allProductAttributes.length > 0) {
+                        e.model.TaxCategoryId = allProductAttributes[0].Id;                        
+                    }
+
+                }
+            },
+            editable: true,
+            navigatable: true,
+            scrollable: false,
+            dataBound: onDataBound,
+            autobind: true,
+            columns: [
+                   {
+                       field: "Id",
+                       title: "Id",
+                       width: 50
+                   },
+                {
+                    field: "ProductId",
+                    title: "Product Id",
+                    width: 50
+                },
+                {
+                    field: "Name",
+                    title: "Product Name",
+                    width: 200,
+                },
+                {
+                    field: "ShortDescription",
+                    title: "Short Description",
+                    width: 100,
+                    encoded: false,
+                },
+                {
+                    field: "FullDescription",
+                    title: "Description",
+                    width: 100,
+                    encoded: false,
+                }, {
+                    field: "Published",
+                    title: "Published",
+                    width: 50,
+                    format:"{0:c2}",
+                }
+                , {
+                    field: "Price",
+                    title: "Price",
+                    width: 50,
+                    format:"{0:c2}",
+                }
+                ,  {
+                    field: "Published",
+                    title: "Published",
+                    width: 50,
+                },  {
+                    field: "TaxCategoryId",
+                    title: "Tax Category",
+                    width: 300,
+                    editor: attributeControlTypeDropDownEditor,
+                    template: "#= getTaxCategoryName(TaxCategoryId) #"
+
+
+                }
+                ,  {
+                    field: "GLCode1Id",
+                    title: "GlCode 1",
+                    width: 100,
+                    editor: attributeGLCode1DropDownEditor,
+                    template: "#= getGlCodeName(GLCode1Id) #"
+
+                }
+                ,  {
+                    field: "GLCode1Amount",
+                    title: "GlCode1 Amount",
+                    format:"{0:c2}",
+                    width: 100,
+
+                }
+                ,  {
+                    field: "GLCode2Id",
+                    title: "GlCode 2",
+                    width: 100,
+                    editor: attributeGLCode2DropDownEditor,
+                    template: "#= getGlCodeName(GLCode2Id) #"
+
+                },
+                {
+                    field: "GLCode2Amount",
+                    title: "GlCode2 Amount",
+                    format:"{0:c2}",
+                    width: 100,
+
+                },
+
+                {
+                    field: "GLCode3Id",
+                    title: "GlCode3 GL",
+                    width: 100,
+                    editor: attributeGLCode3DropDownEditor,
+                    template: "#= getGlCodeName(GLCode3Id) #"
+
+                },
+
+                {
+                    field: "GLCode3Amount",
+                    title: "GlCode3 Amount",
+                    format:"{0:c2}",
+                    width: 100,
+
+                } ,
+                 {
+                     field: "MasterProductId",
+                     title: "Master Product",
+                     width: 100,
+                     editor: mealPlanDropDownEditor,
+                     template: "#= getMasterName(MasterProductId) #"
+
+                 }
+                 ,
+                {
+                    title: "Completed", field: "Completed", template: '<input type="checkbox" #= Completed ? \'checked="checked"\' : "" # class="chkbx" value="#=ProductId#" />', width: 110
+                }
+               ,
+                {
+                    field: "Comments",
+                    title: "Comments",
+                    width: 150,
+
+                }
+            ]
+        } );
+    });
+
+    var allProductAttributes = [
+    @for (int i = 0; i < Model.AvailableTaxCategories.Count; i++)
+                            {
+
+                                var productAttributeItem = Model.AvailableTaxCategories[i];
+                                <text>
+                                {
+                                    Id: @(productAttributeItem.Value),
+                                    Name: "@(Html.Raw(HttpUtility.JavaScriptStringEncode(productAttributeItem.Text)))"
+                                }
+                                    </text>
+                                if (i != Model.AvailableTaxCategories.Count - 1)
+                                {
+                                    <text>,</text>
+                                }
+                            }
+    ];
+
+
+    var allGLCodes = [
+                             @for (int i = 0; i < Model.AvailableGLCodes.Count; i++)
+                            {
+
+                                var productAttributeItem = Model.AvailableGLCodes[i];
+                                <text>
+                                {
+                                    Id: @(productAttributeItem.Value),
+                                    Name: "@(Html.Raw(HttpUtility.JavaScriptStringEncode(productAttributeItem.Text)))"
+                                }
+                                </text>
+                                if (i != Model.AvailableGLCodes.Count - 1)
+                                {
+                                    <text>,</text>
+                                }
+                            }
+    ];
+
+                            var allMasters = [
+                         @for (int i = 0; i < Model.AvailableMasterMealPlans.Count; i++)
+                            {
+
+                                var productAttributeItem = Model.AvailableMasterMealPlans[i];
+                                <text>
+                                {
+                                    Id: @(productAttributeItem.Value),
+                                    Name: "@(Html.Raw(HttpUtility.JavaScriptStringEncode(productAttributeItem.Text)))"
+                                }
+                                </text>
+                                if (i != Model.AvailableMasterMealPlans.Count - 1)
+                                {
+                                    <text>,</text>
+                                }
+                            }
+                            ];
+
+
+
+    function attributeControlTypeDropDownEditor(container, options) {
+        $('<input required data-text-field="Name" data-value-field="Id" data-bind="value:TaxCategoryId"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: allProductAttributes
+            }); 
+    }
+
+    function attributeGLCode1DropDownEditor(container, options) {
+        $('<input required data-text-field="Name" data-value-field="Id" data-bind="value:GLCode1Id"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: allGLCodes
+            });
+    }
+
+    function attributeGLCode2DropDownEditor(container, options) {
+        $('<input data-text-field="Name" data-value-field="Id" data-bind="value:GLCode2Id"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: allGLCodes
+            });
+    }
+    function attributeGLCode3DropDownEditor(container, options) {
+        $('<input data-text-field="Name" data-value-field="Id" data-bind="value:GLCode3Id"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: allGLCodes
+            });
+    }
+    function mealPlanDropDownEditor(container, options) {
+        $('<input data-text-field="Name" data-value-field="Id" data-bind="value:MasterProductId"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: allMasters
+            });
+    }
+                        </script>
+
+                        <script type="text/javascript">
+
+                            function getEmptyOrObjectId(value) {
+                                return (value == null || value == '') ? 0 : (typeof(value) === 'object') ? value.Id : value;
+                            }
+
+                            $(document).ready(function () {
+                                //search button
+                                $('#search-mealplans').click(function () {
+                                    //search
+                                    var grid = $('#mealplans-grid').data('kendoGrid');
+                                    grid.dataSource.page(1); //new search. Set page size to 1
+                                    return false;
+                                });
+
+                            });
+
+                          
+                            $('#process-selected').click(function(){
+                                var data = [];
+                                var dataSource = $("#mealplans-grid").data("kendoGrid").dataSource;
+                                var filters = dataSource.filter();
+                                var allData = dataSource.data();
+                                var query = new kendo.data.Query(allData);
+                                var filteredData = query.filter(filters).data;
+
+                                
+                                $('#mealplans-grid').find('input[type="checkbox"]:checked').each(function () {
+                                    var $check = $(this);
+                                    selectedIds.push(parseInt($check.val()))
+                                });
+
+
+                                $.each(filteredData, function(index, item){
+                                   
+                                    if(selectedIds.indexOf(item.ProductId)>-1)
+                                    {
+                              
+                                        data.push(
+                                            {
+                                                Id: item.Id,
+                                                ProductId:item.ProductId,
+                                                Name: item.Name,
+                                                Published: item.Published,
+                                                TaxCategoryId: getEmptyOrObjectId(item.TaxCategoryId),
+
+                                                GLCode1Id: getEmptyOrObjectId(item.GLCode1Id),
+                                                GLCode1Amount:getEmptyOrObjectId(item.GLCode1Amount),
+
+                                                GLCode2Id: getEmptyOrObjectId(item.GLCode2Id),
+                                                GLCode2Amount:getEmptyOrObjectId(item.GLCode2Amount),
+
+                                                GLCode3Id: getEmptyOrObjectId(item.GLCode3Id),
+                                                GLCode3Amount:getEmptyOrObjectId(item.GLCode3Amount),  
+                                                
+                                                MasterProductId: getEmptyOrObjectId(item.MasterProductId),
+
+                                                Completed:true,
+                                                Comments:item.Comments
+                                            }
+                                       );
+                                    }
+                                });
+                                $.ajax({
+                                    url:'@Html.Raw(Url.Action("SaveStagingProductsInfo", "Staging"))',
+                                    type:"POST",
+                                    data:{productDetailsArr:addAntiForgeryToken(data)},
+                                    datatype:'json',
+                                    ContentType:'application/json;utf-8',
+                                }).done(function(resp){
+                                    alert(resp.Result)
+                                }).error(function(err){
+                                    alert("Error " + err.status);
+                                });
+                            });
+
+                            function additionalData() {
+                                var data = {
+                                    SearchStoreId: $('#@Html.FieldIdFor(model => model.SearchStoreId)').val(),
+                                    Published: $('#@Html.FieldIdFor(model => model.Published)').val(),
+                              
+                                };
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
+
+                            function onDataBound(e) {
+                                var view = this.dataSource.view();
+                            }
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

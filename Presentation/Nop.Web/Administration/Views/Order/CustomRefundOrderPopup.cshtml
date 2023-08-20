@@ -1,0 +1,482 @@
+﻿@model OrderModel.CustomRefundData
+
+@{
+    Layout = "~/Administration/Views/Shared/_AdminPopupLayout.cshtml";
+
+    //page title
+    //ViewBag.Title = T("Admin.Orders.Fields.PartialRefund").Text;
+}
+
+<script>
+
+    $(document).ready(function(){
+
+        openPartialRefundGrid()
+    });
+    //Populating Glcode1 in the Grid
+    function getPaidGlCodeName1(value) {
+        @for (int i = 0; i < Model.AvailablePaidGLCodes1.Count; i++)
+        {
+                var paidGlproductAttributeItem1 = Model.AvailablePaidGLCodes1[i];
+                <text>
+        @if (paidGlproductAttributeItem1.Value != "SDX_FOUNDATION")
+                {
+                    <text>
+        if(@paidGlproductAttributeItem1.Value == value)
+        {
+            return "@(Html.Raw(HttpUtility.JavaScriptStringEncode(paidGlproductAttributeItem1.Text)))";
+        }
+        </texT>
+                }
+        </text>
+        }
+    }
+    //Populating Glcode2 in the Grid
+    function getPaidGlCodeName2(value) {
+        @for (int i = 0; i < Model.AvailablePaidGLCodes2.Count; i++)
+        {
+            var paidGlproductAttributeItem2 = Model.AvailablePaidGLCodes2[i];
+            <text>
+        @if (paidGlproductAttributeItem2.Value != "SDX_FOUNDATION")
+                {
+                    <text>
+        if (@paidGlproductAttributeItem2.Value == value) {
+            return "@(Html.Raw(HttpUtility.JavaScriptStringEncode(paidGlproductAttributeItem2.Text)))";
+        }
+        </text>
+                }
+        </text>
+        }
+    }
+    //Populating Glcode3 in the Grid
+    function getPaidGlCodeName3(value) {
+        @for (int i = 0; i < Model.AvailablePaidGLCodes3.Count; i++)
+        {
+            var paidGlproductAttributeItem3 = Model.AvailablePaidGLCodes3[i];
+            <text>
+        @if (paidGlproductAttributeItem3.Value != "SDX_FOUNDATION")
+                {
+                    <text>
+        if (@paidGlproductAttributeItem3.Value == value) {
+            return "@(Html.Raw(HttpUtility.JavaScriptStringEncode(paidGlproductAttributeItem3.Text)))";
+        }
+        </text>
+                }
+        </text>
+        }
+    }
+    function onDataBound(e) {
+        var view = this.dataSource.view();
+        //console.log(this.dataSource);
+    }
+
+    function showDetails(e) {
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var jsondata = JSON.stringify(dataItem);
+        if (confirm("Are you sure you want to perform this action?")) {
+            $.ajax({
+
+                url: "@Url.Action("UpdateCustomFullRefundData", "Order")",
+                type: 'POST',
+                data: jsondata,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (confirm("Fully Refunded! Order Screen needs to be refreshed. Click Ok to refresh the order Screen"));
+                    {
+                        window.top.location.reload();
+
+                    }
+                },
+                error: function (error) {
+
+                    if (error.Error != null || error.Error != undefined)
+                        alert(error.Error);
+                }
+            });
+        }
+    }
+
+    function openPartialRefundGrid()
+    {
+        $("#partiallyrefund-grid").kendoGrid({
+            dataSource: {
+                type: "json",
+                transport: {
+                    read: {
+                        url: "@Html.Raw(Url.Action("GetPartiallyRefundGridDetails", "Order", new { orderId = Model.OrderId }))",
+                        type: "POST",
+                        dataType: "json",
+                        data: addAntiForgeryToken
+                    },
+                    update: {
+                        url: "@Html.Raw(Url.Action("UpdateCustomRefundData", "Order"))",
+                        type: "POST",
+                        dataType: "json",
+                        data: addAntiForgeryToken,
+
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    total: "Total",
+                    errors: function (e) {
+                        if (e.Error != null || e.Error != undefined)
+                            alert(e.Error);
+                        if (e.Success != null || e.Success != undefined) {
+                            if (confirm("Partially Refunded! Order Screen needs to be refreshed. Click Ok to refresh the order Screen"));
+                            {
+                                window.top.location.reload();
+                            }
+                        }
+                    },
+                    model: {
+                        id: "ProductId",
+                        fields: {
+
+                            OrderItemId:{editable: false, type: "decimal"},
+                            ProductName: { editable: false, type: "string" },
+                            GLAmount1: { type: "decimal" },
+                            GLAmount2: { type: "decimal" },
+                            GLAmount3: { type: "decimal" },
+                            TaxAmount1: {editable: false,type: "decimal" },
+                            TaxAmount2: {editable: false,type: "decimal" },
+                            TaxAmount3: {editable: false,type: "decimal" },
+                            TotalRefund: { editable: false, type: "decimal" },
+                            RefundedTaxAmount1: {type: "decimal" },
+                            RefundedTaxAmount2: {type: "decimal" },
+                            RefundedTaxAmount3: {type: "decimal" },
+                            DeliveryTaxName: { editable: false },
+                            DeliveryTax: { editable: false, type: "decimal" },
+                            ShippingTaxName: { editable: false },
+                            ShippingTax: { editable: false, type: "decimal" },
+                            DeliveryPickupAmount: { editable: false, type: "decimal" },
+                            ShippingAmount: { editable: false, type: "decimal" }
+                        }
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.type == "update") {
+                        this.read();
+                    }
+                },
+                success: function (data) {
+                    confirm("Partial refund successful! Click ok to update the order screen");
+                    window.top.location.reload();
+                },
+                error: function (e) {
+                    display_kendoui_grid_error(e);
+                    // Cancel the changes
+                    this.cancelChanges();
+                },
+                //serverPaging: true,
+                //serverFiltering: true,
+                //serverSorting: true
+            },
+            //pageable: {
+            //refresh: true,
+            //numeric: false,
+            //previousNext: false,
+            //info: false
+            //},
+            edit: function (e) {
+                if (e.model.isNew()) {
+                    //little hack here
+                    //pre-select the first value of kendoui dropdownlist datasource
+                    //for some reasons (maybe, bug) it always sends 0
+                    //if no value has been selected (changed) in the dropdownlist
+
+                    if (!e.model.isNew()) {
+                        if (e.container.find("input[name=GLAmount2]")) {
+                            if (e.model.GLAmount2 <= 0) {
+                                e.container.find("input[name=GLAmount2]").attr("disabled", "disabled");
+                            }
+                        }
+
+                        if (e.container.find("input[name=GLAmount3]")) {
+                            if (e.model.GLAmount3 <= 0) {
+                                e.container.find("input[name=GLAmount3]").attr("disabled", "disabled");
+                            }
+                        }
+
+                    }
+
+                    if (allPaidGLCodes1.length > 0) {
+                        e.model.Glcodeid1 = allPaidGLCodes1[0].Id;
+                    }
+                    if (allPaidGLCodes2.length > 0) {
+                        e.model.Glcodeid2 = allPaidGLCodes2[0].Id;
+                    }
+                    if (allPaidGLCodes3.length > 0) {
+                        e.model.Glcodeid3 = allPaidGLCodes3[0].Id;
+                    }
+
+                }
+            },
+
+            editable: {
+                confirmation: false,
+                mode: "inline"
+            },
+
+            scrollable: false,
+            dataBound: onDataBound,
+            autobind: true,
+            columns: [
+            {
+                field: "ProductName",
+                title: "Product Name",
+                width: 250,
+                template: '<a href="@Url.Content("~/Admin/Product/Edit/")#= ProductId#">#= ProductName#</a> </br><span>Sku: #= Sku#</span>',
+                width: "300px"
+            },
+            {
+                field: "GLAmount1",
+                title: "GL Code1",
+                format: "{0:c2}",
+                width: 250,
+                template: '<span>$#= GLAmount1#</span></br><span>#= GLCodeName1# </span>'
+            },
+            {
+                field: "Glcodeid1",
+                title: "Override Glcode1",
+                width: 250,
+                editor: AvailablePaidGlcodeDropDownEditor1,
+                template: "#= getPaidGlCodeName1(Glcodeid1) #"
+            },
+            {
+                field: "TaxAmount1",
+                title: "Tax Code1",
+                format: "{0:c2}",
+                width: 250,
+                template: '<span>$#= TaxAmount1#</span></br><span>#= TaxName1# </span>'
+            },
+            {
+                field: "RefundedTaxAmount1",
+                title: "Refunded Tax1",
+                format: "{0:c2}",
+                width: 250,
+                template: '<span>$#= RefundedTaxAmount1#</span></br><span>#= TaxName1# </span>'
+            },
+
+             {
+                 field: "GLAmount2",
+                 title: "GL Code2",
+                 width: 250,
+                 format: "{0:c2}",
+                 template: '<span>$#= GLAmount2#</span></br><span>#= GLCodeName2# </span>'
+             },
+             {
+                 field: "Glcodeid2",
+                 title: "Override Glcode2",
+                 width: 250,
+                 editor: AvailablePaidGlcodeDropDownEditor2,
+                 template: "#= getPaidGlCodeName2(Glcodeid2) #"
+             },
+                {
+                    field: "TaxAmount2",
+                    title: "Tax Code2",
+                    format: "{0:c2}",
+                    width: 250,
+                    template: '<span>$#= TaxAmount2#</span></br><span>#= TaxName2# </span>'
+                },
+                {
+                    field: "RefundedTaxAmount2",
+                    title: "Refunded Tax2",
+                    format: "{0:c2}",
+                    width: 250,
+                    template: '<span>$#= RefundedTaxAmount2#</span></br><span>#= TaxName2# </span>'
+                },
+             {
+                 field: "GLAmount3",
+                 title: "GL Code3",
+                 width: 250,
+                 format: "{0:c2}",
+                 template: '<span>$#= GLAmount3#</span></br><span>#= GLCodeName3# </span>'
+             },
+             {
+                 field: "Glcodeid3",
+                 title: "Override Glcode3",
+                 width: 250,
+                 editor: AvailablePaidGlcodeDropDownEditor3,
+                 template: "#= getPaidGlCodeName3(Glcodeid3) #"
+             },
+                {
+                    field: "TaxAmount3",
+                    title: "Tax Code3",
+                    format: "{0:c2}",
+                    width: 250,
+                    template: '<span>$#= TaxAmount3#</span></br><span>#= TaxName3# </span>'
+                },
+                {
+                    field: "RefundedTaxAmount3",
+                    title: "Refunded Tax3",
+                    format: "{0:c2}",
+                    width: 250,
+                    template: '<span>$#= RefundedTaxAmount3#</span></br><span>#= TaxName3# </span>'
+                },
+                {
+                    field: "DeliveryPickupAmount",
+                    title: "Delivery Gl",
+                    format: "{0:c2}",
+                    width: 250,
+                    template: '<span>$#= DeliveryPickupAmount#</span></br><span>#= DeliveryGLCodeName# </span>'
+                },
+                {
+                    field: "DeliveryTax",
+                    title: "Delivery Tax",
+                    width: 250,
+                    format: "{0:c2}",
+                    template: '<span>$#= DeliveryTax#</span></br><span>#= DeliveryTaxName# </span>'
+                },
+                {
+                    field: "ShippingAmount",
+                    title: "Shipping Gl",
+                    format: "{0:c2}",
+                    width: 250,
+                    template: '<span>$#= ShippingAmount#</span></br><span>#= ShippingGlName# </span>'
+                },
+                {
+                    field: "ShippingTax",
+                    title: "Shipping Tax",
+                    width: 250,
+                    format: "{0:c2}",
+                    template: '<span>$#= ShippingTax#</span></br><span>#= ShippingTaxName# </span>',
+                },
+                {
+                    field: "TotalRefund",
+                    title: "Total Refund",
+                    width: 250,
+                    format: "{0:c2}",
+                    template: '<span>$#= TotalRefund#</span>'
+                },
+
+
+            {
+                command: [
+                    {
+
+                        name: "edit",
+                        text: {
+                            edit: "Edit Refund Amount",
+                            update: "Partial Refund",
+                            @*cancel: "@T("Admin.Common.Cancel")"*@
+                        },
+                    },
+                    {
+                        name: "refund",
+                        text: "Full Refund of this individual item",
+                        click: showDetails,
+                    }
+                ],
+                title: "Action",
+                width: 200
+            }]
+        });
+    }
+    var allPaidGLCodes1 = [
+            @for (int i = 0; i < Model.AvailablePaidGLCodes1.Count; i++)
+            {
+
+                var productAttributeItem = Model.AvailablePaidGLCodes1[i];
+
+                <text>
+                {
+                    Id: "@(productAttributeItem.Value)",
+                    Name: "@(Html.Raw(HttpUtility.JavaScriptStringEncode(productAttributeItem.Text)))"
+                }
+                </text>
+                if (i != Model.AvailablePaidGLCodes1.Count - 1)
+                {
+                    <text>,</text>
+                }
+    }];
+    var allPaidGLCodes2 = [
+                @for (int i = 0; i < Model.AvailablePaidGLCodes2.Count; i++)
+                {
+                    var productAttributeItem2 = Model.AvailablePaidGLCodes2[i];
+                    <text>
+                    {
+                        Id: "@(productAttributeItem2.Value)",
+                        Name: "@(Html.Raw(HttpUtility.JavaScriptStringEncode(productAttributeItem2.Text)))"
+                    }
+                    </text>
+                    if (i != Model.AvailablePaidGLCodes2.Count - 1)
+                    {
+                        <text>,</text>
+                    }
+        }];
+    var allPaidGLCodes3 = [
+            @for (int i = 0; i < Model.AvailablePaidGLCodes3.Count; i++)
+            {
+                var productAttributeItem3 = Model.AvailablePaidGLCodes3[i];
+                <text>
+                {
+                    Id: "@(productAttributeItem3.Value)",
+                    Name: "@(Html.Raw(HttpUtility.JavaScriptStringEncode(productAttributeItem3.Text)))"
+                }
+                </text>
+                if (i != Model.AvailablePaidGLCodes3.Count - 1)
+                {
+                    <text>,</text>
+                }
+            }];
+    function AvailablePaidGlcodeDropDownEditor1(container, options) {
+        $('<input required data-text-field="Name" data-value-field="Id" data-bind="value:Glcodeid1"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: allPaidGLCodes1
+                //name: "GLCodeName1",
+                //id: "GLCodeName1"
+            });
+    }
+    function AvailablePaidGlcodeDropDownEditor2(container, options) {
+        $('<input data-text-field="Name" data-value-field="Id" data-bind="value:Glcodeid2"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: allPaidGLCodes2
+                //name: "GLCodeName2",
+                //id: "GLCodeName2"
+            });
+    }
+    function AvailablePaidGlcodeDropDownEditor3(container, options) {
+        $('<input data-text-field="Name" data-value-field="Id" data-bind="value:Glcodeid3"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: allPaidGLCodes3
+                //name: "GLCodeName3",
+                //id: "GLCodeName3"
+            });
+    }
+</script>
+
+
+
+
+@if (ViewBag.RefreshPage == true)
+{
+    <script type="text/javascript">
+        try {window.opener.document.forms['@(ViewBag.formId)'].@(ViewBag.btnId).click();}
+        catch (e){}
+        window.close();
+    </script>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header clearfix">
+
+        <div class="pull-right">
+            &nbsp;
+        </div>
+    </div>
+
+    <div class="content">
+        <div id="partiallyrefund-grid">
+        </div>
+    </div>
+}

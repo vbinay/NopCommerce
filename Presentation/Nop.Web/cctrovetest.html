@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+
+		<!-- var authKey = ""; -->
+		<!-- var expiresIn = ""; -->
+		<!-- var refreshToken = ""; -->
+        <!-- $(document).ready(function () { -->
+             <!-- $.ajax({  -->
+                 <!-- url: "https://api-stage.ingress.systems/api/Partner/Authorization?PartnerUserId=" + params["RealID"] + "&PartnerId=" + params["PartnerId"],  -->
+				 <!-- url: "https://api-stage.ingress.systems/api/Partner/Authorization?PartnerUserId=98766e57-b931-4bd8-b9ce-9fd95cb82a9c&PartnerId=1",  -->
+                 <!-- data: {},  -->
+				 <!-- headers: { "Access-Control-Allow-Origin":"https://shop-staging-nmsu.sodexomyway.net" },  -->
+				 <!-- crossDomain: true,  -->
+				 <!-- dataType: "json",  -->
+                 <!-- type: "GET",  -->
+                 <!-- success: function (data) {  -->
+					 <!-- authKey = data.access_token;  -->
+					 <!-- expiresIn = data.expires_in;  -->
+					 <!-- refreshToken = data.refresh_token;					  -->
+					 <!-- $.ajax({  -->
+						 <!-- url: "https://admin-stage.ingress.systems/byoc/addcards",  -->
+						 <!-- data: {},  -->
+						 <!-- headers: { "authorization": authKey, "expires_in": expiresIn, "refresh_token": refreshToken, "Access-Control-Allow-Origin":"https://shop-staging-nmsu.sodexomyway.net" },  -->
+						 <!-- crossDomain: true,  -->
+						 <!-- type: "get",  -->
+						 <!-- dataType, 'html', -->
+						 <!-- success: function (data) {  -->
+							 <!-- $("#troveresponse").html(data);  -->
+						 <!-- }  -->
+					<!-- });  -->
+             <!-- }  -->
+            <!-- })  -->
+			
+			 $.ajax({ 
+				 url: "https://admin-stage.ingress.systems/byoc/addcards",
+				 <!-- url: "https://admin-stage.ingress.systems/",  -->
+				 data: {}, 
+				 headers: { "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImVjNjA2ODFjNDI2ZWI0OTU1ZWU5ODYwZjk4MGVmZDJlIiwidHlwIjoiSldUIn0.eyJuYmYiOjE2NTk5NjM3ODUsImV4cCI6MTY2MDgyNzc4NSwiaXNzIjoiaHR0cHM6Ly9hcGktc3RhZ2UuaW5ncmVzcy5zeXN0ZW1zIiwiYXVkIjoiaHR0cHM6Ly9hcGktc3RhZ2UuaW5ncmVzcy5zeXN0ZW1zL3Jlc291cmNlcyIsImNsaWVudF9pZCI6InJvLmFuZ3VsYXIiLCJzdWIiOiI2NiIsImF1dGhfdGltZSI6MTY1OTk2Mzc4NSwiaWRwIjoibG9jYWwiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiSnVsaWUgQ2FtcGlvbmUiLCJ1bmlxdWVfbmFtZSI6Ikp1bGllIENhbXBpb25lIiwiZW1haWwiOiJzdGFnZTE0MDBAeW9wbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJCYXNpYyBVc2VyIiwicHJvZ3JhbUlkIjoiMjIiLCJpc1Byb2dyYW1MaW5rZWRXaXRoVXNlciI6IlRydWUiLCJwcm9ncmFtTmFtZSI6IlBhcnRuZXIgVGVzdCAtIENTIEdvbGQiLCJsb2dvUGF0aCI6Imh0dHBzOi8vYXBpLXN0YWdlLmluZ3Jlc3Muc3lzdGVtcy9JbWFnZXMvaW1hZ2Vfbm90X2F2YWlsYWJsZS5wbmciLCJ1c2VySWQiOiI2NiIsIm9yZ2FuaXN0aW9uSWQiOiIxIiwicGljdHVyZSI6Imh0dHBzOi8vYXBpLXN0YWdlLmluZ3Jlc3Muc3lzdGVtcy9JbWFnZXMvYXZhdGFyLnBuZyIsImxhc3ROYW1lIjoiQ2FtcGlvbmUiLCJmaXJzdE5hbWUiOiJKdWxpZSIsImlzVXNlckFjdGl2ZSI6IlRydWUiLCJVc2VyVW5pcXVlSWQiOiJBSEQxMDAwLTY2Iiwic2Vzc2lvbk1vYmlsZUlkIjoiYTgwNzg4YTktY2UzYS00OTkyLTk4NzEtMGRkYzZkMTY1YWQ1IiwianBvc0FjY291bnRIb2xkZXJJZCI6IjAiLCJVc2VyRGV2aWNlSWQiOiIiLCJVc2VyRGV2aWNlVHlwZSI6IiIsInNjb3BlIjpbIm9wZW5pZCIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJwd2QiXX0.RfY_Xn43P6yYQ427yjoUw6GSlA1vXZEsfYZEJE-M377ylBvVq32pWN1TJNx7EvaAara-r1do1Vb135rG4wvAx7b2cE0snaWc2ZmvFIxkHJhB-ixVG1AFPMbwu4GZQFCelLFY4byQb-o38sm_Hma1FSurqLRbqsvn1IT_1nTy31D5eynB5aPJcnlloD5D3gmLYdeXZc1x4I_7IPv63QxmwzUgcl02C9QXrhMq-_-j7tZYCdqWH54ZiwF9RPWSjNextOmXELss4l6uQtMXj-d3BEl-DTAezTo-HMSzodqGdkzF0PpyDyj1M9jOxuoHNwMhKuenq5XUH9UCPvNVUw0XPA",  
+				 "expires_in": 864000,  				 
+				 "refresh_token": "77941c3f3f1be99da3e3fde977a3ed393039fb9982197684afdfc75f741413b7",  
+				 "Access-Control-Allow-Origin":"https://shop-staging-nmsu.sodexomyway.net" }, 
+				 crossDomain: true, 
+				 type: "get",
+				 dataType: 'html',
+				 success: function (data) { 
+					 $("#troveresponse").html(data); 
+				 } 
+			 }); 
+
+        <!-- }) -->
+        $("#complete").on("click", function ()
+        {
+            $(window).parent().cardComplete();
+        }
+        );
+    </script>
+</head>
+<body>
+    <div id="troveResponse">
+
+    </div>
+    <div id="complete">
+        <button class="btn" id="complete" disabled="disabled">Continue Order</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>NopCommerce</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{d8138cfb-fb25-4cbb-89df-1a79a21b838e}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>NopCommerce</RootNamespace>
+    <AssemblyName>NopCommerce</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- VS10 without SP1 will not have VisualStudioVersion set, so do that here -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Warehouse.sql" />
+    <Build Include="dbo\Tables\VendorNote.sql" />
+    <Build Include="dbo\Tables\Vendor.sql" />
+    <Build Include="dbo\Tables\UrlRecord.sql" />
+    <Build Include="dbo\Tables\TopicTemplate.sql" />
+    <Build Include="dbo\Tables\Topic.sql" />
+    <Build Include="dbo\Tables\TierPrice.sql" />
+    <Build Include="dbo\Tables\TaxRate.sql" />
+    <Build Include="dbo\Tables\TaxCategory.sql" />
+    <Build Include="dbo\Tables\StoreMapping.sql" />
+    <Build Include="dbo\Tables\Store.sql" />
+    <Build Include="dbo\Tables\StateProvince.sql" />
+    <Build Include="dbo\Tables\SpecificationAttributeOption.sql" />
+    <Build Include="dbo\Tables\SpecificationAttribute.sql" />
+    <Build Include="dbo\Tables\ShoppingCartItem.sql" />
+    <Build Include="dbo\Tables\ShippingMethodRestrictions.sql" />
+    <Build Include="dbo\Tables\ShippingMethod.sql" />
+    <Build Include="dbo\Tables\ShippingByWeight.sql" />
+    <Build Include="dbo\Tables\ShipmentItem.sql" />
+    <Build Include="dbo\Tables\Shipment.sql" />
+    <Build Include="dbo\Tables\Setting.sql" />
+    <Build Include="dbo\Tables\SearchTerm.sql" />
+    <Build Include="dbo\Tables\ScheduleTask.sql" />
+    <Build Include="dbo\Tables\RewardPointsHistory.sql" />
+    <Build Include="dbo\Tables\ReturnRequestReason.sql" />
+    <Build Include="dbo\Tables\ReturnRequestAction.sql" />
+    <Build Include="dbo\Tables\ReturnRequest.sql" />
+    <Build Include="dbo\Tables\RelatedProduct.sql" />
+    <Build Include="dbo\Tables\RecurringPaymentHistory.sql" />
+    <Build Include="dbo\Tables\RecurringPayment.sql" />
+    <Build Include="dbo\Tables\QueuedEmail.sql" />
+    <Build Include="dbo\Tables\ProductWarehouseInventory.sql" />
+    <Build Include="dbo\Tables\ProductTemplate.sql" />
+    <Build Include="dbo\Tables\ProductTag.sql" />
+    <Build Include="dbo\Tables\ProductReviewHelpfulness.sql" />
+    <Build Include="dbo\Tables\ProductReview.sql" />
+    <Build Include="dbo\Tables\ProductAttributeValue.sql" />
+    <Build Include="dbo\Tables\ProductAttributeCombination.sql" />
+    <Build Include="dbo\Tables\ProductAttribute.sql" />
+    <Build Include="dbo\Tables\Product_SpecificationAttribute_Mapping.sql" />
+    <Build Include="dbo\Tables\Product_ProductTag_Mapping.sql" />
+    <Build Include="dbo\Tables\Product_ProductAttribute_Mapping.sql" />
+    <Build Include="dbo\Tables\Product_Picture_Mapping.sql" />
+    <Build Include="dbo\Tables\Product_Manufacturer_Mapping.sql" />
+    <Build Include="dbo\Tables\Product_Category_Mapping.sql" />
+    <Build Include="dbo\Tables\Product.sql" />
+    <Build Include="dbo\Tables\PredefinedProductAttributeValue.sql" />
+    <Build Include="dbo\Tables\PollVotingRecord.sql" />
+    <Build Include="dbo\Tables\PollAnswer.sql" />
+    <Build Include="dbo\Tables\Poll.sql" />
+    <Build Include="dbo\Tables\Picture.sql" />
+    <Build Include="dbo\Tables\PermissionRecord_Role_Mapping.sql" />
+    <Build Include="dbo\Tables\PermissionRecord.sql" />
+    <Build Include="dbo\Tables\OrderNote.sql" />
+    <Build Include="dbo\Tables\OrderItem.sql" />
+    <Build Include="dbo\Tables\Order.sql" />
+    <Build Include="dbo\Tables\NewsLetterSubscription.sql" />
+    <Build Include="dbo\Tables\NewsComment.sql" />
+    <Build Include="dbo\Tables\News.sql" />
+    <Build Include="dbo\Tables\MessageTemplate.sql" />
+    <Build Include="dbo\Tables\MeasureWeight.sql" />
+    <Build Include="dbo\Tables\MeasureDimension.sql" />
+    <Build Include="dbo\Tables\ManufacturerTemplate.sql" />
+    <Build Include="dbo\Tables\Manufacturer.sql" />
+    <Build Include="dbo\Tables\Log.sql" />
+    <Build Include="dbo\Tables\LocalizedProperty.sql" />
+    <Build Include="dbo\Tables\LocaleStringResource.sql" />
+    <Build Include="dbo\Tables\Language.sql" />
+    <Build Include="dbo\Tables\GoogleProduct.sql" />
+    <Build Include="dbo\Tables\GiftCardUsageHistory.sql" />
+    <Build Include="dbo\Tables\GiftCard.sql" />
+    <Build Include="dbo\Tables\GenericAttribute.sql" />
+    <Build Include="dbo\Tables\Forums_Topic.sql" />
+    <Build Include="dbo\Tables\Forums_Subscription.sql" />
+    <Build Include="dbo\Tables\Forums_PrivateMessage.sql" />
+    <Build Include="dbo\Tables\Forums_Post.sql" />
+    <Build Include="dbo\Tables\Forums_Group.sql" />
+    <Build Include="dbo\Tables\Forums_Forum.sql" />
+    <Build Include="dbo\Tables\ExternalAuthenticationRecord.sql" />
+    <Build Include="dbo\Tables\EmailAccount.sql" />
+    <Build Include="dbo\Tables\Download.sql" />
+    <Build Include="dbo\Tables\DiscountUsageHistory.sql" />
+    <Build Include="dbo\Tables\DiscountRequirement.sql" />
+    <Build Include="dbo\Tables\Discount_AppliedToProducts.sql" />
+    <Build Include="dbo\Tables\Discount_AppliedToManufacturers.sql" />
+    <Build Include="dbo\Tables\Discount_AppliedToCategories.sql" />
+    <Build Include="dbo\Tables\Discount.sql" />
+    <Build Include="dbo\Tables\DeliveryDate.sql" />
+    <Build Include="dbo\Tables\CustomerRole.sql" />
+    <Build Include="dbo\Tables\CustomerAttributeValue.sql" />
+    <Build Include="dbo\Tables\CustomerAttribute.sql" />
+    <Build Include="dbo\Tables\CustomerAddresses.sql" />
+    <Build Include="dbo\Tables\Customer_CustomerRole_Mapping.sql" />
+    <Build Include="dbo\Tables\Customer.sql" />
+    <Build Include="dbo\Tables\Currency.sql" />
+    <Build Include="dbo\Tables\CrossSellProduct.sql" />
+    <Build Include="dbo\Tables\Country.sql" />
+    <Build Include="dbo\Tables\CheckoutAttributeValue.sql" />
+    <Build Include="dbo\Tables\CheckoutAttribute.sql" />
+    <Build Include="dbo\Tables\CategoryTemplate.sql" />
+    <Build Include="dbo\Tables\Category.sql" />
+    <Build Include="dbo\Tables\Campaign.sql" />
+    <Build Include="dbo\Tables\BlogPost.sql" />
+    <Build Include="dbo\Tables\BlogComment.sql" />
+    <Build Include="dbo\Tables\BackInStockSubscription.sql" />
+    <Build Include="dbo\Tables\Affiliate.sql" />
+    <Build Include="dbo\Tables\AddressAttributeValue.sql" />
+    <Build Include="dbo\Tables\AddressAttribute.sql" />
+    <Build Include="dbo\Tables\Address.sql" />
+    <Build Include="dbo\Tables\ActivityLogType.sql" />
+    <Build Include="dbo\Tables\ActivityLog.sql" />
+    <Build Include="dbo\Tables\AclRecord.sql" />
+    <Build Include="dbo\Functions\urlencode.sql" />
+    <Build Include="dbo\Functions\updateStoreURL.sql" />
+    <Build Include="dbo\Functions\Parse_For_Domain_Name.sql" />
+    <Build Include="dbo\Functions\nop_getprimarykey_indexname.sql" />
+    <Build Include="dbo\Functions\nop_getnotnullnotempty.sql" />
+    <Build Include="dbo\Functions\gethostname.sql" />
+    <Build Include="dbo\Functions\createSlug.sql" />
+    <Build Include="dbo\Functions\nop_splitstring_to_table.sql" />
+    <Build Include="dbo\Stored Procedures\ProductTagCountLoadAll.sql" />
+    <Build Include="dbo\Stored Procedures\ProductLoadAllPaged.sql" />
+    <Build Include="dbo\Stored Procedures\Migration.sql" />
+    <Build Include="dbo\Stored Procedures\LanguagePackImport.sql" />
+    <Build Include="dbo\Stored Procedures\FullText_IsSupported.sql" />
+    <Build Include="dbo\Stored Procedures\FullText_Enable.sql" />
+    <Build Include="dbo\Stored Procedures\FullText_Disable.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteGuests.sql" />
+    <Build Include="dbo\Stored Procedures\_ProductLoadAllPaged.sql" />
+    <Build Include="dbo\Functions\updateEmail.sql" />
+    <Build Include="dbo\Functions\getEmailDomain.sql" />
+    <Build Include="dbo\Stored Procedures\TruncateTable.sql" />
+  </ItemGroup>
+</Project>

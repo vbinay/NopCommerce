@@ -1,0 +1,15 @@
+﻿@using Nop.Web.Framework.UI
+@using Nop.Services.Stores;
+@using Nop.Core;
+@model Nop.Plugin.Widgets.AdminSecurity.Models.PublicInfoModel
+@{
+    Layout = "";
+
+    if (!Model.hasAccess)
+    {
+        <script>
+            document.location.href = "/login?message=You are not authorized to access the administration area of this store";
+        </script>
+    }
+}
+

@@ -1,0 +1,74 @@
+﻿@model ProductModel
+
+@{
+    var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
+}
+
+<div class="panel-group">
+    <p>
+        Here you can see a list of all the localized products for this Master product.
+    </p>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div id="localized-products-grid"></div>
+
+            <script>
+                $(document).ready(function() {
+                    $("#localized-products-grid").kendoGrid({
+                        dataSource: {
+                            type: "json",
+                            transport: {
+                                read: {
+                                    url: "@Html.Raw(Url.Action("LocalizedProducts", "Product", new {productId = Model.Id}))",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: addAntiForgeryToken
+                                }
+                            },
+                            schema: {
+                                data: "Data",
+                                total: "Total",
+                                errors: "Errors"
+                            },
+                            error: function(e) {
+                                display_kendoui_grid_error(e);
+                                // Cancel the changes
+                                this.cancelChanges();
+                            },
+                            serverPaging: false,
+                            serverFiltering: true,
+                            serverSorting: true
+                        },            
+                        scrollable: false,
+                        columns: [
+                            {
+                                field: "StoreName",
+                                title: "Store Name",
+                                width: 25
+                            },
+                            {
+                                field: "Name",
+                                title: "Name",
+                                width: 25
+                            },
+                             {
+                                field: "Published",
+                                title: "Published",
+                                width: 10
+                            },
+                             {
+                                field: "Id",
+                                title: "@T("Admin.Common.View")",
+                                width: 100,
+
+                                template: '<a target="_blank" href="@Url.Content("~/Admin/Product/Edit/")#=Id#">@T("Admin.Common.View")</a>'
+                            }
+                        ]
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿@using Nop.Core.Infrastructure;
+@using Nop.Core
+@model UIResponseVieModel
+
+<div class="checkout-data">
+    @{
+        <form action="" id="co-payment-info-form-trove">
+            <div class="edit-address">
+                <div class="inputs">
+                    <label for="FirstName">First Name: </label>
+                    @Html.EditorFor(model => model.Customer.FirstName)
+                </div>
+                <div class="inputs">
+                    <label for="LastName">Last Name: </label>
+                    @Html.EditorFor(model => model.Customer.LastName)
+                </div>
+                <div class="inputs">
+                    <label for="UserEmail">User Email: </label>
+                    @Html.EditorFor(model => model.Customer.Email)
+                </div>
+                <div class="edit-address">
+                    <div class="col-md-6"><input type="radio" name="paymentOption" value="rdAvlblCards">Available Cards:  @Html.DropDownListFor(model => model.SelectedCardId, Model.AvailableCards)</div>
+                    <div class="col-md-6"><input type="radio" name="paymentOption" value="rdAvlblAccounts" checked>Available Accounts: @Html.DropDownListFor(model => model.SelectAccountId, Model.AvailableAccounts)</div>
+                </div>
+                @Html.CheckBoxFor(x => x.UserConsent)<label for="consentVerbiage">By Clicking this checkbox you are consenting that the order amount can/will be deducted from your BYOC wallet</label>
+            </div>
+        </form>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //defaults
+        $("#hdnSelectedCardName").val('');
+        $("#hdnSelectedPaymentOption").val('rdAvlblAccounts');
+        $("#hdnSelectedAccountName").val($('#SelectAccountId').find(":selected").val());
+
+
+        $('input[type=radio][name=paymentOption]').change(function () {
+            //debugger;//
+            if (this.value == 'rdAvlblCards') {
+                $("#hdnSelectedCardName").val($('#SelectedCardId').find(":selected").val());
+                $("#hdnSelectedAccountName").val('');
+                $("#hdnSelectedPaymentOption").val('rdAvlblCards');
+            }
+            else if (this.value == 'rdAvlblAccounts') {
+                $("#hdnSelectedAccountName").val($('#SelectAccountId').find(":selected").val());
+                $("#hdnSelectedCardName").val('');
+                $("#hdnSelectedPaymentOption").val('rdAvlblAccounts');
+            }
+        });
+    })
+</script>

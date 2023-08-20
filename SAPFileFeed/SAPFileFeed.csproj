@@ -1,0 +1,674 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3621E5A2-B8FE-48F1-B26E-F8BB81F9BBFE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SAPFileFeed</RootNamespace>
+    <AssemblyName>SAPFileFeed</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>D:\SapFileFeedPublish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>9F66CB085CF49AFACAF4A186427A6B76F0E70F5C</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>SAPFileFeed_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ChoPGP, Version=1.0.1.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ChoPGP.1.0.1.2\lib\ChoPGP.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FlatFile.Core, Version=0.2.51.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FlatFile.Core.0.2.51\lib\net45\FlatFile.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.Core.Attributes, Version=0.2.51.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FlatFile.Core.Attributes.0.2.51\lib\net45\FlatFile.Core.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.FixedLength, Version=0.2.51.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FlatFile.FixedLength.0.2.51\lib\net45\FlatFile.FixedLength.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.FixedLength.Attributes, Version=0.2.51.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FlatFile.FixedLength.Attributes.0.2.51\lib\net45\FlatFile.FixedLength.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentFTP, Version=25.0.5.0, Culture=neutral, PublicKeyToken=f4af092b1d8df44f, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentFTP.25.0.5\lib\net45\FluentFTP.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nop.Services">
+      <HintPath>..\Libraries\Nop.Services\bin\Debug\Nop.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tamir.SharpSSH">
+      <HintPath>..\lib\Tamir.SharpSSH.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AclRecord.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityLog.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityLogType.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Address.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AddressAttribute.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AddressAttributeValue.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Affiliate.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BackInStockSubscription.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_SavedCard.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_SavedCard_o.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_StoreLicenseKey.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_StoreLicenseKey_1.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_StoreSetting.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_StoreSetting_1.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BlogComment.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BlogPost.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Campaign.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CardAccessRecord.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Category.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryTemplate.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CheckoutAttribute.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CheckoutAttributeValue.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Commuter.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Commuter1.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Commuter_old.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Country.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrossSellProduct.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Currency.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Customer.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerAttribute.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerAttributeValue.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerRole.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DeliveryDate.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Discount.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DiscountRequirement.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DiscountUsageHistory.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Donation.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Download.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmailAccount.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmailType.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExternalAuthenticationRecord.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_Forum.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_Group.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_Post.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_PostVote.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_PrivateMessage.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_Subscription.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_Topic.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FsuFixedRecordLayout.cs" />
+    <Compile Include="FsuMealPlanRecord.cs" />
+    <Compile Include="FsuMealPlanTrailer.cs" />
+    <Compile Include="FulfillmentCalDay.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GenericAttribute.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GiftCard.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GiftCardUsageHistory.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GLCode.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GLSpecificationAttribute.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GLSpecificationAttributeOption.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GoogleProduct.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Language.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LocaleStringResource.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LocalizedProperty.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Log.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Manufacturer.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ManufacturerTemplate.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MealPlan.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeasureDimension.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeasureWeight.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessageTemplate.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="News.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NewsComment.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NewsLetterSubscription.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="nop_splitstring_to_table_Result.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Order.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderItem.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="orderitem_fulfillmentdate_bkp_070219.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderNote.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PermissionRecord.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Picture.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Poll.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PollAnswer.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PollVotingRecord.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PredefinedProductAttributeValue.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductAttribute.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductAttributeCombination.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductAttributeValue.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductGlCodeMapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductRelation.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductReview.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductReviewHelpfulness.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTag.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTagCountLoadAll_Result.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTax.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTemplate.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductWarehouseInventory.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_5_22_19.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_backup_5_20.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_BKP111.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_bkp_1_21.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_bkp_1_22.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_BKP_3_11.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_Category_Mapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_GLCode_Calc.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_GlCode_Mapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_glcode_mappingBKP111.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_glcode_mapping_5_21.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_glcode_mapping_5_22.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_glcode_mapping_5_28.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_GLSpecificationAttribute_Mapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_Manufacturer_Mapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_PickupWarehouses_Mapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_Picture_Mapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_ProductAttribute_Mapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_SpecificationAttribute_Mapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueuedEmail.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RecurringPayment.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RecurringPaymentHistory.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RelatedProduct.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReportHelper.cs" />
+    <Compile Include="ReturnRequest.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReturnRequestAction.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReturnRequestReason.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RewardPointsHistory.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SAPFile.cs" />
+    <Compile Include="SAPFileFeed.cs" />
+    <Compile Include="SapFileFeedDataModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SapFileFeedDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SapFileFeedDataModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SapFileFeedDataModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SapFileFeedDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="SAPLogger.cs" />
+    <Compile Include="SAPOrder.cs" />
+    <Compile Include="SAPOrderProcess.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SAPTaxResponseStorage.cs" />
+    <Compile Include="SAPWorkFlowMessagingSystem.cs" />
+    <Compile Include="SAP\DistributiveTaxResponse.cs" />
+    <Compile Include="SAP\SAPFixedRecordLayout.cs" />
+    <Compile Include="SAP\SAPSalesJournalEntry.cs" />
+    <Compile Include="SAP\SAPTrailer.cs" />
+    <Compile Include="SAP\SAPRecord.cs" />
+    <Compile Include="SAP\SAPHeader.cs" />
+    <Compile Include="SAP_SalesJournal.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScheduleTask.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SearchTerm.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Setting.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Shipment.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShipmentItem.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShippingMethod.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShoppingCartItem.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpecificationAttribute.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpecificationAttributeOption.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StagingTaxCategory.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StagingTaxCategory_bkp_1_22.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StateProvince.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Store.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="storebkp.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StoreCommission.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StoreMapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StorePickupPoint.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Store_Email_Mapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxCategory.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxRate.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxResponseStorage.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TierPrice.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Topic.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TopicTemplate.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TridionProfileMapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UrlRecord.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="URLRecordBkp.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vendor.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorMapping.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorNote.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VertexResponse.cs" />
+    <Compile Include="Warehouse.cs">
+      <DependentUpon>SapFileFeedDataModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <EntityDeploy Include="SapFileFeedDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SapFileFeedDataModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="SapFileFeedDataModel.edmx.diagram">
+      <DependentUpon>SapFileFeedDataModel.edmx</DependentUpon>
+    </None>
+    <None Include="Sodexho_Operations_LLC2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Sodexho_Operations_LLC2.asc" />
+    <None Include="Sodexho_Operations_LLC_pub.asc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SapFileFeedDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SapFileFeedDataModel.edmx</DependentUpon>
+      <LastGenOutput>SapFileFeedDataModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="SapFileFeedDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SapFileFeedDataModel.edmx</DependentUpon>
+      <LastGenOutput>SapFileFeedDataModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

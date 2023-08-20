@@ -1,0 +1,299 @@
+﻿@model StoreCommissionReportModel
+@{
+    var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
+
+    //page title
+    ViewBag.Title = T("Admin.StoreCommissions").Text;
+    //active menu item (system name)
+    Html.SetActiveMenuItemSystemName("StoreCommissionsReport");
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            <img src="@Url.Content("~/Administration/Content/images/ico-sales.png")" alt="" />
+            @T("Admin.StoreCommissions")
+        </h1>
+        <div class="pull-right">
+            <div class="btn-group">
+                <button type="button" class="btn btn-success">
+                    <i class="fa fa-download"></i>
+                    @T("Admin.Common.Export")
+                </button>
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">&nbsp;</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <button type="submit" name="exportstorecommissions-xml">
+                            <i class="fa fa-file-code-o"></i>
+                            @T("Admin.Common.ExportToXml.All")
+                        </button>
+                    </li>
+                    <li>
+                        <button type="submit" name="exportstorecommissions-excel">
+                            <i class="fa fa-file-excel-o"></i>
+                            @T("Admin.Common.ExportToExcel.All")
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" id="exportstorecommissions-pdf">
+                            <i class="fa fa-file-excel-o"></i>
+                            @T("Admin.Orders.PdfInvoice.All")
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div class="form-horizontal">
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.StartDate)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.StartDate)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.EndDate)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.EndDate)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.StoreId)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDropDownList("StoreId", Model.AvailableStores)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.VendorId)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDropDownList("VendorId", Model.AvailableVendors)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.ProductId)
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="search-product-name" autocomplete="off" />
+                                <span id="search-product-friendly-name"></span>
+                                <input type="button" id="search-product-clear" class="k-button" style="display:none;" value="@T("Admin.Common.Clear")" />
+
+
+                                @Html.TextBoxFor(model => model.ProductId, new { autocomplete = "off", style = "display:none;" })
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        $('#search-product-name').autocomplete({
+                                            delay: 500,
+                                            minLength: 3,
+                                            source: '@(Url.Action("ProductSearchAutoComplete"))',
+                                            select: function(event, ui) {
+                                                $('#@Html.FieldIdFor(model => model.ProductId)').val(ui.item.productid);
+                                                $('#search-product-friendly-name').text(ui.item.label);
+
+                                                $('#search-product-clear').show();
+                                                return false;
+                                            }
+                                        });
+
+                                        //remove button
+                                        $('#search-product-clear').click(function () {
+                                            $('#@Html.FieldIdFor(model => model.ProductId)').val('0');
+                                            $('#search-product-friendly-name').text('');
+                                            $('#search-product-clear').hide();
+                                            return false;
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-9 col-md-offset-3">
+                                <button type="button" id="search-orders" class="btn btn-primary btn-search">
+                                    <i class="fa fa-line-chart"></i>
+                                    @T("Admin.Common.Search")
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="orders-grid"></div>
+
+                        <script>
+    $(document).ready(function() {
+        $("#orders-grid").kendoGrid({
+            dataSource: {
+                type: "json",
+                transport: {
+                    read: {
+                        url: "@Html.Raw(Url.Action("StoreCommissionsReportList", "Order"))",
+                        type: "POST",
+                        dataType: "json",
+                        data: additionalData
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    total: "Total",
+                    errors: "Errors"
+                },
+                requestEnd: function (e) {
+                    if (e.type == "read") {
+                        var response = e.response;
+                        if (response) {
+                            //store extra data
+                            reportAggregates = e.response["ExtraData"];
+                        }
+                    }
+                },
+                error: function(e) {
+                    display_kendoui_grid_error(e);
+                    // Cancel the changes
+                    this.cancelChanges();
+                },
+                pageSize: @(defaultGridPageSize),
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true
+            },
+            pageable: {
+                refresh: true,
+                pageSizes: [@(gridPageSizes)]
+            },
+            editable: {
+                confirmation: false,
+                mode: "inline"
+            },
+            scrollable: false,
+            dataBound: onDataBound,
+            columns: [
+                {
+                    field: "OrderId",
+                    title: "@T("Admin.Orders.StoreCommissions.Fields.OrderId")",
+                    width: 50
+                },
+                {
+                    field: "StoreName",
+                    title: "@T("Admin.Orders.StoreCommissions.Fields.Store")",
+                    width: 300
+                },
+                {
+                    field: "ProductName",
+                    title: "@T("Admin.Orders.StoreCommissions.Fields.Product")",
+                    width: 300
+                },
+                {
+                    field: "VendorName",
+                    title: "@T("Admin.Orders.StoreCommissions.Fields.Vendor")",
+                    width: 300
+                },
+                {
+                    field: "Quantity",
+                    title: "@T("Admin.Orders.StoreCommissions.Fields.Quantity")",
+                    width: 50
+                },
+                @*{
+                                            field: "Rate",
+                                            title: "@T("Admin.Orders.StoreCommissions.Fields.Rate")",
+                                            width: 50,
+                                            template: '#=kendo.format("{0:p}", Rate / 100)#'
+                                        },
+                                        {
+                                            field: "Commission",
+                                            title: "@T("Admin.Orders.StoreCommissions.Fields.Commission")",
+                                            width: 50
+                                        },
+                                        {
+                                            field: "Earned",
+                                            title: "@T("Admin.Orders.StoreCommissions.Fields.Earned")",
+                                            width: 50
+                                        },*@
+                {
+                    field: "Total",
+                    title: "@T("Admin.Orders.StoreCommissions.Fields.Total")",
+                    width: 50
+                },
+                {
+                    field: "Date",
+                    title: "@T("Admin.Orders.StoreCommissions.Fields.Date")",
+                    width: 200,
+                    type: "date",
+                    format: "{0:G}",
+                    footerTemplate: '<div><strong>@T("Admin.Orders.StoreCommissions.Summary"):</strong></div>' +                                            
+                                            '<div>@T("Admin.Orders.StoreCommissions.Total"): <span id=\"aggregator-total-block\"></span></div>'
+                }
+            ]
+        } );
+    });
+                        </script>
+
+                        <script type="text/javascript">
+
+                            var reportAggregates = "";
+
+                            $(document).ready(function () {
+
+                                //search button
+                                $('#search-orders').click(function () {
+                                    //search
+                                    var grid = $('#orders-grid').data('kendoGrid');
+                                    grid.dataSource.page(1); //new search. Set page size to 1
+                                    //grid.dataSource.read(); we already loaded the grid above using "page" function
+                                    //clear selected checkboxes
+                                    return false;
+                                });
+
+                            });
+
+                            function additionalData() {
+                                var data = {
+                                    StartDate: $('#@Html.FieldIdFor(model => model.StartDate)').val(),
+                                    EndDate: $('#@Html.FieldIdFor(model => model.EndDate)').val(),
+                                    StoreId: $('#@Html.FieldIdFor(model => model.StoreId)').val(),
+                                    VendorId: $('#@Html.FieldIdFor(model => model.VendorId)').val(),
+                                    ProductId: $('#@Html.FieldIdFor(model => model.ProductId)').val(),
+                                };
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
+
+                            function onDataBound(e) {
+
+                                //update order totals summary
+                                if (reportAggregates != "") {
+                                    for (var key in reportAggregates) {
+                                        $('#aggregator-commission-block').text(reportAggregates['aggregatorcommission']);
+                                        $('#aggregator-earned-block').text(reportAggregates['aggregatorearned']);
+                                        $('#aggregator-total-block').text(reportAggregates['aggregatortotal']);
+                                    }
+                                }
+                            }
+                        </script>
+                                
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+}

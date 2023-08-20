@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "";
+}
+@model Nop.Plugin.Shipping.StoresPickup.Models.StoresPickupModel
+@using Nop.Web.Framework;
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Stores):
+            </td>
+            <td class="adminData">
+
+                @Html.EditorFor(model => model.Stores)
+                @Html.ValidationMessageFor(model => model.Stores)
+
+
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" width="100%">
+                <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
+            </td>
+        </tr>
+    </table>
+}

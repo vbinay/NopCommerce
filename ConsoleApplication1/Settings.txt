@@ -1,0 +1,2 @@
+DataProvider: sqlserver
+DataConnectionString: Data Source=54.225.229.159;Initial Catalog=nopcommerce_prod_38;User Id=smwbluedotuser;Password=Tahz00!;Persist Security Info=False;MultipleActiveResultSets=True

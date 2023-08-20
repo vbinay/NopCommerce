@@ -1,0 +1,195 @@
+﻿@model WarehouseListModel
+
+@using System.Globalization;
+
+@{
+	// #region SODMYWAY-
+    var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
+	// #endregion
+
+    //page title
+    ViewBag.Title = T("Admin.Configuration.Shipping.Warehouses").Text;
+    //active menu item (system name)
+    Html.SetActiveMenuItemSystemName("Warehouses");
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            @T("Admin.Configuration.Shipping.Warehouses")
+        </h1>
+        @if (!Model.IsReadOnly)
+        {
+        <div class="pull-right">
+            <!-- #region SODMYWAY- -->
+            @*@if (Model.IsLoggedAs == "ADMIN")
+                {*@
+            <a href="@Url.Action("CreateWarehouse")" class="btn bg-blue">
+                <i class="fa fa-plus-square"></i>
+                @T("Admin.Common.AddNew")
+            </a>
+            @*}*@
+            <!-- #endregion -->
+        </div>
+        }
+    </div>
+
+    <div class="content">
+        <div class="form-horizontal">
+            <div class="panel-group">
+				<!-- #region SODMYWAY- -->
+                @if (Model.IsLoggedAs == "ADMIN")
+                {
+                <div class="panel panel-default panel-search">
+                    <div class="panel-body">
+                        <div class="row">
+                            <!-- #region SODMYWAY-3297-->
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.SearchStoreId)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopDropDownListFor(model => model.SearchStoreId, Model.AvailableStores)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.SearchVendorId)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopDropDownListFor(model => model.SearchVendorId, Model.AvailableVendors)
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- #endregion -->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7 col-md-offset-5">
+                                <button type="button" id="search-vendors" class="btn btn-primary btn-search">
+                                    <i class="fa fa-search"></i>
+                                    @T("Admin.Common.Search")
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.SearchStoreId);
+                    @Html.HiddenFor(model => model.SearchVendorId);
+                }
+				<!-- #endregion -->
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="warehouse-grid"></div>
+
+                        <script>
+                            $(document).ready(function () {
+                                $("#warehouse-grid").kendoGrid({
+                                    dataSource: {
+                                        type: "json",
+                                        transport: {
+                                            read: {
+                                                url: "@Html.Raw(Url.Action("Warehouses", "Shipping"))",
+                                                type: "POST",
+                                                dataType: "json",
+                                                data: additionalData	// SODMYWAY-
+                                            }
+                                        },
+                                        schema: {
+                                            data: "Data",
+                                            total: "Total",
+                                            errors: "Errors"
+                                        },
+                                        error: function (e) {
+                                            display_kendoui_grid_error(e);
+                                            // Cancel the changes
+                                            this.cancelChanges();
+                                        },
+                                        serverPaging: true,
+                                        serverFiltering: true,
+                                        serverSorting: true
+                                    },
+                                    pageable: {
+                                        refresh: true,
+                                        numeric: false,
+                                        previousNext: false,
+                                        info: false
+                                    },
+                                    editable: {
+                                        confirmation: "@T("Admin.Common.DeleteConfirmation")",
+                                        mode: "inline"
+                                    },
+                                    scrollable: false,
+                                    columns: [
+                                    {
+                                        field: "Name",
+                                        title: "@T("Admin.Configuration.Shipping.Warehouses.Fields.Name")"
+                                    }, {
+                                        field: "Id",
+                                        title: "@T("Admin.Common.Edit")",
+                                        width: 100,
+                                        template: '<a href="EditWarehouse/#=Id#">@T("Admin.Common.Edit")</a>'
+                                    }
+                                    ]
+                                });
+                            });
+                        </script>
+                    </div>
+                    <!-- #region SODMYWAY-  -->
+                    <script type="text/javascript">
+
+                        function additionalData() {
+                            var data = {
+                                SearchBy: $('#SearchBy:checked').val(),
+                                SearchStoreId: $('#SearchStoreId').val(),
+                                SearchVendorId: $('#SearchVendorId').val()
+                            };
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+                    </script>
+                    <!-- #endregion -->
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<!-- #region SODMYWAY- -->
+<script>
+    @if (Model.IsLoggedAs == "ADMIN")
+    {<text>
+        $("#SearchVendorId").click(function () {
+            $("#SearchStoreId").val(-1);
+        });
+
+        $("#SearchStoreId").click(function () {
+            $("#SearchVendorId").val(-1);
+        });</text>
+    }
+
+    $(document).ready(function () {
+        $('#search-vendors').click(function () {
+            var grid = $('#warehouse-grid').data('kendoGrid');
+            grid.dataSource.page(1); //new search. Set page size to 1
+            return false;
+        });
+    });
+
+    function additionalData() {
+        var data = {
+            SearchStoreId: $('#@Html.FieldIdFor(model => model.SearchStoreId)').val(),
+            SearchVendorId: $('#@Html.FieldIdFor(model => model.SearchVendorId)').val()
+        };
+        addAntiForgeryToken(data);
+        return data;
+    }
+</script>
+<!-- #endregion -->

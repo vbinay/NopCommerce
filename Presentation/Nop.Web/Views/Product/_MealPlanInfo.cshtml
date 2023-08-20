@@ -1,0 +1,118 @@
+﻿@model ProductDetailsModel.MealPlanModel
+@using Nop.Web.Models.Catalog;
+@if (Model.IsMealPlan && Model.ShowStandardMealPlanFields)  // NU-16
+{
+
+    <style>
+        .cell-label {
+            text-align: right;
+            padding: 8px 4px 0 0;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+
+        .cell-value {
+            padding: 8px 0 0 0;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+    </style>
+    <div class="attributes">
+        <p> Fields marked with * are required</p>
+        <ul>
+            <li>
+                <label class="text-prompt">
+                    @Html.LabelFor(model => model.MealPlanRecipientAcctNum)
+                    <span class="required">*</span>
+                    <span class="required-field-error">This field is required</span>
+                </label>
+
+                @Html.TextBoxFor(model => model.MealPlanRecipientAcctNum, new { @style = "width: 275px; display: block;", @class = "aria-invalid" })
+            </li>
+            <li>
+                <label class="text-prompt">
+                    @Html.LabelFor(model => model.MealPlanRecipientName)
+                    <span class="required">*</span>
+                    <span class="required-field-error">This field is required</span>
+                </label>
+
+                @Html.TextBoxFor(model => model.MealPlanRecipientName, new { @style = "width: 275px; display: block;", @class = "aria-invalid" })
+            </li>
+            <li>
+                <label class="text-prompt">
+                    @Html.LabelFor(model => model.MealPlanRecipientAddress)
+                    <span class="required">*</span>
+                    <span class="required-field-error">This field is required</span>
+                </label>
+
+                @Html.TextBoxFor(model => model.MealPlanRecipientAddress, new { style = "Width: 275px; Height: 100px; display: block;", @class = "aria-invalid" })
+            </li>
+            <li>
+                <label class="text-prompt">
+                    @Html.LabelFor(model => model.MealPlanRecipientPhone)
+                    <span class="required">*</span>
+                    <span class="required-field-error">This field is required</span>
+                </label>
+
+                @Html.TextBoxFor(model => model.MealPlanRecipientPhone, new { @style = "width: 275px; display: block;", @class = "aria-invalid" })
+            </li>
+            <li>
+                <label class="text-prompt">
+                    @Html.LabelFor(model => model.MealPlanRecipientEmail)
+                    <span class="required">*</span>
+                    <span class="required-field-error">This field is required</span>
+                </label>
+
+                @Html.TextBoxFor(model => model.MealPlanRecipientEmail, new { @style = "width: 275px; display: block;", @class = "aria-invalid" })
+            </li>
+
+        </ul>
+    </div>
+   
+
+
+        @*<div class="layout-table-container">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td class="cell-label">@Html.LabelFor(model => model.MealPlanRecipientAcctNum):</td>
+                    <td class="cell-value">
+                        @Html.TextBoxFor(model => model.MealPlanRecipientAcctNum, new { @style = "width: 275px;" })<br /><label id="accountVerification"></label>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-label">@Html.LabelFor(model => model.MealPlanRecipientName):</td>
+                    <td class="cell-value">@Html.TextBoxFor(model => model.MealPlanRecipientName, new { @style = "width: 275px;" })</td>
+                </tr>
+                <tr>
+                    <td class="cell-label">@Html.LabelFor(model => model.MealPlanRecipientAddress):</td>
+                    <td class="cell-value">@Html.TextAreaFor(model => model.MealPlanRecipientAddress, new { style = "Width: 275px; Height: 100px;" })</td>
+                </tr>
+                <tr>
+                    <td class="cell-label">@Html.LabelFor(model => model.MealPlanRecipientPhone):</td>
+                    <td class="cell-value">@Html.TextBoxFor(model => model.MealPlanRecipientPhone, new { @style = "width: 275px;" })</td>
+                </tr>
+                <tr>
+                    <td class="cell-label">@Html.LabelFor(model => model.MealPlanRecipientEmail):</td>
+                    <td class="cell-value">@Html.TextBoxFor(model => model.MealPlanRecipientEmail, new { @style = "width: 275px;" })</td>
+                </tr>
+            </table>
+        </div>*@
+  <script type="text/javascript">
+
+      $(document).ready(function () {
+          $(".required-field-error").hide();
+          });
+
+      $(".text-prompt").each(function (item) {
+          var $lb = $(this).children("label");
+          var inputid = $lb.attr("for");
+          var inputname = $("#" + inputid).attr("name");
+          var $span = $(this).find('.required-field-error');
+          if ($span) {
+              $span.attr("id", "required-error-" + inputname.replace(".", "_"));
+          }
+      })
+  </script>
+
+}

@@ -1,0 +1,134 @@
+﻿@model CheckoutPaymentInfoModel
+@using Nop.Web.Models.Checkout;
+<div class="checkout-data">
+    @Html.Widget("op_checkout_payment_info_top")
+    <div class="section payment-info">
+        @{
+            string[] errmsg = new string[ViewData.ModelState.Values.SelectMany(v => v.Errors).Count()];
+            int count = 0;
+            foreach (ModelState modelState in ViewData.ModelState.Values)
+            {
+                foreach (ModelError error in modelState.Errors)
+                {
+                    errmsg[count] = error.ErrorMessage;
+                    count++;
+                }
+            }
+
+            var validationSummary = Html.ValidationSummary(false);
+        }
+        @if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+        {
+
+            <div class="message-error">
+                <label>
+                    Error:
+                </label>
+                <ul id="cardError"></ul>
+
+            </div>
+
+
+        }
+        <div class="info">
+            @Html.Action(Model.PaymentInfoActionName, Model.PaymentInfoControllerName, Model.PaymentInfoRouteValues)
+        </div>      
+
+    </div>
+    @Html.Widget("op_checkout_payment_info_bottom")
+    @if (Model.DisplayOrderTotals)
+    {
+        <div class="section order-summary">
+            @Html.Action("OrderSummary", "ShoppingCart")
+        </div>
+    }
+</div>
+<script>
+    $('body').bind('copy paste', function (e) {
+        e.preventDefault(); return false;
+    });
+    $(document).ready(function () {
+        $(".info table").attr('role', 'presentation');
+        var $label = $("label[for='CreditCardTypes']");
+        $label.attr('for', 'CreditCardType');  
+
+        var lbCardHolder = $('label[for="CardholderName"]');
+        lbCardHolder.after('<span class="required">*</span>');
+
+        var lbCardCode = $('label[for="CardCode"]');
+        lbCardCode.after('<span class="required">*</span>');
+
+        var lbExpireMonth = $('label[for="ExpireMonth"]');
+        lbExpireMonth.after('<span class="required">*</span>');
+
+        $(".paymentTitle").after('<p>Fields marked with * are required</p><br clear="all">');      
+           
+        $(".message-error").hide();
+       
+    });
+    $("#CardholderName,#CardNumber").keypress(function () {
+        var regex = new RegExp("^[0-9a-zA-Z \b]+$");
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+        if (!regex.test(key)) {
+            event.preventDefault();
+            return false;
+        }
+    })
+    var $label = $("label[for=ExpireMonth]");
+    $label.attr("id", "exp-label");
+    $("#ExpireYear").attr("aria-labelledby", "exp-label");
+
+    if (@errmsg.Length > 0) {
+        //$(".message-error").prepend("Error: ");        
+        var arr = JSON.parse('@Html.Raw(Json.Encode(errmsg))')
+        var focus = 0;
+
+        $.each(arr, function (id, option) {
+            var id;
+            var idyeear;
+
+            if (option.includes('cardholder name')) {
+                id = "CardholderName";
+                $("#cardError").append("<li><span id='error-" + id + "'> <a href='#" + id + "'>" + option + "</span></a></li>");
+                $("#" + id).attr("aria-describedby", "error-" + id);
+            }
+            else if (option.includes('Wrong card code')) {
+                id = "CardCode";
+                $("#cardError").append("<li><span id='error-" + id + "'> <a href='#" + id + "'>" + option + "</span></a></li>");
+                $("#" + id).attr("aria-describedby", "error-" + id);
+            }
+            else if (option.includes('Wrong card number')) {
+                id = "CardNumber";
+                $("#cardError").append("<li><span id='error-" + id + "'> <a href='#" + id + "'>" + option + "</span></a></li>");
+                $("#" + id).attr("aria-describedby", "error-" + id);
+            }
+            else if (option.includes('Card expired')) {
+                id = "ExpireMonth";
+                idyeear = "ExpireYear";
+                $("#cardError").append("<li><span id='error-" + id + "'> <a href='#" + id + "'>" + option + "</span></a></li>");
+                $("#" + id).attr("aria-describedby", "error-" + id);
+            }
+
+            $("#" + id).attr("aria-invalid", "true");
+            if (idyeear) {
+                $("#" + idyeear).attr("aria-invalid", "true");
+            }
+
+            if (focus == 0) {
+                $("#" + id).focus();
+                if (idyeear) {
+                    $("#" + idyeear).focus();
+                }
+                //$("#" + id).addClass('focus-outline');
+                //if (idyeear) {
+                //    $("#" + idyeear).addClass('focus-outline');
+                //}
+            }
+            focus++;            
+        });
+
+        $(".message-error").show();
+        $("#confirmOrder").focus();
+        
+    }
+</script>

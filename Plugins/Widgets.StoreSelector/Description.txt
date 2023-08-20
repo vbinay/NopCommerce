@@ -1,0 +1,8 @@
+﻿Group: Widgets
+FriendlyName: Store Selector
+SystemName: Widgets.StoreSelector
+Version: 1.00
+SupportedVersions: 3.70
+Author: Luiz Gouvea
+DisplayOrder: 1
+FileName: Nop.Plugin.Widgets.StoreSelector.dll

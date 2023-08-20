@@ -1,0 +1,572 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2A82B491-3851-419E-B6E3-5513E600EF89}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BackFillForReports</RootNamespace>
+    <AssemblyName>BackFillForReports</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AclRecord.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityLog.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityLogType.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Address.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AddressAttribute.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AddressAttributeValue.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Affiliate.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BackFillReports.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BackFillReports.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BackFillReports.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BackFillReports.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BackFillReports.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="BackInStockSubscription.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_SavedCard.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_SavedCard_o.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_StoreLicenseKey.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_StoreLicenseKey_1.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_StoreSetting.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BitShift_FirstData_StoreSetting_1.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BlogComment.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BlogPost.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Campaign.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CardAccessRecord.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Category.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryTemplate.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CheckoutAttribute.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CheckoutAttributeValue.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Commuter.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Commuter1.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Commuter_old.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Country.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrossSellProduct.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Currency.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Customer.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerAttribute.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerAttributeValue.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerRole.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DeliveryDate.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Discount.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DiscountRequirement.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DiscountUsageHistory.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Donation.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Download.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmailAccount.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmailType.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExternalAuthenticationRecord.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_Forum.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_Group.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_Post.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_PostVote.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_PrivateMessage.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_Subscription.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Forums_Topic.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FulfillmentCalDay.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GenericAttribute.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GiftCard.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GiftCardUsageHistory.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GLCode.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GLSpecificationAttribute.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GLSpecificationAttributeOption.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GoogleProduct.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Language.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LocaleStringResource.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LocalizedProperty.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Log.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Manufacturer.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ManufacturerTemplate.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MealPlan.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeasureDimension.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeasureWeight.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessageTemplate.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="News.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NewsComment.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NewsLetterSubscription.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="nop_splitstring_to_table_Result.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Order.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderDetail.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderDetails.cs" />
+    <Compile Include="OrderItem.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="orderitem_fulfillmentdate_bkp_070219.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderNote.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PermissionRecord.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Picture.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Poll.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PollAnswer.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PollVotingRecord.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PredefinedProductAttributeValue.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductAttribute.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductAttributeCombination.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductAttributeValue.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductGlCodeMapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductRelation.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductReview.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductReviewHelpfulness.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTag.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTagCountLoadAll_Result.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTax.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTemplate.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductWarehouseInventory.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_5_22_19.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_backup_5_20.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_BKP111.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_bkp_1_21.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_bkp_1_22.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_BKP_3_11.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_Category_Mapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_GLCode_Calc.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_GlCode_Mapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_glcode_mappingBKP111.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_glcode_mapping_5_21.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_glcode_mapping_5_22.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product_glcode_mapping_5_28.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_GLSpecificationAttribute_Mapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_Manufacturer_Mapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_PickupWarehouses_Mapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_Picture_Mapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_ProductAttribute_Mapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_SpecificationAttribute_Mapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueuedEmail.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RecurringPayment.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RecurringPaymentHistory.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RelatedProduct.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReturnRequest.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReturnRequestAction.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReturnRequestReason.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RewardPointsHistory.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SAPOrderProcess.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SAP_SalesJournal.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScheduleTask.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SearchTerm.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Setting.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Shipment.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShipmentItem.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShippingMethod.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShoppingCartItem.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpecificationAttribute.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpecificationAttributeOption.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StagingTaxCategory.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StagingTaxCategory_bkp_1_22.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StateProvince.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Store.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="storebkp.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StoreCommission.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StoreMapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StorePickupPoint.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Store_Email_Mapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxCategory.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxRate.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxResponseStorage.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TierPrice.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Topic.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TopicTemplate.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TridionProfileMapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UrlRecord.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="URLRecordBkp.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vendor.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorMapping.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorNote.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Warehouse.cs">
+      <DependentUpon>BackFillReports.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="BackFillReports.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BackFillReports.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="BackFillReports.edmx.diagram">
+      <DependentUpon>BackFillReports.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BackFillReports.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BackFillReports.edmx</DependentUpon>
+      <LastGenOutput>BackFillReports.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="BackFillReports.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BackFillReports.edmx</DependentUpon>
+      <LastGenOutput>BackFillReports.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

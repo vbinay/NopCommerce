@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="61a22e102f894ddbbb9a6dbb59a6c5cc" Name="Diagram1" ZoomLevel="82">
+        <EntityTypeShape EntityType="SapFileFeedDataModel.AclRecord" Width="1.5" PointX="17.25" PointY="59" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ActivityLog" Width="1.5" PointX="12" PointY="66.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ActivityLogType" Width="1.5" PointX="9.75" PointY="60" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Address" Width="1.5" PointX="7.5" PointY="63.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.AddressAttribute" Width="1.5" PointX="5.75" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.AddressAttributeValue" Width="1.5" PointX="8" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Affiliate" Width="1.5" PointX="9.75" PointY="55.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.BackInStockSubscription" Width="1.5" PointX="15" PointY="66.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.BitShift_FirstData_SavedCard" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.BitShift_FirstData_SavedCard_o" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.BitShift_FirstData_StoreLicenseKey" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.BitShift_FirstData_StoreLicenseKey_1" Width="1.5" PointX="2.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.BitShift_FirstData_StoreSetting" Width="1.5" PointX="2.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.BitShift_FirstData_StoreSetting_1" Width="1.5" PointX="4.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.BlogComment" Width="1.5" PointX="12" PointY="62.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.BlogPost" Width="1.5" PointX="9.75" PointY="74.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Campaign" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.CardAccessRecord" Width="1.5" PointX="6.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Category" Width="1.5" PointX="12.75" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.CategoryTemplate" Width="1.5" PointX="8.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.CheckoutAttribute" Width="1.5" PointX="0.75" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.CheckoutAttributeValue" Width="1.5" PointX="3" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Country" Width="1.5" PointX="3" PointY="53.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.CrossSellProduct" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Currency" Width="1.5" PointX="17.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Customer" Width="1.5" PointX="9.75" PointY="63.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.CustomerAttribute" Width="1.5" PointX="2.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.CustomerAttributeValue" Width="1.5" PointX="5" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.CustomerRole" Width="1.5" PointX="15" PointY="62.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.DeliveryDate" Width="1.5" PointX="17.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Discount" Width="1.5" PointX="10.5" PointY="35.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.DiscountRequirement" Width="1.5" PointX="12.75" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.DiscountUsageHistory" Width="1.5" PointX="23.25" PointY="65.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Donation" Width="1.5" PointX="31.5" PointY="61.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Download" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.EmailAccount" Width="1.5" PointX="5.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.EmailType" Width="1.5" PointX="15.75" PointY="77.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ExternalAuthenticationRecord" Width="1.5" PointX="12" PointY="72.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Forums_Forum" Width="1.5" PointX="15.75" PointY="96.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Forums_Group" Width="1.5" PointX="13.5" PointY="96.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Forums_Post" Width="1.5" PointX="15" PointY="70.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Forums_PostVote" Width="1.5" PointX="17.25" PointY="73.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Forums_PrivateMessage" Width="1.5" PointX="12" PointY="80" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Forums_Subscription" Width="1.5" PointX="12" PointY="84" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Forums_Topic" Width="1.5" PointX="18" PointY="66.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.FulfillmentCalDay" Width="1.5" PointX="12" PointY="53.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.GenericAttribute" Width="1.5" PointX="8.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.GiftCard" Width="1.5" PointX="31.5" PointY="66.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.GiftCardUsageHistory" Width="1.5" PointX="26.25" PointY="66.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.GLSpecificationAttribute" Width="1.5" PointX="10.5" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.GLSpecificationAttributeOption" Width="1.5" PointX="12.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.GoogleProduct" Width="1.5" PointX="19.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Language" Width="1.5" PointX="7.5" PointY="74.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.LocaleStringResource" Width="1.5" PointX="9.75" PointY="80.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.LocalizedProperty" Width="1.5" PointX="9.75" PointY="83.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Log" Width="1.5" PointX="12" PointY="91.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Manufacturer" Width="1.5" PointX="12.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ManufacturerTemplate" Width="1.5" PointX="19.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.MealPlan" Width="1.5" PointX="31.5" PointY="71.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.MeasureDimension" Width="1.5" PointX="19.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.MeasureWeight" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.MessageTemplate" Width="1.5" PointX="0.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.News" Width="1.5" PointX="15.75" PointY="47.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.NewsComment" Width="1.5" PointX="18" PointY="62.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.NewsLetterSubscription" Width="1.5" PointX="20.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Order" Width="1.5" PointX="21" PointY="61.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.OrderItem" Width="1.5" PointX="29.25" PointY="62" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.orderitem_fulfillmentdate_bkp_070219" Width="1.5" PointX="20.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.OrderNote" Width="1.5" PointX="23.25" PointY="68.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.PermissionRecord" Width="1.5" PointX="12.75" PointY="77" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Picture" Width="1.5" PointX="15.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Poll" Width="1.5" PointX="13.5" PointY="101.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.PollAnswer" Width="1.5" PointX="15.75" PointY="101.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.PollVotingRecord" Width="1.5" PointX="18" PointY="70.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.PredefinedProductAttributeValue" Width="1.5" PointX="18" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_Category_Mapping" Width="1.5" PointX="15" PointY="33.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_GLSpecificationAttribute_Mapping" Width="1.5" PointX="15" PointY="36.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_Manufacturer_Mapping" Width="1.5" PointX="15" PointY="28.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_PickupWarehouses_Mapping" Width="1.5" PointX="18" PointY="37" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_Picture_Mapping" Width="1.5" PointX="18" PointY="33.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_ProductAttribute_Mapping" Width="1.5" PointX="18" PointY="39.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_SpecificationAttribute_Mapping" Width="1.5" PointX="21" PointY="36.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ProductAttribute" Width="1.5" PointX="15.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ProductAttributeCombination" Width="1.5" PointX="15" PointY="43.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ProductAttributeValue" Width="1.5" PointX="20.25" PointY="41.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ProductReview" Width="1.5" PointX="12" PointY="58.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ProductReviewHelpfulness" Width="1.5" PointX="14.25" PointY="54" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ProductTag" Width="1.5" PointX="15" PointY="40.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ProductTemplate" Width="1.5" PointX="20.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ProductWarehouseInventory" Width="1.5" PointX="18" PointY="30.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.QueuedEmail" Width="1.5" PointX="8" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.RecurringPayment" Width="1.5" PointX="23.25" PointY="86.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.RecurringPaymentHistory" Width="1.5" PointX="25.5" PointY="86.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.RelatedProduct" Width="1.5" PointX="2.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ReturnRequest" Width="1.5" PointX="12" PointY="120.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ReturnRequestAction" Width="1.5" PointX="4.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ReturnRequestReason" Width="1.5" PointX="21.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.RewardPointsHistory" Width="1.5" PointX="26.25" PointY="62.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.SAP_SalesJournal" Width="1.5" PointX="21.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ScheduleTask" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.SearchTerm" Width="1.5" PointX="22.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Setting" Width="1.5" PointX="6.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Shipment" Width="1.5" PointX="23.25" PointY="94.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ShipmentItem" Width="1.5" PointX="25.5" PointY="94.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ShippingMethod" Width="1.5" PointX="0.75" PointY="54.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ShoppingCartItem" Width="1.5" PointX="15" PointY="56.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.SpecificationAttribute" Width="1.5" PointX="16.5" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.SpecificationAttributeOption" Width="1.5" PointX="18.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.StagingTaxCategory" Width="1.5" PointX="22.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.StateProvince" Width="1.5" PointX="5.25" PointY="76.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Store" Width="1.5" PointX="9.75" PointY="47.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Store_Email_Mapping" Width="1.5" PointX="18" PointY="49.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.StoreCommission" Width="1.5" PointX="18" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.StoreMapping" Width="1.5" PointX="12" PointY="87.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.StorePickupPoint" Width="1.5" PointX="8.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.TaxCategory" Width="1.5" PointX="17.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.TaxRate" Width="1.5" PointX="23.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.TierPrice" Width="1.5" PointX="20.25" PointY="57.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Topic" Width="1.5" PointX="23.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.TopicTemplate" Width="1.5" PointX="23.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.TridionProfileMapping" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.UrlRecord" Width="1.5" PointX="2.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Vendor" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.VendorMapping" Width="1.5" PointX="24.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.VendorNote" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Warehouse" Width="1.5" PointX="15.75" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Commuter" Width="1.5" PointX="24.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Commuter_old" Width="1.5" PointX="24.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Commuter1" Width="1.5" PointX="20.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.GLCode" Width="1.5" PointX="4.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.product_5_22_19" Width="1.5" PointX="25.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.product_backup_5_20" Width="1.5" PointX="6.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.product_bkp_1_21" Width="1.5" PointX="27.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.product_bkp_1_22" Width="1.5" PointX="27.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_BKP_3_11" Width="1.5" PointX="29.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_BKP111" Width="1.5" PointX="29.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_GLCode_Calc" Width="1.5" PointX="22.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_GlCode_Mapping" Width="1.5" PointX="8.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.product_glcode_mapping_5_21" Width="1.5" PointX="0.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product_glcode_mapping_5_22" Width="1.5" PointX="2.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.product_glcode_mapping_5_28" Width="1.5" PointX="8.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.product_glcode_mappingBKP111" Width="1.5" PointX="20.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ProductRelation" Width="1.5" PointX="22.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ProductTax" Width="1.5" PointX="31.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.SAPOrderProcess" Width="1.5" PointX="31.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.StagingTaxCategory_bkp_1_22" Width="1.5" PointX="31.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.storebkp" Width="1.5" PointX="31.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.TaxResponseStorage" Width="1.5" PointX="31.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.URLRecordBkp" Width="1.5" PointX="31.75" PointY="21.75" IsExpanded="true" />
+        <AssociationConnector Association="SapFileFeedDataModel.AclRecord_CustomerRole" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ActivityLog_ActivityLogType" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ActivityLog_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Address_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Address_StateProvince" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Affiliate_Address" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Customer_BillingAddress" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Customer_ShippingAddress" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Order_BillingAddress" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Order_PickupAddress" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Order_ShippingAddress" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.AddressAttributeValue_AddressAttribute" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.BackInStockSubscription_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.BlogComment_BlogPost" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.BlogComment_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.BlogPost_Language" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductCategory_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.CheckoutAttributeValue_CheckoutAttribute" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.StateProvince_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ExternalAuthenticationRecord_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ForumPost_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ForumSubscription_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ForumTopic_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Log_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.NewsComment_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Order_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.PollVotingRecord_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.PrivateMessage_FromCustomer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.PrivateMessage_ToCustomer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductReview_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ReturnRequest_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.RewardPointsHistory_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ShoppingCartItem_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.CustomerAttributeValue_CustomerAttribute" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.TierPrice_CustomerRole" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Discount_DiscountRequirements" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.DiscountUsageHistory_Discount" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.DiscountUsageHistory_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Donation_PurchasedWithOrderItem" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.QueuedEmail_EmailAccount" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.FK_EmailContacts_EmailType" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Forum_ForumGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ForumTopic_Forum" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ForumPost_ForumTopic" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ForumPostVote_ForumPost" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.FulfillmentCalDay_Store" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.GiftCard_PurchasedWithOrderItem" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.GiftCardUsageHistory_GiftCard" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.GiftCardUsageHistory_UsedWithOrder" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.GLSpecificationAttributeOption_GLSpecificationAttribute" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductGLSpecificationAttribute_GLSpecificationAttributeOption" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.LocaleStringResource_Language" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.LocalizedProperty_Language" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.NewsItem_Language" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Poll_Language" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductManufacturer_Manufacturer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.MealPlan_PurchasedWithOrderItem" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.NewsComment_NewsItem" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.OrderItem_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.OrderNote_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.RecurringPayment_InitialOrder" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.RewardPointsHistory_UsedWithOrder" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Shipment_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductPicture_Picture" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.PollAnswer_Poll" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.PollVotingRecord_PollAnswer" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.PredefinedProductAttributeValue_ProductAttribute" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductWarehouse_Warehouse" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductAttributeMapping_ProductAttribute" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductAttributeValue_ProductAttributeMapping" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductSpecificationAttribute_SpecificationAttributeOption" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductReview_Store" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductReviewHelpfulness_ProductReview" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductWarehouseInventory_Warehouse" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.RecurringPaymentHistory_RecurringPayment" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ShipmentItem_Shipment" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.SpecificationAttributeOption_SpecificationAttribute" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.FK_EmailContact_Store" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.FK_StoreComission_Store" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.StoreMapping_Store" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.FK_StoreComission_Vendor" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.VendorNote_Vendor" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Customer_CustomerRole_Mapping" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.CustomerAddresses" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Discount_AppliedToCategories" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.Discount_AppliedToManufacturers" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.PermissionRecord_Role_Mapping" ManuallyRouted="false" />
+        <AssociationConnector Association="SapFileFeedDataModel.ShippingMethodRestrictions" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.ProductGlCodeMapping" Width="1.5" PointX="0.75" PointY="32.75" />
+        <EntityTypeShape EntityType="SapFileFeedDataModel.Product" Width="1.5" PointX="0.75" PointY="33.125" />
+        <AssociationConnector Association="SapFileFeedDataModel.BackInStockSubscription_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.OrderItem_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductAttributeCombination_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductAttributeMapping_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductCategory_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductGLSpecificationAttribute_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductManufacturer_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductPicture_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductReview_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductSpecificationAttribute_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductWarehouse_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.ProductWarehouseInventory_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.ShoppingCartItem_Product" />
+        <AssociationConnector Association="SapFileFeedDataModel.TierPrice_Product" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

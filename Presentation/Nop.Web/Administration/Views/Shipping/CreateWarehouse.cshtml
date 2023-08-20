@@ -1,0 +1,74 @@
+@model WarehouseModel
+
+@{
+    //page title
+    ViewBag.Title = T("Admin.Configuration.Shipping.Warehouses.AddNew").Text;
+    //active menu item (system name)
+    Html.SetActiveMenuItemSystemName("Warehouses");
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            @T("Admin.Configuration.Shipping.Warehouses.AddNew") 
+            <small><i class="fa fa-arrow-circle-left"></i>@Html.ActionLink(T("Admin.Configuration.Shipping.Warehouses.BackToList").Text, "Warehouses")</small>
+        </h1>
+        <div class="pull-right">
+            <button type="submit" name="save" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.Save")
+            </button>
+            <button type="submit" name="save-continue" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.SaveContinue")
+            </button>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdateWarehouse", Model)
+    //---START: Codechages done by (na-sdxcorp\ADas)--------------
+    if (ViewBag.SingleMatchFound == true)
+    {
+
+        <br />
+        <br />
+        <div><b>Address validated by UPS and modified. Please save it again.</b></div>
+    }
+    else if (ViewBag.NoMatchFound == true)
+    {
+        <br />
+        <br />
+        <div><b>Address is in wrong format. UPS could not find any match. Please check again and continue.</b></div>
+    }
+    else if (ViewBag.MultipleMatchFound == true)
+    {
+
+        <br />
+        <br />
+        <div><b>Address validated by UPS. More than one found. Please select one.</b><br /></div>
+        <br />
+        <div>
+            <table border="1">
+                <tr>
+                    <th>AddressLine </th>
+                    <th>StateProvinceCode </th>
+                    <th>City </th>
+                    <th>PostalCode</th>
+                    <th>Select an Address</th>
+                </tr>
+                @foreach (var d in ViewBag.AllMatchingUPSAddress)
+                {
+                    <tr>
+                        <td>@d.AddressLine</td>
+                        <td>@d.StateProvinceCode</td>
+                        <td>@d.City</td>
+                        <td>@d.PostalCode</td>
+                        <td>@Html.ActionLink("Choose one and Save", "SelectAddress", new { address1 = d.AddressLine, city = d.City, postalCode = d.PostalCode, stateProvinceCode = d.StateProvinceCode })</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+    //---END: Codechages done by (na-sdxcorp\ADas)--------------
+}

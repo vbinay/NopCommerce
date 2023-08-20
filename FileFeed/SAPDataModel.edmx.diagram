@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="dfd7b0f66d574ad7986bc155095f21e5" Name="Diagram1" ZoomLevel="61">
+        <EntityTypeShape EntityType="SAPDBModel.SAP_SalesJournal" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAPDBModel.Product_GlCode_Mapping" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SAPDBModel.Product" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="SAPDBModel.Order" Width="1.5" PointX="3.375" PointY="30.75" />
+        <EntityTypeShape EntityType="SAPDBModel.OrderItem" Width="1.5" PointX="5.625" PointY="13.125" />
+        <AssociationConnector Association="SAPDBModel.OrderItem_Order" />
+        <AssociationConnector Association="SAPDBModel.OrderItem_Product" />
+        <EntityTypeShape EntityType="SAPDBModel.Store" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SAPDBModel.Customer" Width="1.5" PointX="1.125" PointY="33.75" />
+        <AssociationConnector Association="SAPDBModel.Order_Customer" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

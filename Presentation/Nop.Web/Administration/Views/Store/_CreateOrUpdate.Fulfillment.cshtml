@@ -1,0 +1,214 @@
+﻿@model StoreModel
+
+@{
+    //page title
+    ViewBag.Title = "Fulfillment Calendar";
+}
+
+@using (Html.BeginForm())
+{
+    if (Model.Id > 0)
+    {
+        <style>
+            .two-col {
+                display: table;
+                width: 100%;
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+
+                .two-col > .content,
+                .two-col > .sidebar {
+                    display: table-cell;
+                    vertical-align: top;
+                }
+
+                .two-col > .content {
+                    width: 60%;
+                }
+
+                .two-col > .sidebar {
+                    width: 40%;
+                    white-space: nowrap;
+                }
+
+            td.fc-other-month .fc-day-number {
+                display: none;
+            }
+        </style>
+        <div class="container">
+            <div class="cal1">
+                <script type="text/template" id="template-calendar">
+                    <div class="clndr-controls">
+                        <div class="clndr-previous-button">&lsaquo;</div>
+                        <div class="month"><%= intervalStart.format('M/DD') + ' &mdash; ' + intervalEnd.format('M/DD') %></div>
+                        <div class="clndr-next-button">&rsaquo;</div>
+                    </div>
+                    <div class="clndr-grid">
+                        <div class="days-of-the-week">
+                            <% _.each(daysOfTheWeek, function(day) { %>
+                            <div class="header-day"><%= day %></div>
+                            <% }); %>
+                            <div class="days">
+                                <% _.each(days, function(day) { %>
+                                <div class="<%= day.classes %>"><%= day.day %></div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clndr-today-button">Today</div>
+                </script>
+
+            </div>
+
+        </div>
+        <script>
+    // Call this from the developer console and you can control both instances
+    var calendars = {};
+
+    $(document).ready(function () {
+
+        var calendar = $('.cal1').clndr({
+            clickEvents: {
+                click: function (target) {
+
+                    if (target.date != null) {
+
+
+                        var data2 = {
+                            date: JSON.stringify(target.date._i),
+                            storeId: @Html.Raw(Model.Id)
+                        };
+                        addAntiForgeryToken(data2);
+                        $.ajax({
+                            url: "@Html.Raw(Url.Action("SaveEvent", "Store"))",
+                            dataType: 'json',
+                            data: data2,
+                            type: 'POST',
+                            error: function () {
+                                alert('there was an error while fetching events!');
+                            },
+                            success: function (data) {
+
+
+                                var data = {
+                                    date: JSON.stringify(target.date._i),
+                                    storeId: @Html.Raw(Model.Id)
+                                };
+                                addAntiForgeryToken(data);
+
+                                $.ajax({
+                                    method: "POST",
+                                    dataType: "json",
+                                    url: "@Html.Raw(Url.Action("GetFulfillmentAvailablility", "Store"))",
+                                    data: data,
+                                    success: function (data2) {
+                                        var $currentElem;
+                                        var calendarEvents = [];
+                                        $.each(data2, function (index, value) {
+                                            var item2 = { date: value.event_date, title: 'Closed' };
+
+                                            calendarEvents.push(item2);
+                                        });
+                                        calendar.setEvents(calendarEvents);
+
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        console.log(errorThrown);
+                                    }
+                                });
+
+
+                            }
+                        })
+                    }
+
+                },
+                onMonthChange: function (target) {
+                    var data = {
+                        date: JSON.stringify(target.format("YYYY-MM-DD")),
+                        storeId: @Html.Raw(Model.Id)
+                    };
+                    addAntiForgeryToken(data);
+
+                    $.ajax({
+                        method: "POST",
+                        dataType: "json",
+                        url: "@Html.Raw(Url.Action("GetFulfillmentAvailablility", "Store"))",
+                        data: data,
+                        success: function (data2) {
+                            var $currentElem;
+                            var calendarEvents = [];
+                            $.each(data2, function (index, value) {
+                                var item2 = { date: value.event_date, title: 'Closed' };
+                                calendarEvents.push(item2);
+                            });
+                            calendar.setEvents(calendarEvents);
+
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                        }
+                    });
+
+
+                },
+            },
+            multiDayEvents: {
+                singleDay: 'date',
+                endDate: 'endDate',
+                startDate: 'startDate'
+            },
+            showAdjacentMonths: false,
+            adjacentDaysChangeMonth: false
+        });
+
+
+        var thisMonth = moment().format("YYYY-MM-DD");
+
+        var data = {
+            date: JSON.stringify(thisMonth),
+            storeId: @Html.Raw(Model.Id)
+            };
+        addAntiForgeryToken(data);
+
+        $.ajax({
+            method: "POST",
+            dataType: "json",
+            url: "@Html.Raw(Url.Action("GetFulfillmentAvailablility", "Store"))",
+            data: data,
+            success: function (data2) {
+                var $currentElem;
+                var calendarEvents = [];
+                $.each(data2, function (index, value) {
+                    var item2 = { date: value.event_date, title: 'Closed' };
+
+                    calendarEvents.push(item2);
+                });
+                calendar.setEvents(calendarEvents);
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+
+
+        // Bind all clndrs to the left and right arrow keys
+        $(document).keydown(function (e) {
+            // Left arrow
+            if (e.keyCode == 37) {
+                calendars.clndr1.back();
+            }
+
+            // Right arrow
+            if (e.keyCode == 39) {
+                calendars.clndr1.forward();
+            }
+        });
+    });
+
+
+        </script>
+    }
+}

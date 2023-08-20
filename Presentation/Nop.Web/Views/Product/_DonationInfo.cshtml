@@ -1,0 +1,116 @@
+﻿@model Nop.Web.Models.Catalog.ProductDetailsModel.DonationModel
+@if (Model.IsDonation)  /// NU-17
+{
+    //Model.IsDonation)
+    <style>
+        .cell-label {
+            text-align: left;
+            padding: 4px 4px 0 0;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+
+        .cell-value {
+            padding: 4px 0 0 0;
+            white-space: nowrap;
+        }
+    </style>
+
+    <h2>Donor Information</h2>
+    <br/>
+    <div class="donation">
+        <div>
+            @Html.LabelFor(model => model.DonorFirstName, new { }, ":")
+            <span class="required-field-error">This field is required</span>
+            @Html.TextBoxFor(model => model.DonorFirstName, new { @style = "display: block;", @class = "aria-invalid" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.DonorLastName, new { }, ":")
+            <span class="required-field-error">This field is required</span>
+            @Html.TextBoxFor(model => model.DonorLastName, new { @style = "display: block;", @class = "aria-invalid" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.DonorCompany, new { }, ":")
+            <span class="required-field-error">This field is required</span>
+            @Html.TextBoxFor(model => model.DonorCompany, new { @style = "display: block;", @class = "aria-invalid" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.DonorAddress, new { }, ":")
+            <span class="required-field-error">This field is required</span>
+            @Html.TextBoxFor(model => model.DonorAddress, new { @style = "display: block;", @class = "aria-invalid" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.DonorAddress2, new { }, ":")
+            <span class="required-field-error">This field is required</span>
+            @Html.TextBoxFor(model => model.DonorAddress2, new { @style = "display: block;", @class = "aria-invalid" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.DonorPhone, new { }, ":")
+            <span class="required-field-error">This field is required</span>
+            @Html.TextBoxFor(model => model.DonorPhone, new { @style = "display: block;", @class = "aria-invalid" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.DonorCity, new { }, ":")
+            <span class="required-field-error">This field is required</span>
+            @Html.TextBoxFor(model => model.DonorCity, new { @style = "display: block;", @class = "aria-invalid" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.DonorCountry, new { }, ":")
+            <span class="required-field-error">This field is required</span>
+            @Html.TextBoxFor(model => model.DonorCountry, new { @style = "display: block;", @class = "aria-invalid" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.DonorState, new { }, ":")
+            <span class="required-field-error">This field is required</span>
+            @Html.TextBoxFor(model => model.DonorState, new { @style = "display: block;", @class = "aria-invalid" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.DonorZip, new { }, ":")     
+            <span class="required-field-error">This field is required</span>
+            @Html.TextBoxFor(model => model.DonorZip, new { @style = "display: block;", @class = "aria-invalid" })
+        </div>
+        @if (Model.ShowOnBehalfOf)
+        {
+            <div>
+                @Html.LabelFor(model => model.OnBehalfOfFullName, new { @style = "width: 350px" }, ":")  
+                @Html.TextBoxFor(model => model.OnBehalfOfFullName, new { id = "onBehalfOfFullName"})
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.NotificationEmail, new { @style = "width: 350px"  }, ":") 
+                @Html.TextBoxFor(model => model.NotificationEmail, new { id = "donationNotificationEmail" })
+            </div>
+
+            <div>                
+                @Html.CheckBoxFor(model => model.IncludeGiftAmount, new { id = "donationIncludeGiftAmount", @style = "width: 15px;"  }) @Html.LabelFor(model => model.IncludeGiftAmount, new { })  
+                
+            </div>
+            <div>
+                @Html.LabelFor(model => model.Comments, new { }, ":") 
+                @Html.TextAreaFor(model => model.Comments, new { id = "donationComments", @style = "width: 275px; height:100px" })
+            </div>
+
+        }
+    </div>
+
+
+
+
+    <script type="text/javascript">
+        // $('#onBehalfTable').hide();
+        $(document).ready(function () {
+            $(".required-field-error").hide();
+
+        });
+
+        $(".donation").children("div").each(function (item) {
+            var $lb = $(this).children("label");
+            var inputid = $lb.attr("for");
+            var inputname = $("#" + inputid).attr("name");
+            var $span = $(this).find('.required-field-error');
+              if ($span) {
+                $span.attr("id", "required-error-" + inputname.replace(".", "_"));
+            }
+        })
+    </script>
+}

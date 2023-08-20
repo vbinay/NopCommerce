@@ -1,0 +1,9 @@
+﻿Group: Payment methods
+FriendlyName: First Data Hosted
+SystemName: Payments.FirstDataHosted
+Version: 1.22
+SupportedVersions: 3.80
+Author: Ryan Markle (ryan.markle@sodexo.com)
+DisplayOrder: 1
+FileName: Nop.Plugin.Payments.FirstDataHosted.dll
+Description: This plugin enables hosted credit card 

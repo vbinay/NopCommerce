@@ -1,0 +1,269 @@
+﻿@model Nop.Admin.Models.KitchenProduction.KitchenProductionSearchDataModel
+
+@{
+    var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
+
+    //page title
+    ViewBag.Title = T("Admin.KitchenProduction").Text;
+    //active menu item (system name)
+    Html.SetActiveMenuItemSystemName("Kitchen Production");
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            Kitchen Production
+        </h1>
+        <div class="pull-right">
+            <div class="btn-group">
+                <button type="button" class="btn bg-purple">
+                    <i class="fa fa-file-pdf-o"></i>
+                    Kitchen/Production/Pre-Order Reports
+                </button>
+                <button type="button" class="btn bg-purple dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">&nbsp;</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <button type="submit" name="production-report-all">
+                                Production Reports
+                            </button>
+                        </li>
+                        
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="form-horizontal">
+            <div class="panel-group">
+                <div class="panel panel-default panel-search">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.StartDate)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopEditorFor(model => model.StartDate)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.EndDate)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopEditorFor(model => model.EndDate)
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.OrderId)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopEditorFor(model => model.OrderId)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.BillingLastName)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopEditorFor(model => model.BillingLastName)
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.PaymentMethodSystemName)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopDropDownList("PaymentMethodSystemName", Model.AvailablePaymentMethods)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="form-group" @(Model.IsLoggedInAsVendor ? Html.Raw("style='display: none;'") : null)>
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.CategoriesIds)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.CategoriesIds, new { SelectList = Model.AvailableCategories })
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
+                        <div class="row">
+                            <div class="col-md-7 col-md-offset-5">
+                                <button type="button" id="search-kitchenproduction" class="btn btn-primary btn-search">
+                                    <i class="fa fa-search"></i>
+                                    @T("Admin.Common.Search")
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="kicthenProduction-grid"></div>
+                        <script>
+                            $(document).ready(function() {
+                                $("#kicthenProduction-grid").kendoGrid({
+                                    dataSource: {
+                                        type: "json",
+                                        transport: {
+                                            read: {
+                                                url: "@Html.Raw(Url.Action("KitchenProdcutionList", "kitchenProduction"))",
+                                                type: "POST",
+                                                dataType: "json",
+                                                data: additionalData
+                                            }
+                                        },
+                                        schema: {
+                                            data: "Data",
+                                            total: "Total",
+                                            errors: "Errors"
+                                        },
+                                        requestEnd: function (e) {
+                                            if (e.type == "read") {
+                                                var response = e.response;
+                                                if (response) {
+                                                    //store extra data
+                                                    reportAggregates = e.response["ExtraData"];
+                                                }
+                                            }
+                                        },
+                                        error: function(e) {
+                                            display_kendoui_grid_error(e);
+                                            // Cancel the changes
+                                            this.cancelChanges();
+                                        },
+                                        pageSize: @(defaultGridPageSize),
+                                        serverPaging: true,
+                                        serverFiltering: true,
+                                        serverSorting: true
+                                    },
+                                    pageable: {
+                                        refresh: true,
+                                        pageSizes: [@(gridPageSizes)]
+                                    },
+                                    editable: {
+                                        confirmation: "@T("Admin.Common.DeleteConfirmation")",
+                                        mode: "inline"
+                                    },
+                                    scrollable: false,
+                                    sortable: true,
+                                    columns: [
+
+                                        {
+                                            field: "orderid",
+                                            title: "OrderId",
+                                            width: 80
+                                        },
+                                        {
+                                            field: "productName",
+                                            title: "Product Name",
+                                            width: 150
+                                        },
+
+                                        {
+                                            field: "attributes",
+                                            title: "Attributes",
+                                            width: 150
+                                        },
+                                        {
+                                            field: "Categories",
+                                            title: "Categories",
+                                            width: 100
+                                        },
+                                        {
+                                            field: "pickupDate",
+                                            title: "Pickup Date",
+                                            type: "date",
+                                            width: 100,
+                                            format: "{0:G}"
+                                        },
+                                        {
+                                            field: "pickupLocation",
+                                            title: "Pickup Location",
+                                            width: 150
+                                        },
+                                        {
+                                            field: "userName",
+                                            title: "CustomerName",
+                                            width: 150
+                                        },
+                                        {
+                                            field: "email",
+                                            title: "Customer Email",
+                                            width: 100
+                                        },
+                                        {
+                                            field: "createdOnDate",
+                                            title: "Order Date",
+                                            type: "date",
+                                            width: 100,
+                                            format: "{0:MM/dd/yyyy}"
+                                        },
+                                        {
+                                            field: "createdOnDate",
+                                            title: "Order Time",
+                                            type: "date",
+                                            width: 100,
+                                            format: "{0:HH:mm:ss tt}"
+                                        },
+                                        {
+                                            field: "orderid",
+                                            title: "View",
+                                            width: 100,
+                                            template:"<a href='@Server.UrlDecode(Url.Action("Edit", "Order", new { Id = "#=orderid#" }))' target='_blank'>View</a >"
+                                        },
+                                    ]
+                                } );
+                            });
+                        </script>
+
+                        <script type="text/javascript">
+                            var selectedIds = [];
+                            var reportAggregates = "";
+
+                            $(document).ready(function () {
+                                //search button
+                                $('#search-kitchenproduction').click(function () {
+                                    var grid = $('#kicthenProduction-grid').data('kendoGrid');
+                                    grid.dataSource.page(1);
+                                    return false;
+                                });
+                            });
+
+                            function additionalData() {
+                                var data = {
+                                    StartDate: $('#@Html.FieldIdFor(model => model.StartDate)').val(),
+                                    EndDate: $('#@Html.FieldIdFor(model => model.EndDate)').val(),
+                                    BillingLastName: $('#@Html.FieldIdFor(model => model.BillingLastName)').val(),
+                                    OrderId: $('#@Html.FieldIdFor(model => model.OrderId)').val(),
+                                    PaymentMethodSystemName: $('#@Html.FieldIdFor(model => model.PaymentMethodSystemName)').val(),
+                                    CategoriesIds:$('#@Html.FieldIdFor(model => model.CategoriesIds)').val()
+                                };
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
+                        </script>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

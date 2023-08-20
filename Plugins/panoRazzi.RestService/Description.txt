@@ -1,0 +1,8 @@
+﻿Group: Misc
+FriendlyName: Expose REST API for integration with 3rd-party applications
+SystemName: panoRazzi.RestService
+Version: 1.00
+SupportedVersions: 3.80
+Author: Lam Woon Cherk (http://www.pronopcommerce.com)
+DisplayOrder: 1
+FileName: panoRazzi.RestService.dll

@@ -1,0 +1,77 @@
+﻿@model CatalogPagingFilteringModel
+@using Nop.Web.Models.Catalog;
+@using Nop.Core
+@using Nop.Services.Common
+@using Nop.Core.Infrastructure;
+
+
+
+<div class="product-selectors">
+    @*view mode*@
+    @if (Model.AllowProductViewModeChanging)
+    {
+        <div class="product-viewmode">
+            <span>@T("Catalog.ViewMode")</span>
+            @if (Model.AvailableViewModes.Count > 1)
+                {
+                    var gridMode = Model.AvailableViewModes[0];
+                    var listMode = Model.AvailableViewModes[1];
+
+                <a class="viewmode-icon grid @if (gridMode.Selected) {<text>selected</text>}" href="@gridMode.Value" title="@gridMode.Text" id="grid-view">@gridMode.Text</a>
+                <a class="viewmode-icon list @if (listMode.Selected) {<text>selected</text>}" href="@listMode.Value" title="@listMode.Text" id="list-view">@listMode.Text</a>
+            }
+        </div>
+    }
+    @*sorting*@
+    @if (Model.AllowProductSorting)
+    {
+        <div class="product-sorting">
+            <label for="products-orderby">@T("Catalog.OrderBy")</label>
+            @Html.DropDownList("products-orderby", Model.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
+        </div>
+    }
+    @*page size*@
+    @if (Model.AllowCustomersToSelectPageSize)
+    {
+        <div class="product-page-size">
+            <label for="products-pagesize">@T("Catalog.PageSize")</label>
+            @Html.DropDownList("products-pagesize", Model.PageSizeOptions, new { onchange = "setLocation(this.value);" })
+            <span>@T("Catalog.PageSize.PerPage")</span>
+        </div>
+    }
+    <div>
+        <label for="searchProductBycategory">Search Product:</label>
+        <input type="text" id="searchProductBycategory" name="searchProductBycategory" placeholder="Search" onkeypress="handle(event)" />
+        <input type="button" id="searchBtn" value="Search" role="button" aria-describedby="Seach Product" class="product-search-button"/>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        var lastClisked = urlParams.get("clicked");
+        
+        if (lastClisked != null) {
+            $("#" + lastClisked).focus();
+        }        
+
+    });
+
+    $('#searchBtn').click(function () {
+
+        @{
+            var istore = EngineContext.Current.Resolve<IStoreContext>();
+
+            ViewBag.data = istore.CurrentStore.Url;
+        }
+        var valuefromTextBox = $('#searchProductBycategory').val();
+        var url = '@ViewBag.data'
+        window.location.href = url + '/' + 'search?' + "q=" + valuefromTextBox;
+    })
+
+    function handle(e) {
+        if (e.keyCode === 13) {
+            $('#searchBtn').trigger('click');
+        }
+    }
+</script>

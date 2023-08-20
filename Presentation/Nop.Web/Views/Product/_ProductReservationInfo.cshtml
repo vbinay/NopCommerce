@@ -1,0 +1,77 @@
+﻿@model ReservationProductDetailsModel
+@using Nop.Web.Models.Catalog;
+@{
+                /**/
+    <div class="attribute-label">
+        @Html.Label("Select Date : ")
+    </div>
+    @Html.Partial("_DatePicker");
+
+    @*//Slot Drop Down*@
+    <div class="attributes">
+        <div class="attribute-label">
+            @Html.Label("Select Timeslot : ")
+        </div>
+        <div class="attribute-data">
+            @Html.DropDownListFor(x => Model.TimeslotsConfigured, new SelectList(Model.TimeslotsConfigured, "Value", "Text"), htmlAttributes: new { @class = "form-control", id = "TimeslotsConfigured" })
+            @Html.ValidationMessageFor(x => x.TimeslotsConfigured, "", new { @class = "text-danger" })
+        </div>
+        @Html.TextBoxFor(m => m.JsMinDateStr, new { @readonly = "readonly", style = "display: none; ", id = "Reservation_JsMinDateStr", name = "Reservation_JsMinDateStr" })
+        @Html.TextBoxFor(m => m.JsMaxDateStr, new { @readonly = "readonly", style = "display: none; ", id = "Reservation_JsMaxDateStr", name = "Reservation_JsMaxDateStr" })
+        @Html.TextBoxFor(m => m.JsExcludedDatesStr, new { @readonly = "readonly", style = "display: none; ", id = "Reservation_JsExcludedDatesStr", name = "Reservation_JsExcludedDatesStr" })
+        @Html.TextBoxFor(m => m.ReservationCapPerSlot, new { @readonly = "readonly", style = "display: none; ", id = "Reservation_ReservationCapPerSlot", name = "Reservation_ReservationCapPerSlot" })
+
+        <script>
+            $(document).ready(function () {
+                //TimeSlot logic
+                var value = $("#TimeslotsConfigured").prop("selectedIndex", 0).val();
+                timeslotChange(value)
+                $('#TimeslotsConfigured').change(function () {
+                    timeslotChange($(this).val());
+                });
+            });
+
+            function timeslotChange(timeslotvalue) {
+                 displayAjaxLoading(true);
+                var obj = {};
+                obj.productId = @Model.ProductId;
+                obj.timeSlot = timeslotvalue;
+                obj.selectedDate = $('#reservationDate').val();
+                    $.ajax({
+                        cache: false,
+                        url: '@Html.Raw(Url.Action("GetAvailableSlot", "Product"))',
+                            data: JSON.stringify(obj),
+                            type: 'POST',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                $("#AvailableUnits").html("Available: "+ data);
+                                $("#TimeslotsConfigured > option").each(function() {
+                                    $(this).prop("disabled", false);
+                                });
+                                if(data == 0){
+                                    $( "select option:selected" ).each(function() {
+                                        $(this).prop("disabled", true);
+                                    });
+                                }
+                                if (data <= 0) {
+                                    $(".button-1,add-to-cart-button").hide();
+                                }
+                                else {
+                                    $(".button-1,add-to-cart-button").show();
+                                }
+                                displayAjaxLoading(false);
+                            }
+                    });
+            }
+
+        </script>
+    </div>
+
+    <div>
+        <div class="col-md-9" id="ReservationCapPerSlot" name="ReservationCapPerSlot">Reservation Cap Per Slot: @Model.ReservationCapPerSlot </div>
+        <div class="col-md-9" id="AvailableUnits" name="AvailableUnits">Available: @Model.OccupancyUnitsAvailableForReservation </div>
+        <div class="col-md-9" id="TotalUnits">Total :  @Model.OccupancyUnitsAvailable </div>
+
+    </div>
+}

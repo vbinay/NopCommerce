@@ -1,0 +1,22 @@
+﻿@*@model Nop.Web.Models.Common.DatePickerAttributesModel
+{*@
+    <script src="~/Scripts/Utils/DateCalendar.js" type="text/javascript"></script>
+    <div class="datepicker-calendar">
+
+        <label for="reservationDate" id="pickupText"style="display: none;"></label>
+        <input placeholder="MM-DD-YYYY" id="reservationDate" type="text" 
+               name="reservationDate" class="datepicker-input" readonly />
+        <kbd id="keyboardHints" hidden class="down"></kbd>
+        
+        <a role="button" aria-label="Calendar Date Picker" href="#" id="dateIcons" onclick="buildCalendar();"
+           class="accCalendar datePicker" aria-pressed="false"> <span class="fa fa-calendar-o" aria-hidden="true"></span></a>
+
+
+        <label for="timePicker" id="pickupTimeText" style="padding-left: 20px; display: none;">Available Times</label>
+        <select name="timePicker" id="timePicker" style="display: none;"></select>
+        
+        <input type="text" id="mindate" style="display: none;" readonly />
+        <input type="text" id="showTimePicker" style="display: none;" readonly />
+
+    </div>
+@* } *@

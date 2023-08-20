@@ -1,0 +1,301 @@
+﻿@model MealPlanListModel
+
+@{	// NU-32
+
+    var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
+
+    //page title
+    ViewBag.Title = T("Admin.Orders.MealPlans").Text;
+    //active menu item (system name)
+    Html.SetActiveMenuItemSystemName("Meal Plans");
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            @T("Admin.Orders.MealPlans")
+        </h1>
+        <div class="pull-right">
+            <div class="btn-group">
+                <button type="button" id="process-selected" class="btn bg-green">
+                    <i class="fa fa-check-square-o"></i>
+                    @T("Admin.Orders.MealPlans.ProcessSelected")
+                </button>
+            </div>
+            <div class="btn-group">
+                <button type="submit" id="exportexcel-all" name="exportexcel-all" class="btn bg-green">
+                    <i class="fa fa-file-excel-o"></i>
+                    @T("Admin.Common.ExportToExcel")
+                </button>
+            </div>
+            <div class="btn-group">
+                <button type="submit" id="exportexcel-grouped" name="exportexcel-grouped" class="btn bg-green">
+                    <i class="fa fa-file-excel-o"></i>
+                    Export Grouped
+                </button>
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.ExportExcel)
+    <div class="content">
+        <div class="form-horizontal">
+            <div class="panel-group">
+                <div class="panel panel-default panel-search">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.StartDate)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopEditorFor(model => model.StartDate)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.EndDate)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopEditorFor(model => model.EndDate)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.IncludeProcessed)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopEditorFor(model => model.IncludeProcessed)
+                                    </div>
+                                </div>
+                                @*<div class="form-group" @(Model.AvailableWarehouses.SelectionIsNotPossible() ? Html.Raw("style=\"display:none\"") : null)>
+                                        <div class="col-md-4">
+                                            @Html.NopLabelFor(model => model.ProductId)
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" id="search-product-name" autocomplete="off" class="form-control" />
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7 col-md-offset-5">
+                                <button type="button" id="search-mealplans" class="btn btn-primary btn-search">
+                                    <i class="fa fa-search"></i>
+                                    @T("Admin.Common.Search")
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="mealplans-grid"></div>
+
+                        <script>
+                            $(document).ready(function() {
+                                $("#mealplans-grid").kendoGrid({
+                                    dataSource: {
+                                        type: "json",
+                                        transport: {
+                                            read: {
+                                                url: "@Html.Raw(Url.Action("MealPlanList", "MealPlan"))",
+                                                type: "POST",
+                                                dataType: "json",
+                                                data: additionalData
+                                            }
+                                        },
+                                        schema: {
+                                            data: "Data",
+                                            total: "Total",
+                                            errors: "Errors"
+                                        },
+                                        requestEnd: function (e) {
+                                            if (e.type == "read") {
+                                                var response = e.response;
+                                                if (response) {
+                                                    //store extra data
+                                                    reportAggregates = e.response["ExtraData"];
+                                                }
+                                            }
+                                        },
+                                        error: function(e) {
+                                            display_kendoui_grid_error(e);
+                                            // Cancel the changes
+                                            this.cancelChanges();
+                                        },
+                                        pageSize: @(defaultGridPageSize),
+                                        serverPaging: true,
+                                        serverFiltering: true,
+                                        serverSorting: true
+                                    },
+                                    pageable: {
+                                        refresh: true,
+                                        pageSizes: [@(gridPageSizes)]
+                                    },
+                                    editable: {
+                                        confirmation: "@T("Admin.Common.DeleteConfirmation")",
+                                        mode: "inline"
+                                    },
+                                    scrollable: false,
+                                    dataBound: onDataBound,
+                                    columns: [
+                                          {
+                                              field: "Id",
+                                              headerTemplate: "<input id='mastercheckbox' type='checkbox'/>",
+                                              headerAttributes: { style: "text-align:center" },
+                                              attributes: { style: "text-align:center" },
+                                              template: "<input type='checkbox' value='#=Id#' class='checkboxGroups'/>",
+                                              width: 50
+                                          },  {
+                                              field: "OrderId",
+                                              title: "Order",
+                                              width: 50,
+                                              template: '<a href="/Admin/Order/Edit/#=OrderId#\\#tab-products">@T("Admin.Common.View")</a>'
+                                          },
+                                {
+                                    field: "MealPlanName",
+                                    title: "Meal Plan Name",
+                                    width: 200
+                                }, {
+                                    field: "RecipientAcctNum",
+                                    title: "Account Number",
+                                    width: 100
+                                },  {
+                                    field: "MealPlanAmount",
+                                    title: "Amount",
+                                    width: 100
+                                },{
+                                    field: "RecipientName",
+                                    title: "Recipient Name",
+                                    width: 150,
+                                }, {
+                                    field: "RecipientEmail",
+                                    title: "Recipient Email",
+                                    width: 100
+                                }, {
+                                    field: "RecipientPhone",
+                                    title: "Recipient Phone",
+                                    width: 75
+
+                                }, {
+                                    field: "CreatedOnLocal",
+                                    title: "Created On Date (Local)",
+                                    width: 100,
+                                },
+                                {
+                                    field: "Attributes",
+                                    title: "Attributes",
+                                    width: 100,
+                                    encoded: false
+                                },
+                                {
+                                    field: "IsProcessed",
+                                    title: "Is Processed",
+                                    width: 50,
+                                }
+                                    ]
+                                } );
+                            });
+                        </script>
+
+                        <script type="text/javascript">
+                            var selectedIds = [];
+                            var reportAggregates = "";
+
+                            $(document).ready(function () {
+                                //search button
+                                $('#search-mealplans').click(function () {
+                                    //search
+                                    var grid = $('#mealplans-grid').data('kendoGrid');
+                                    grid.dataSource.page(1); //new search. Set page size to 1
+                                    //grid.dataSource.read(); we already loaded the grid above using "page" function
+                                    //clear selected checkboxes
+                                    $('.checkboxGroups').attr('checked', false).change();
+                                    selectedIds = [];
+                                    return false;
+                                });
+
+                                $('#mastercheckbox').click(function () {
+                                    $('.checkboxGroups').attr('checked', $(this).is(':checked')).change();
+                                });
+
+                                //wire up checkboxes.
+                                $('#mealplans-grid').on('change', 'input[type=checkbox][id!=mastercheckbox]', function (e) {
+                                    var $check = $(this);
+                                    if ($check.is(":checked") == true) {
+                                        var checked = jQuery.inArray($check.val(), selectedIds);
+                                        if (checked == -1) {
+                                            //add id to selectedIds.
+                                            selectedIds.push($check.val());
+                                        }
+                                    }
+                                    else {
+                                        var checked = jQuery.inArray($check.val(), selectedIds);
+                                        if (checked > -1) {
+                                            //remove id from selectedIds.
+                                            selectedIds = $.grep(selectedIds, function (item, index) {
+                                                return item != $check.val();
+                                            });
+                                        }
+                                    }
+                                    updateMasterCheckbox();
+                                });
+
+                                $('#process-selected').click(function(e) {
+                                    e.preventDefault();
+
+                                    var postData = {
+                                        selectedIds: selectedIds
+                                    };
+                                    addAntiForgeryToken(postData);
+
+                                    $.ajax({
+                                        cache: false,
+                                        type: "POST",
+                                        url: "@(Url.Action("ProcessSelected", "MealPlan"))",
+                                        data: postData,
+                                        complete: function(data) {
+                                            //reload grid
+                                            var grid = $('#mealplans-grid').data('kendoGrid');
+                                            grid.dataSource.read();
+                                        },
+                                        error: function(xhr, ajaxOptions, thrownError) {
+                                            alert(thrownError);
+                                        },
+                                        traditional: true
+                                    });
+                                    return false;
+                                });
+                            });
+
+                            function additionalData() {
+                                var data = {
+                                    StartDate: $('#@Html.FieldIdFor(model => model.StartDate)').val(),
+                                    EndDate: $('#@Html.FieldIdFor(model => model.EndDate)').val(),
+                                    IncludeProcessed: $('#@Html.FieldIdFor(model => model.IncludeProcessed)').is(':checked'),
+                                };
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
+
+                            function onDataBound(e) {
+                                var view = this.dataSource.view();
+                            }
+
+                            function updateMasterCheckbox() {
+                                var numChkBoxes = $('#mealplans-grid input[type=checkbox][id!=mastercheckbox]').length;
+                                var numChkBoxesChecked = $('#mealplans-grid input[type=checkbox][id!=mastercheckbox]:checked').length;
+                                $('#mastercheckbox').attr('checked', numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

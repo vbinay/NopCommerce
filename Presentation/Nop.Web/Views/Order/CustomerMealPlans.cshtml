@@ -1,0 +1,77 @@
+﻿@model Nop.Web.Models.Orders.CustomerMealPlanListModel
+@{  // NU-16
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+}
+@using Nop.Web.Models.Customer
+@using Nop.Web.Models.Order;
+@section left
+{
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.MealPlans })
+}
+<div class="page account-page order-list-page">
+    <div class="page-title">
+        <h1>@T("Account.MyAccount") - @T("Account.CustomerMealPlans")</h1>
+    </div>
+    <div class="page-body">
+        @if (Model.CardAccessSystemRecords.Count > 0)
+        {
+            <div class="order-list">
+                <div class="section order-item">
+                    <div class="title">
+                        Current Accounts
+                    </div>
+                    <div class="title">
+                        <table class="info">
+                            <tr><td>Account Number</td><td>Balance</td></tr>
+                            @foreach (var order in Model.CardAccessSystemRecords)
+                            {
+                                <tr>
+                                    <td>@order.CardHolderID</td>
+                                    <td>$@order.Balance</td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="no-data">
+                @*@T("Account.CustomerMealPlans.NoMealPlans")*@
+            </div>
+        }
+
+        @if (Model.MealPlans.Count > 0)
+        {
+            <div class="order-list">
+                @foreach (var order in Model.MealPlans)
+                {
+                    <div class="section order-item">
+                        <div class="title">
+                            <strong>@T("Account.CustomerMealPlans.OrderNumber"): @order.OrderId</strong>
+                        </div>
+                        <ul class="info">
+                            <li>Account Name:<span class="order-date">@order.RecipientAcctNum</span></li>
+                            <li>Is Processed: <span class="order-status @order.IsProcessed.ToString().ToLowerInvariant()">@order.IsProcessed</span></li>
+                            <li>@T("Account.CustomerMealPlans.OrderDate"): <span class="order-date">@order.CreatedOnLocal</span></li>
+                            <li>@T("Account.CustomerMealPlans.OrderTotal"): <span class="order-total">$@order.MealPlanAmount</span></li>
+                        </ul>
+                        <div class="buttons">
+                            <input type="button" value="@T("Account.CustomerOrders.OrderDetails")" class="button-2 order-details-button" onclick="setLocation('@Url.RouteUrl("OrderDetails", new { orderId = order.OrderId })')" />
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="no-data">
+                @T("Account.CustomerMealPlans.NoMealPlans")
+            </div>
+        }
+    </div>
+</div>

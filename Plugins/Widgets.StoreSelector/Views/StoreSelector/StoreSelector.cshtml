@@ -1,0 +1,22 @@
+﻿@model Nop.Plugin.Widgets.StoreSelector.Models.StoreSelectorModel
+@{
+    Layout = "";
+}
+@using Nop.Web.Framework;
+<div class="links" style="z-index:1000;background-color:black">
+    @Html.DropDownList("wdgtStores", Model.AvailableStores)
+    <span class="separator">|</span>
+    @Html.ActionLink(T("Admin.Header.PublicStore").Text, "Index", "Home", new { area = "" }, null)
+    @if (Model.canManageMaintenance)
+    {
+        <span class="separator">|</span>
+        <a href="@Model.webHelper.ModifyQueryString(Url.Action("ClearCache", "Common", new RouteValueDictionary {{ "area", "Admin" }}), "returnurl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl), null)">@T("Admin.Header.ClearCache")</a>
+        <span class="separator">|</span>
+        <a href="@Model.webHelper.ModifyQueryString(Url.Action("RestartApplication", "Common", new RouteValueDictionary {{ "area", "Admin" }}), "returnurl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl), null)" id="restart-application">@T("Admin.Header.RestartApplication")</a>
+    }
+</div>
+<script>
+    $("#wdgtStores").change(function () {
+        document.location.href = $(this).val();
+    })
+</script>

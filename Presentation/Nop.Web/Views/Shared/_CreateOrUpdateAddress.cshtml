@@ -1,0 +1,208 @@
+﻿@model AddressModel
+@using Nop.Web.Models.Common;
+@if (Model.CountryEnabled && Model.StateProvinceEnabled)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#@Html.FieldIdFor(model => model.CountryId)").change(function () {
+                var selectedItem = $(this).val();
+                var ddlStates = $("#@Html.FieldIdFor(model => model.StateProvinceId)");
+                var statesProgress = $("#states-loading-progress");
+                statesProgress.show();
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.RouteUrl("GetStatesByCountryId"))",
+                    data: { "countryId": selectedItem, "addSelectStateItem": "true" },
+                    success: function (data) {
+                        ddlStates.html('');
+                        $.each(data, function (id, option) {
+                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        statesProgress.hide();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                        statesProgress.hide();
+                    }
+                });
+            });
+        });
+    </script>
+}
+@Html.HiddenFor(model => model.Id)
+    <p>Fields marked with * are required</p>
+    <div class="edit-address">        
+        <div class="inputs">
+            @Html.LabelFor(model => model.FirstName, new { }, ":")
+            @Html.RequiredHint()
+            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "aria-invalid" } })
+            @Html.ValidationMessageFor(model => model.FirstName, "")
+        </div>
+        <div class="inputs">
+            @Html.LabelFor(model => model.LastName, new { }, ":")
+            @Html.RequiredHint()
+            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "aria-invalid" } })
+            @Html.ValidationMessageFor(model => model.LastName, "")
+
+        </div>
+        <div class="inputs">
+            @Html.LabelFor(model => model.Email, new { }, ":")
+            @Html.RequiredHint()
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "aria-invalid" } })
+            @Html.ValidationMessageFor(model => model.Email, "")
+
+        </div>
+        @if (Model.CompanyEnabled)
+        {
+        <div class="inputs">
+            @Html.LabelFor(model => model.Company, new {style= "margin-right: 8px;"}, ":")
+            @if (Model.CompanyRequired)
+            {
+                @Html.RequiredHint()
+            }
+            @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "aria-invalid"} })
+            @Html.ValidationMessageFor(model => model.Company, "")
+        </div>
+        }
+        <!-- #region NU-87 -->
+        @if (Model.StreetAddressEnabled)
+        {
+        <div class="inputs">
+            @Html.LabelFor(model => model.Address1, new { }, ":")
+            @if (Model.StreetAddressRequired)
+            {
+                @Html.RequiredHint()
+            }
+            @Html.EditorFor(model => model.Address1, new { htmlAttributes = new { @class = "aria-invalid", onkeypress = "RestrictSpaceSpecial(event);" } })
+
+            @Html.ValidationMessageFor(model => model.Address1, "")
+        </div>
+        }
+        @if (Model.StreetAddress2Enabled)
+        {
+        <div class="inputs">
+            @Html.LabelFor(model => model.Address2, new { style = "margin-right: 8px;" }, ":")
+            @if (Model.StreetAddress2Required)
+            {
+                @Html.RequiredHint()
+            }
+            @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "aria-invalid", onkeypress = "RestrictSpaceSpecial(event);" } })
+
+            @Html.ValidationMessageFor(model => model.Address2, "")
+        </div>
+        }
+        @if (Model.CountryEnabled)
+        {
+        <div class="inputs">
+            @Html.LabelFor(model => model.CountryId, new { }, ":")
+            @Html.RequiredHint()
+            @Html.DropDownListFor(model => model.CountryId, Model.AvailableCountries, new { @class = "aria-invalid" })
+            @Html.ValidationMessageFor(model => model.CountryId, "")
+        </div>
+        }
+        <!-- #endregion -->
+        @if (Model.CityEnabled)
+        {
+        <div class="inputs">
+            @Html.LabelFor(model => model.City, new { }, ":")
+            @if (Model.CityRequired)
+            {
+                @Html.RequiredHint()
+            }
+            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "aria-invalid" } })
+
+            @Html.ValidationMessageFor(model => model.City, "")
+
+        </div>
+        }
+        @if (Model.CountryEnabled && Model.StateProvinceEnabled)
+        {
+        <div class="inputs">
+            @Html.LabelFor(model => model.StateProvinceId, new { }, ":")
+            @Html.RequiredHint()
+
+            @Html.DropDownListFor(model => model.StateProvinceId, Model.AvailableStates, new { @class = "aria-invalid" })
+
+            @*@Html.DropDownListFor(model => model.StateProvinceId, Model.AvailableStates)*@
+
+
+            <span id="states-loading-progress" style="display: none;" class="please-wait">@T("Common.Wait...")</span>
+            @Html.ValidationMessageFor(model => model.StateProvinceId, "")
+
+        </div>
+        }
+        @if (Model.ZipPostalCodeEnabled)
+        {
+        <div class="inputs">
+            @Html.LabelFor(model => model.ZipPostalCode, new { }, ":")
+            @if (Model.ZipPostalCodeRequired)
+            {
+                @Html.RequiredHint()
+            }
+            @Html.EditorFor(model => model.ZipPostalCode, new { htmlAttributes = new { @class = "aria-invalid" } })
+
+            @Html.ValidationMessageFor(model => model.ZipPostalCode, "")
+
+        </div>
+        }
+        @if (Model.PhoneEnabled)
+        {
+        <div class="inputs">
+            @Html.LabelFor(model => model.PhoneNumber, new { }, ":")
+            @if (Model.PhoneRequired)
+            {
+                @Html.RequiredHint()
+            }
+            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "aria-invalid" } })
+
+            @Html.ValidationMessageFor(model => model.PhoneNumber, "")
+
+        </div>
+        }
+        @if (Model.FaxEnabled)
+        {
+        <div class="inputs">
+            @Html.LabelFor(model => model.FaxNumber, new { }, ":")
+            @if (Model.FaxRequired)
+            {
+                @Html.RequiredHint()
+            }
+            @Html.EditorFor(model => model.FaxNumber, new { htmlAttributes = new { @class = "aria-invalid" } })
+
+            @Html.ValidationMessageFor(model => model.FaxNumber, "")
+
+        </div>
+        }
+        @if (Model.CustomAddressAttributes.Count > 0)
+        {
+            @Html.Partial("_AddressAttributes", Model.CustomAddressAttributes)
+        }
+    </div>
+
+<script type="text/javascript">
+    $(".aria-invalid").attr("aria-invalid", "false");
+    $(".inputs").find('input,textarea,select').removeClass('focus-outline');
+    var focuscount = 0;
+    $(".inputs").each(function (item) {
+        
+        var inputid = $(this).find('.field-validation-valid').attr('data-valmsg-for');
+        $(this).find('.field-validation-valid').attr('id', 'error-' + inputid);
+        
+        var spanerror = $(this).find('.field-validation-error').text();
+        if (spanerror) {
+            var inputid = $(this).find('.field-validation-error').attr('data-valmsg-for');
+            $(this).find('.field-validation-error').attr('id', 'error-' + inputid);
+
+            var spanid = $(this).find('.field-validation-error').attr('id');
+            $('[name="' + inputid + '"]').attr("aria-invalid", "true");
+            if (focuscount == 0) {
+                $('[name="' + inputid + '"]').first().focus();
+                $('[name="' + inputid + '"]').first().addClass('focus-outline');
+            }
+            focuscount = focuscount + 1;
+            $('[name="' + inputid + '"]').attr("aria-describedby", spanid);
+        }
+        
+    })    
+</script>

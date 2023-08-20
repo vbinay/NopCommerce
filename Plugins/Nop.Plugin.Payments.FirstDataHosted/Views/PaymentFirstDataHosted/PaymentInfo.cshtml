@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "";
+}
+@model Nop.Plugin.Payments.FirstDataHosted.Models.PaymentInfoModel
+<form action="https://demo.globalgatewaye4.firstdata.com/payment" method="post">
+
+    <input name="x_login" value="HCO-SODEX-992" type="hidden">
+
+    <input name="x_amount" value="1.23" type="hidden">
+
+    <input name="x_fp_sequence" value="123456" type="hidden">
+
+    <input name="x_fp_timestamp" value="1191600622" type="hidden">
+
+    <input name="x_fp_hash" value="4b04d15ccd9007658c2dadc679899ec4" type="hidden">
+
+    <input name="x_show_form" value="PAYMENT_FORM" type="hidden">
+
+    <input value="Checkout" type="submit">
+
+</form>

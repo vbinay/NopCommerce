@@ -1,0 +1,100 @@
+﻿@{
+    Layout = "";
+}
+@model Nop.Plugin.PickUpPoints.Store.Models.ConfigurationModel
+@using Nop.Web.Framework;
+@Html.Action("StoreScopeConfiguration", "Setting", new { area = "Admin" })
+@using (Html.BeginForm())
+{
+
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.Street_OverrideForStore, model => model.Street, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.Street):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Street)
+                @Html.ValidationMessageFor(model => model.Street)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.BuildingNumber_OverrideForStore, model => model.BuildingNumber, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.BuildingNumber):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.BuildingNumber)
+                @Html.ValidationMessageFor(model => model.BuildingNumber)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.PostCode_OverrideForStore, model => model.PostCode, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.PostCode):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.PostCode)
+                @Html.ValidationMessageFor(model => model.PostCode)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.Town_OverrideForStore, model => model.Town, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.Town):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Town)
+                @Html.ValidationMessageFor(model => model.Town)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.Latitude_OverrideForStore, model => model.Latitude, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.Latitude):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Latitude)
+                @Html.ValidationMessageFor(model => model.Latitude)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.Longitude_OverrideForStore, model => model.Longitude, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.Longitude):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Longitude)
+                @Html.ValidationMessageFor(model => model.Longitude)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.Description_OverrideForStore, model => model.Description, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.Description):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.Fee_OverrideForStore, model => model.Fee, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.Fee):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Fee)
+                @Html.ValidationMessageFor(model => model.Fee)
+            </td>
+        </tr>
+    </table>
+
+    <table class="adminContent">
+        <tr>
+            <td colspan="2">
+                <input type="submit" name="save" class="k-button" value="@T("Admin.Common.Save")" />
+            </td>
+        </tr>
+    </table>
+}

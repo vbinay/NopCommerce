@@ -1,0 +1,11 @@
+<NUnitProject>
+  <Settings activeconfig="Debug"/>
+  <Config name="Debug">
+    <assembly path="Nop.Tests\bin\Debug\Nop.Tests.dll"/>
+    <assembly path="Nop.Core.Tests\bin\Debug\Nop.Core.Tests.dll"/>
+    <assembly path="Nop.Services.Tests\bin\Debug\Nop.Services.Tests.dll"/>
+    <assembly path="Nop.Web.MVC.Tests\bin\Debug\Nop.Web.MVC.Tests.dll"/>
+    <assembly path="Nop.Data.Tests\bin\Debug\Nop.Data.Tests.dll"/>
+  </Config>
+</NUnitProject>
+

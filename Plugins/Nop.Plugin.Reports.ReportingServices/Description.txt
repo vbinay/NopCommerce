@@ -1,0 +1,8 @@
+﻿Group: Reporting providers
+FriendlyName: ReportingServices SodexoMyWay provider
+SystemName: Reports.ReportingServices
+Version: 1.0
+SupportedVersions: 3.70
+Author: SodexoMyWay
+DisplayOrder: 1
+FileName: Nop.Plugin.Reports.ReportingServices.dll

@@ -1,0 +1,146 @@
+﻿@model ProductDetailsModel.AddToCartModel
+@using Nop.Web.Models.Catalog;
+@using Nop.Core.Domain.Orders;
+@if (Model.UpdatedShoppingCartItemId > 0)
+{
+    @Html.HiddenFor(x => x.UpdatedShoppingCartItemId)
+}
+@if ((!Model.DisableBuyButton) || Model.CustomerEntersPrice)
+{
+    <div class="add-to-cart">
+        @if (Model.CustomerEntersPrice)
+        {
+            <div class="customer-entered-price">
+                <div class="price-input">
+                    @Html.LabelFor(model => model.CustomerEnteredPrice, new { @class = "enter-price-label" }, ":")
+                    @*round price*@
+                    @Html.TextBox("CustomerEnteredPrice", Convert.ToInt32(Math.Ceiling(Model.CustomerEnteredPrice)), new { @class = "enter-price-input" })
+                </div>
+                <div class="price-range">
+                    @Model.CustomerEnteredPriceRange
+                </div>
+            </div>
+        }
+        @if (!String.IsNullOrEmpty(Model.MinimumQuantityNotification))
+        {
+            <div class="min-qty-notification">@Model.MinimumQuantityNotification</div>
+        }
+        @if (!Model.DisableBuyButton)
+        {
+            <div class="add-to-cart-panel">
+@*@if (!Model.IsReservation)
+{*@
+                <div>
+                    <label aria-hidden="true" class="qty-label" for="@string.Format("addtocart_{0}_EnteredQuantity", Model.ProductId)">QTY:</label>
+
+                    @if (Model.AllowedQuantities.Count > 0)
+                    {
+                        @Html.DropDownListFor(model => model.EnteredQuantity, Model.AllowedQuantities, new { @class = "qty-dropdown" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.EnteredQuantity, new { @maxlength = "5", @class = "qty-input" })
+                        //when a customer clicks 'Enter' button we submit the "add to cart" button (if visible)
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                @*$("#@Html.FieldIdFor(model => model.EnteredQuantity)").change(function () {
+                                    var quan = $(this).val();
+                                    var resCapPerSlot = @Model.ReservationCapPerSlot;
+                                    if(quan > resCapPerSlot)
+                                    {
+                                        return;
+                                    }
+                                })*@
+
+                                $("#@Html.FieldIdFor(model => model.EnteredQuantity)").keydown(function (event) {
+                                    if (event.keyCode == 13) {
+                                        $("#add-to-cart-button-@Model.ProductId").click();
+                                        return false;
+                                    }
+                                });
+                            });
+                        </script>
+                    }
+                </div>
+@*}*@
+                @{
+                    var addToCartText = "";
+                    if (Model.UpdatedShoppingCartItemId > 0 && Model.UpdateShoppingCartItemType.HasValue && Model.UpdateShoppingCartItemType.Value == ShoppingCartType.ShoppingCart)
+                    {
+                        addToCartText = T("ShoppingCart.AddToCart.Update").Text;
+                    }
+                    else
+                    {
+                        addToCartText = T("ShoppingCart.AddToCart").Text;
+                        if (Model.IsRental)
+                        {
+                            addToCartText = T("ShoppingCart.Rent").Text;
+                        }
+                        if (Model.AvailableForPreOrder)
+                        {
+                            addToCartText = T("ShoppingCart.PreOrder").Text;
+                        }
+                    }
+                    <input type="button" id="add-to-cart-button-@Model.ProductId" class="button-1 add-to-cart-button" value="@addToCartText" data-productid="@Model.ProductId" onclick="AddProductDetailsToJsonOnAddtoCartClick(); AjaxCart.addproducttocart_details(this.id,'@Url.RouteUrl("AddProductToCart-Details", new { productId = Model.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })', '#product-details-form');return false;" />
+                }
+            </div>
+                    }
+                        @Html.Widget("productdetails_add_info", Model.ProductId)
+                    </div>
+                    }
+                    else
+                    {
+                        <div class="add-to-cart">
+                            <div class="add-to-cart-panel">
+                                @{
+                                    var addToCartText = "";
+                                    if (Model.UpdatedShoppingCartItemId > 0 && Model.UpdateShoppingCartItemType.HasValue && Model.UpdateShoppingCartItemType.Value == ShoppingCartType.ShoppingCart)
+                                    {
+                                        if (Model.LimitPurchaseResult.LimitMessage == "")
+                                        {
+                                            //addToCartText = "Login To Add";
+                                            addToCartText = "ADD TO CART";
+                                            <input type="button" id="add-to-cart-button-@Model.ProductId" class="button-1 add-to-cart-button-disabled" disabled="disabled" value="@addToCartText" data-productid="@Model.ProductId" onclick="window.location = '/customer/login?ReturnUrl=@HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl)'" />
+                                        }
+                                        else
+                                        {
+                                            addToCartText = Model.LimitPurchaseResult.LimitMessage;
+                                            <input type="button" id="add-to-cart-button-@Model.ProductId" class="button-1 add-to-cart-button-disabled" value="@addToCartText" data-productid="@Model.ProductId" />
+                                        }
+
+
+                                    }
+                                    else
+                                    {
+                                        if (Model.LimitPurchaseResult.LimitMessage == "")
+                                        {
+                                            // addToCartText = "Login To Add";
+                                            addToCartText = "ADD TO CART";
+                                            <input type="button" id="add-to-cart-button-@Model.ProductId" class="button-1 add-to-cart-button-disabled" disabled="disabled" value="@addToCartText" data-productid="@Model.ProductId" onclick="window.location = '/customer/login?ReturnUrl=@HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl)'" />
+                                        }
+                                        else
+                                        {
+                                            addToCartText = Model.LimitPurchaseResult.LimitMessage;
+                                            <input type="button" id="add-to-cart-button-@Model.ProductId" class="button-1 add-to-cart-button-disabled" value="@addToCartText" data-productid="@Model.ProductId" />
+
+                                        }
+
+
+                                        if (Model.IsRental)
+                                        {
+                                            addToCartText = "Login To Add";
+                                            <input type="button" id="add-to-cart-button-@Model.ProductId" class="button-1 add-to-cart-button-disabled" value="@addToCartText" data-productid="@Model.ProductId" onclick="window.location = '/customer/login?ReturnUrl=@HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl)'" />
+                                        }
+                                        if (Model.AvailableForPreOrder)
+                                        {
+                                            addToCartText = "Login To Add";
+                                            <input type="button" id="add-to-cart-button-@Model.ProductId" class="button-1 add-to-cart-button-disabled" value="@addToCartText" data-productid="@Model.ProductId" onclick="window.location = '/customer/login?ReturnUrl=@HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl)'" />
+                                        }
+                                    }
+
+
+                                }
+                            </div>
+                        </div>
+                    }
+

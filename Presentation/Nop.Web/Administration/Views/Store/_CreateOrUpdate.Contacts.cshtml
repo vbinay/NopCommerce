@@ -1,0 +1,97 @@
+﻿@model StoreModel
+
+@if (Model.Id > 0)
+{
+    <table class="adminContent">
+        <tr>
+            <td>
+                <div id="emailcontact-grid"></div>
+
+                <script>
+                    $(document).ready(function () {
+                        $("#emailcontact-grid").kendoGrid({
+                            dataSource: {
+                                type: "json",
+                                transport: {
+                                    read: {
+                                        url: "@Html.Raw(Url.Action("StoreContactList", "Store", new { StoreId = Model.Id }))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    },
+                                    update: {
+                                        url: "@Html.Raw(Url.Action("StoreContactUpdate", "Store"))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    },
+                                },
+                                schema: {
+                                    data: "Data",
+                                    total: "Total",
+                                    errors: "Errors",
+                                    model: {
+                                        id: "Id",
+                                        fields: {
+                                            EmailType: { editable: false, type: "string" },
+                                            Email: { editable: true, type: "string" },
+                                            DisplayName: { editable: true, type: "string" }
+                                        }
+                                    }
+                                },
+                                requestEnd: function (e) {
+                                    if (e.type == "update") {
+                                        this.read();
+                                    }
+                                },
+                                error: function (e) {
+                                    display_kendoui_grid_error(e);
+                                    // Cancel the changes
+                                    this.cancelChanges();
+                                },
+                                serverPaging: true,
+                                serverFiltering: true,
+                                serverSorting: true
+                            },
+                            pageable: {
+                                refresh: true,
+                                numeric: false,
+                                previousNext: false,
+                                info: false
+                            },
+                            editable: {
+                                confirmation: false,
+                                mode: "inline"
+                            },
+                            scrollable: false,
+                            columns: [{
+                                field: "EmailType",
+                                title: "@T("Admin.Config.Stores.StoreContacts.Fields.EmailType")"
+                            }, {
+                                field: "Email",
+                                title: "@T("Admin.Config.Stores.StoreContacts.Fields.Email")"
+                            }, {
+                                field: "DisplayName",
+                                title: "@T("Admin.Config.Stores.StoreContacts.Fields.DisplayName")"
+                            }, {
+                                command: [{
+                                    name: "edit",
+                                    text: {
+                                        edit: "@T("Admin.Common.Edit")",
+                                        update: "@T("Admin.Common.Update")",
+                                        cancel: "@T("Admin.Common.Cancel")"
+                                    }
+                                }],
+                                width: 200
+                            }]
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}
+else
+{
+    @T("Admin.Config.Stores.StoreContacts.SaveBeforeEdit")
+}

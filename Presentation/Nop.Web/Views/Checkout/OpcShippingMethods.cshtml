@@ -1,0 +1,983 @@
+﻿@model CheckoutShippingMethodListModel
+@using Nop.Web.Models.Checkout;
+@using Nop.Web.Models.ShoppingCart
+
+<script src="~/Scripts/Acc.DC.API.js"></script>
+<script src="~/Scripts/calendar_generator.js"></script>
+
+<!-- #region SODMYWAY- -->
+<!-- #region CSS -->
+<style>
+    /* Start of Column CSS */
+
+    #container2 {
+        clear: left;
+        float: left;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    #container1 {
+        float: left;
+        width: 100%;
+        position: relative;
+        right: 50%;
+        padding-top: 10px;
+    }
+
+    #col1 {
+        float: left;
+        width: 46%;
+        position: relative;
+        left: 50%;
+        overflow: hidden;
+        padding-top: 20px;
+    }
+
+
+    #col1IMG {
+        float: left;
+        width: 46%;
+        position: relative;
+        left: 50%;
+        overflow: hidden;
+        padding-top: 20px;
+    }
+
+    #col2 {
+        float: left;
+        width: 46%;
+        position: relative;
+        left: 50%;
+        overflow: hidden;
+    }
+</style>
+<!-- #endregion CSS -->
+<div class="checkout-data">
+    <div class="section shipping-method">
+        @Html.Widget("op_checkout_shipping_method_top")
+
+        
+            <script type="text/javascript">
+                function toggleInputField() {
+                    var rd2 = $("[id='rdContractShippingEnabled']:checked").val();
+                    var rd3 = $("[id='rdInterOfficeDeliveryEnabled']:checked").val();
+
+                    if (rd2 == "FedexShipping") {
+                        $("#divFedexShipping").show();
+                    } else {
+                        $("#divFedexShipping").hide();
+                    }
+
+                    if (rd3 == "MailStopShipping") {
+                        $("#divMailStopShipping").show();
+                    } else {
+                        $("#divMailStopShipping").hide();
+                    }
+                }
+            </script>
+        
+            @for (int i = 0; i < Model.ShoppingCartItemModels.Count; i++)
+            {
+                bool flag = false;
+                bool isUPS = false;
+                var UpsList = Model.ShoppingCartItemModels[i].FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods.Where(x => x.ShippingRateComputationMethodSystemName == "Shipping.UPS").ToList();
+                <div class="shipping-options-img">
+                    <img style="vertical-align: middle;" src="@Model.ShoppingCartItemModels[i].Picture.ImageUrl" alt="" title="@Model.ShoppingCartItemModels[i].Picture.Title" />
+                    <label style="vertical-align: middle;">@Model.ShoppingCartItemModels[i].ProductName</label>
+                </div>
+
+                <ul class="method-list">
+                    @for (int j = 0; j < Model.ShoppingCartItemModels[i].FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods.Count; j++)
+                    {
+                        var shippingMethod = Model.ShoppingCartItemModels[i].FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods[j];
+                        <li>
+                            @if (!shippingMethod.ShippingRateComputationMethodSystemName.Contains("UPS"))
+                            {
+                                <div class="method-name">
+                                    <input id="shippingoption_@(i)_@(j)__@( Model.ShoppingCartItemModels[i].Id)" type="radio" name="shippingOption__@( Model.ShoppingCartItemModels[i].Id)" value="@(shippingMethod.Name)___@(shippingMethod.ShippingRateComputationMethodSystemName)__@( Model.ShoppingCartItemModels[i].Id)" @(j == 0 ? " checked=\"checked\"" : null) />
+                                    <label for="shippingoption_@(i)_@(j)__@( Model.ShoppingCartItemModels[i].Id)">@shippingMethod.Name @(shippingMethod.Fee == "$0.00" ? "" : "(" + @shippingMethod.Fee + ")")</label>
+                                </div>
+                            }
+                            @if (!String.IsNullOrEmpty(shippingMethod.Description))
+                            {
+                                <div class="method-description">
+                                    @Html.Raw(shippingMethod.Description)
+                                </div>
+                            }
+                            @if (shippingMethod.ShippingRateComputationMethodSystemName.Contains("UPS") && !Model.IsMultipleShippingFeatureEnabled)
+                            {
+                                if (!flag)
+                                {
+                                    <div class="method-name">
+                                        <input id="shippingoption_@(i)_@(j)__@( Model.ShoppingCartItemModels[i].Id)" type="radio" name="shippingOption__@( Model.ShoppingCartItemModels[i].Id)" value="UPS-Shipping___@(shippingMethod.ShippingRateComputationMethodSystemName)__@( Model.ShoppingCartItemModels[i].Id)" @(j == 0 ? " checked=\"checked\"" : null) />
+                                        <label for="shippingoption_@(i)_@(j)__@( Model.ShoppingCartItemModels[i].Id)">UPS Shipping</label>
+                                    </div>
+                                    <select name="UpsOptionSelect__@(Model.ShoppingCartItemModels[i].Id)" id="UpsOptionSelect__@(Model.ShoppingCartItemModels[i].Id)">
+                                        @foreach (var list in UpsList)
+                                        {
+                                            <option value="@(list.Name)___@(list.ShippingRateComputationMethodSystemName)__@( Model.ShoppingCartItemModels[i].Id)">@list.Name @(list.Fee == "$0.00" ? "" : "(" + @list.Fee + ")")</option>
+                                        }
+                                    </select>
+                                    if (UpsList.Count >= 1 && UpsList.Where(x => x.Name.Contains("Ground")).ToList().Count() >= 1)
+                                    {
+                                        <div><strong>Estimated Delivery in 3-7 Business Days</strong></div>
+                                    }
+                                    <div id="no_po" style="display:none"><p style="color:#CB4335">UPS does not ship to P.O. Boxes</p></div>
+                                    flag = true;
+                                    if (j == 0)
+                                    {
+                                        isUPS = true;
+                                    }
+                                }
+
+                            }
+
+                            @if (shippingMethod.Name == "In-Store Pickup")
+                            {
+                                <div id="storeListContainer__@(Model.ShoppingCartItemModels[i].Id)">
+                                    <label for="StoreSelect__@(Model.ShoppingCartItemModels[i].Id)">Select Pickup Location:</label>
+                                    <select name="StoreSelect__@(Model.ShoppingCartItemModels[i].Id)" id="StoreSelect__@(Model.ShoppingCartItemModels[i].Id)">
+                                        @foreach (ShoppingCartModel.WarehouseModel loc in Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses)
+                                        {
+                                            <option value="@(loc.Id)">@(loc.Name)</option>
+                                        }
+                                    </select>
+                                    <br />
+                                    Pickup Address: <span id="pickupLocationText__@(Model.ShoppingCartItemModels[i].Id)" style="font-style: italic; padding: 5px 0 10px 5px; font-weight: bold;">@(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].Address.Address1)</span>
+                                </div>
+                            }
+                        </li>
+                    }
+                    <li>
+                        @if (!isUPS && !Model.ShoppingCartItemModels[i].IsTieredShippingVisible)
+                        {
+                            <div class="datepicker-calendar">
+                                @if (Model.ShoppingCartItemModels[i].FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods.Count > 0)
+                                {
+                                    <label for="requestedFulfillmentDate__@( Model.ShoppingCartItemModels[i].Id)" aria-label="Calendar Date Picker" id="pickupText__@(Model.ShoppingCartItemModels[i].Id)" style="font-style: italic; color: #CB4335; font-weight: bold;">Please select a date (this field is required)</label>
+                                    @*<input type="text" id="requestedFulfillmentDate__@( Model.ShoppingCartItemModels[i].Id)" name="requestedFulfillmentDate__@( Model.ShoppingCartItemModels[i].Id)" style="display: block;" />*@
+                                    <input placeholder="YYYY-MM-DD" id="requestedFulfillmentDate__@( Model.ShoppingCartItemModels[i].Id)" type="text" name="requestedFulfillmentDate__@( Model.ShoppingCartItemModels[i].Id)" class="datepicker-input" readonly />
+                                    <kbd id="keyboardHints__@( Model.ShoppingCartItemModels[i].Id)" hidden class="down"></kbd>
+                                    <a role="button" aria-label="Calendar Date Picker" href="#" id="dateIcons__@( Model.ShoppingCartItemModels[i].Id)" class="accCalendar datePicker" aria-pressed="false"> <span class="fa fa-calendar-o" aria-hidden="true"></span></a>
+                                    <label for="timePicker__@(Model.ShoppingCartItemModels[i].Id)" id="pickupTimeText__@( Model.ShoppingCartItemModels[i].Id)" style="padding-left: 20px;">Available Times</label>
+                                    <select name="timePicker__@(Model.ShoppingCartItemModels[i].Id)" id="timePicker__@(Model.ShoppingCartItemModels[i].Id)"></select>
+                                    <input type="text" id="mindate__@(Model.ShoppingCartItemModels[i].Id)" style="display: none;" readonly />
+                                    <input type="text" id="showTimePicker__@(Model.ShoppingCartItemModels[i].Id)" style="display: none;" readonly />
+                                }
+                                else
+                                {
+                                    <div class="method-name">
+                                        <text>No other information needed</text>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </li>
+                    <li>
+                        @if (Model.ShoppingCartItemModels[i].IsTieredShippingVisible)
+                        {
+                        <div class="method-name">
+                            @if (Model.IsTieredShippingEnabled || Model.IsContractShippingEnabled)
+                            {
+                                bool isTieredShippingChecked = (Model.ShoppingCartItemModels[i].FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods.Count == 0 &&
+                                                            Model.ShoppingCartItemModels[i].IsTieredShippingVisible);
+                            <div class="col-md-pull-12">
+                                <input id="rdContractShippingEnabled_@( Model.ShoppingCartItemModels[i].Id)" type="radio" name="shippingOption__@( Model.ShoppingCartItemModels[i].Id)" value="FedexShipping" checked="checked" />
+                                <label>Shipping</label>
+                            </div>
+                            <div id="divFedexShipping_@( Model.ShoppingCartItemModels[i].Id)" class="col-md-12">
+                                <div class="col-md-12"><strong>Flat Rate Tiered Delivery Service Fee will be charged to your credit card if RC Number is left blank.</strong></div>
+                                <div class="col-md-12">
+                                    NOTE: If RC is provided, the FedEx delivery fee will be charged to the RC, however
+                                    all merchandise must be paid for on a credit card.
+                                </div>
+                                <div class="col-md-12">
+                                    If you need to have the entire purchased billed to an RC number or shipped internationally, please contact the
+                                    Chandlery directly at mailto:byung.lee@sodexo.com.
+                                </div>
+                                <div class="col-md-12">
+                                    <span>RC# (billing account number) </span>
+                                    @Html.NopEditorFor(model => model.ShoppingCartItemModels[i].RCNumber)
+                                </div>
+                            </div>
+                            }
+                            @if (Model.IsInterOfficeDeliveryEnabled)
+                            {
+                            <div class="col-md-12">
+                                <input id="rdInterOfficeDeliveryEnabled_@( Model.ShoppingCartItemModels[i].Id)" type="radio" name="shippingOption__@( Model.ShoppingCartItemModels[i].Id)" value="MailStopShipping" />
+                                <label>Inter-office/Mail-Stop shipping</label>
+                            </div>
+                            <div class="col-md-12" id="divMailStopShipping_@( Model.ShoppingCartItemModels[i].Id)">
+                                <span>Mail Stop Address : </span>@Html.NopEditorFor(model => model.ShoppingCartItemModels[i].MailStopAddress)
+                            </div>
+                            }
+                        </div>
+                            @*<div>
+                                &nbsp;
+                            </div>
+                            <div>
+                                &nbsp;
+                            </div>*@
+                            
+                           
+                        }
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <div>
+                            <hr />
+                        </div>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <div>
+                            &nbsp;
+                        </div>
+                    </li>
+                </ul>
+            }
+
+        @Html.Widget("op_checkout_shipping_method_bottom")
+    </div>
+</div>
+<!-- #region JavaScript-->
+<script type="text/javascript">
+    var clickCount = 0;
+
+    $(function () {
+        //Radio Buttons "In-Store Pickup", "Delivery", "UPS" click events
+        $("input[name^='shippingOption']").click(function () {
+
+            var value = $(this).attr('value');
+            if (value.indexOf("UPS") > -1) {
+                $("#no_po").show();
+            }
+            else {
+                $("#no_po").hide();
+            }
+            
+
+            var name = $(this).attr('name');
+            var product_id = name.substring(name.indexOf("__") + 2);
+            var toggleFlag = 0;
+
+            if ($(this).val().split('_')[0] == 'Delivery') {
+                toggleFlag = 1;
+            }
+
+
+            $("#storeListContainer" + "__" + product_id).toggle(toggleFlag === 0);
+            //var dp = $('#requestedFulfillmentDate__' + id);
+            var dp = 'requestedFulfillmentDate__' + product_id; //Datepicker component
+
+            //$("#storeListContainer" + "__" + product_id).toggle(toggleFlag === 0);
+            //var dp = $('#requestedFulfillmentDate__' + product_id); //Datepicker component
+
+            var valueName = $(this).val().substring(0, $(this).val().indexOf('__'));
+
+            @foreach (Nop.Web.Models.ShoppingCart.ShoppingCartModel.ShoppingCartItemModel shoppingCartItemModel in Model.ShoppingCartItemModels)
+            {
+                if (shoppingCartItemModel.FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods.Count > 0)
+                {
+                            <text>
+
+            if (product_id == @(shoppingCartItemModel.Id))
+            {
+            var _unavailDates = new Array(@Html.Raw(shoppingCartItemModel.FulfillmentModel.JsExcludedDatesStr));
+            var minDate = new Date(@Html.Raw(shoppingCartItemModel.FulfillmentModel.JsMinDateStr));
+            var maxDate = new Date(@Html.Raw(shoppingCartItemModel.FulfillmentModel.JsMaxDateStr));
+
+            var leadTimeDays = @Html.Raw(shoppingCartItemModel.FulfillmentModel.JsLeadTimeDays.GetValueOrDefault(0).ToString());
+            var leadTimeHours = @Html.Raw(shoppingCartItemModel.FulfillmentModel.JsLeadTimeHours.GetValueOrDefault(0).ToString());
+            var leadTimeMinutes = @Html.Raw(shoppingCartItemModel.FulfillmentModel.JsLeadTimeMinutes.GetValueOrDefault(0).ToString());
+
+                                        //get the stupid storeinfo for this shippingmethod
+                                         @foreach (CheckoutShippingMethodModel.ShippingMethodModel shippingMethodModel in shoppingCartItemModel.FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods)
+                                        {
+                                            if (shippingMethodModel.Name == "In-Store Pickup")
+                                            {
+                                                foreach (ShoppingCartModel.WarehouseModel loc in  shoppingCartItemModel.FulfillmentModel.ShippingMethodAllWarehouses)
+
+                                                {
+                                                    <text>
+                                                     if("@(loc.Id)" == getSelectedStore("#storeListContainer" + "__" + product_id))
+                                                        {
+                                                                var date = new Date();
+                                                                if (valueName == "In-Store Pickup") { //pickup
+                                                                    $("#pickupText__" + product_id).text("Please select a date");
+
+                                                                    var _availTimes = new Array(@Html.Raw(loc.GetAvailablePickupTimes()));
+                                                                    buildCalendar(dp,  minDate, maxDate, @(loc.AllowPickupTime.GetValueOrDefault(false).ToString().ToLower()), _unavailDates, _availTimes, leadTimeDays, leadTimeHours, leadTimeMinutes, @(loc.Id) , false, @(shippingMethodModel.RequireFulfillmentCalendar.ToString().ToLower()), true);
+                                                                    return;
+                                                                }
+                                                            }
+                                                             </text>
+                                                         } //foreach for Pickup Stores
+                                                      } //foreach shippingMethods
+                                                    <text>
+
+                                            var show = true;
+                                           if(valueName == "UPS-Shipping")
+                                            {
+                                                show = false;
+                                            }
+
+                                    $("#pickupText__" + product_id).text("Please select a date");
+                                    var _availTimes = new Array(@Html.Raw(shoppingCartItemModel.FulfillmentModel.ShippingMethodAllWarehouses[0].GetAvailableDeliveryTimes()));
+                                    @*buildCalendar(dp, minDate, maxDate,  @(shoppingCartItemModel.FulfillmentModel.ShippingMethodAllWarehouses[0].AllowDeliveryTime.GetValueOrDefault(false).ToString().ToLower()), _unavailDates, _availTimes, leadTimeDays, leadTimeHours, leadTimeMinutes,  @(shoppingCartItemModel.FulfillmentModel.ShippingMethodAllWarehouses[0].Id), true,  @(shippingMethodModel.RequireFulfillmentCalendar.ToString().ToLower()), false);*@
+                                    buildCalendar(dp, minDate, maxDate,  @(shoppingCartItemModel.FulfillmentModel.ShippingMethodAllWarehouses[0].AllowDeliveryTime.GetValueOrDefault(false).ToString().ToLower()), _unavailDates, _availTimes, leadTimeDays, leadTimeHours, leadTimeMinutes,  @(shoppingCartItemModel.FulfillmentModel.ShippingMethodAllWarehouses[0].Id), true,  show, true);
+
+                                    return;
+
+
+                                    </text>
+
+                                   } //foreach shippingMethods
+                    }
+             </text>
+                }
+            }
+        });
+    });
+
+    function getSelectedStore(storeListContainerId) {
+
+        var containerName = storeListContainerId + ' select';
+        return $(containerName).children(':selected').val();
+    }
+
+    //#region StoreSelection Script
+    $(function() {
+
+        Date.prototype.dateFormat = function (format) {
+            //if (format == "H:i")
+            //    return moment(this).format("HH:mm");
+
+            return moment(this).format(format);
+        };
+        @for (int i = 0; i < Model.ShoppingCartItemModels.Count; i++)
+        {
+            if (Model.ShoppingCartItemModels[i].FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods.Count > 0)
+            {
+
+                <text>
+        $("#StoreSelect__@(Model.ShoppingCartItemModels[i].Id)").change(function () {
+
+            var end = this.value;
+            @foreach (CheckoutShippingMethodModel.ShippingMethodModel shippingMethodModel in Model.ShoppingCartItemModels[i].FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods)
+                        {
+                              foreach (ShoppingCartModel.WarehouseModel loc in  Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses)
+                             {
+                            <text>
+            if(end == @(loc.Id))
+            {
+
+            var minDate = new Date(@Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsMinDateStr));
+            var maxDate = new Date(@Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsMaxDateStr));
+            var excludeDates =  new Array(@Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsExcludedDatesStr));
+
+            var leadTimeDays = @Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsLeadTimeDays.GetValueOrDefault(0).ToString());
+            var leadTimeHours = @Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsLeadTimeHours.GetValueOrDefault(0).ToString());
+            var leadTimeMinutes = @Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsLeadTimeMinutes.GetValueOrDefault(0).ToString());
+
+            var _availTimes = new Array(@Html.Raw(loc.GetAvailablePickupTimes()));
+
+            $("#pickupLocationText__@(Model.ShoppingCartItemModels[i].Id)").text("@(loc.Address.Address1)");
+            //var dp = $('#requestedFulfillmentDate__@(Model.ShoppingCartItemModels[i].Id)');
+            var dp = 'requestedFulfillmentDate__' + @(Model.ShoppingCartItemModels[i].Id);
+
+
+            buildCalendar(dp,  minDate, maxDate, @(loc.AllowPickupTime.GetValueOrDefault(false).ToString().ToLower()), excludeDates, _availTimes, leadTimeDays, leadTimeHours, leadTimeMinutes, @(loc.Id), false, true, true);
+
+            @*var dp = $('#requestedFulfillmentDate__@(Model.ShoppingCartItemModels[i].Id)');
+
+            buildCalendar(dp,  minDate, maxDate, @(loc.AllowPickupTime.GetValueOrDefault(false).ToString().ToLower()), excludeDates, _availTimes, leadTimeDays, leadTimeHours, leadTimeMinutes, @(loc.Id), false, true);*@
+
+            //     buildCalendar(dp,  minDate, maxDate, @(loc.AllowPickupTime.GetValueOrDefault(false).ToString().ToLower()), excludeDates, _availTimes, leadTimeDays, leadTimeHours, leadTimeMinutes, @(loc.Id), false);
+            return;
+        }
+                              </text>
+
+                    }
+                }
+        });
+
+    var _unavailDates_@(i) = new Array(@Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsExcludedDatesStr));
+    var minDate_@(i) = new Date(@Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsMinDateStr));
+    var maxDate_@(i) = new Date(@Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsMaxDateStr));
+
+    var leadTimeDays = @Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsLeadTimeDays.GetValueOrDefault(0).ToString());
+    var leadTimeHours = @Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsLeadTimeHours.GetValueOrDefault(0).ToString());
+    var leadTimeMinutes = @Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.JsLeadTimeMinutes.GetValueOrDefault(0).ToString());
+    //var dp = $('#requestedFulfillmentDate__@(Model.ShoppingCartItemModels[i].Id)');
+    var dp = 'requestedFulfillmentDate__' + @(Model.ShoppingCartItemModels[i].Id);
+
+
+        var names = "@Model.ShoppingCartItemModels[i].FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods[0].Name";
+    if(names == "Delivery")
+    {
+        var _availTimes = new Array(@Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].GetAvailableDeliveryTimes()));
+        buildCalendar(dp, minDate_@(i), maxDate_@(i),  @(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].AllowDeliveryTime.GetValueOrDefault(false).ToString().ToLower()), _unavailDates_@(i), _availTimes, leadTimeDays, leadTimeHours, leadTimeMinutes,  @(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].Id) , true, @Model.ShoppingCartItemModels[i].FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods[0].RequireFulfillmentCalendar.ToString().ToLower(), false);
+    }
+    else if (names =="In-Store Pickup")
+    {
+
+        var _availTimes = new Array(@Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].GetAvailablePickupTimes()));
+        @*buildCalendar(dp,  minDate_@(i), maxDate_@(i),  @(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].AllowPickupTime.GetValueOrDefault(false).ToString().ToLower()),_unavailDates_@(i), _availTimes, leadTimeDays, leadTimeHours, leadTimeMinutes,  @(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].Id) , false, @Model.ShoppingCartItemModels[i].FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods[0].RequireFulfillmentCalendar.ToString().ToLower());*@
+        buildCalendar(dp, minDate_@(i), maxDate_@(i),  @(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].AllowPickupTime.GetValueOrDefault(false).ToString().ToLower()), _unavailDates_@(i), _availTimes, leadTimeDays, leadTimeHours, leadTimeMinutes,  @(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].Id) , false, true, false);
+    }
+    else if (names =="UPS Shipping")
+    {
+        var _availTimes = new Array(@Html.Raw(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].GetAvailablePickupTimes()));
+        @*buildCalendar(dp,  minDate_@(i), maxDate_@(i),  @(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].AllowPickupTime.GetValueOrDefault(false).ToString().ToLower()),_unavailDates_@(i), _availTimes, leadTimeDays, leadTimeHours, leadTimeMinutes,  @(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].Id) , false, @Model.ShoppingCartItemModels[i].FulfillmentModel.CheckoutShippingMethodModel.ShippingMethods[0].RequireFulfillmentCalendar.ToString().ToLower());*@
+        buildCalendar(dp,  minDate_@(i), maxDate_@(i),  @(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].AllowPickupTime.GetValueOrDefault(false).ToString().ToLower()),_unavailDates_@(i), _availTimes, leadTimeDays, leadTimeHours, leadTimeMinutes,  @(Model.ShoppingCartItemModels[i].FulfillmentModel.ShippingMethodAllWarehouses[0].Id) , false, false, false);
+    }
+    </text>
+    }
+    }
+    });
+
+    //#endregion
+
+
+
+
+    //#region Build DateTime Picker
+    function parseTime(timeString) {
+        if (timeString == '') return null;
+
+        var time = timeString.match(/(\d+)(:(\d\d))?\s*(p?)/i);
+        if (time == null) return null;
+
+        var hours = parseInt(time[1],10);
+        if (hours == 12 && !time[4]) {
+            hours = 0;
+        }
+        else {
+            hours += (hours < 12 && time[4])? 12 : 0;
+        }
+        var d = new Date();
+        d.setHours(hours);
+        d.setMinutes(parseInt(time[3],10) || 0);
+        d.setSeconds(0, 0);
+        return d;
+    }
+
+
+    function getNearestHalfHourTimeString(date) {
+        var now = date;
+        var hour = now.getHours();
+        var minutes = now.getMinutes();
+
+        var ampm = "AM";
+        if (minutes < 15) {
+            minutes = "15";
+        }else if (minutes < 30){
+            minutes = "30";
+        }else if (minutes < 45){
+            minutes = "45";
+        } else {
+            minutes = "00";
+            ++hour;
+        }
+        if (hour > 23) {
+            hour = 12;
+        } else if (hour > 12) {
+            hour = hour - 12;
+            ampm = "PM";
+        } else if (hour == 12) {
+            ampm = "PM";
+        } else if (hour == 0) {
+            hour = 12;
+        }
+
+        return(hour + ":" + minutes + " " + ampm);
+    }
+
+    function getTimeToUse(allowedTimes,minDate) {
+        var earliestAllowedTime = parseTime(allowedTimes[0]);
+        earliestAllowedTime.setMonth(minDate.getMonth());
+        earliestAllowedTime.setYear(minDate.getFullYear());
+        earliestAllowedTime.setDate(minDate.getDate());
+
+        var nearestHalfHourToNow = parseTime(getNearestHalfHourTimeString(minDate));
+        nearestHalfHourToNow.setMonth(minDate.getMonth());
+        nearestHalfHourToNow.setYear(minDate.getFullYear());
+        nearestHalfHourToNow.setDate(minDate.getDate());
+
+        var timeToUse = "";
+
+        if(nearestHalfHourToNow > earliestAllowedTime)
+        {
+            timeToUse = getNearestHalfHourTimeString(minDate);
+        }
+        else
+        {
+            timeToUse = allowedTimes[0];
+
+        }
+        return timeToUse;
+
+    }
+
+
+    function GetNextAvailableDate(blockedDates, date) {
+
+        for (i =0; i < blockedDates.length; i++) {
+            var dateParts = blockedDates[i].split("-");
+            var dateClosed = new Date(dateParts[0], (dateParts[1] - 1), dateParts[2]);
+            var minDateZeroTime = new Date(date.getFullYear(), (date.getMonth()), date.getDate());
+            //alert(date);
+
+            //alert(minDateZeroTime + " " + dateClosed);
+            if (minDateZeroTime.getTime() == dateClosed.getTime()) {
+                date.setDate(date.getDate() + 1);
+                GetNextAvailableDate(blockedDates, date)
+            }
+        }
+
+        return date;
+
+    }
+
+    function buildCalendar(picker, minDate, maxDate, showTimePicker, dates, allowedTimes, leadTimeDays, leadTimeHours, leadTimeMinutes, warehouseId, isDelivery, showPicker, isUnbind) {
+        var id = picker.split('__');
+        var dateIcon = 'dateIcons__' + id[1];
+        var timePickerId = 'timePicker__' + id[1];
+        var pickupTimeText = 'pickupTimeText__' + id[1];
+
+        //alert(showPicker);
+
+        var isPickup = false;
+
+        if(isDelivery == true)
+        {
+            isPickup = false;
+
+        }
+        else
+        {
+            isPickup = true;
+        }
+
+
+        if (!showPicker) {
+            $("#pickupText__" + id[1]).hide();
+            $("#requestedFulfillmentDate__" + id[1]).hide();
+            $("#" + pickupTimeText).hide();
+            $("#" + timePickerId).hide();
+            $("#" + dateIcon).hide();
+            return;
+        }
+        else {
+            $("#pickupText__" + id[1]).show();
+            $("#requestedFulfillmentDate__" + id[1]).show();
+            $("#" + pickupTimeText).show();
+            $("#" + timePickerId).show();
+            $("#" + dateIcon).show();
+
+        }
+      
+        var latestTimeOnMinDate = parseTime(allowedTimes[allowedTimes.length - 1]);
+        latestTimeOnMinDate.setMonth(minDate.getMonth());
+        latestTimeOnMinDate.setYear(minDate.getFullYear());
+        latestTimeOnMinDate.setDate(minDate.getDate());
+
+        if (minDate > Date.parse(latestTimeOnMinDate)) {
+            //No more available times that day to select from, bump the date to next day
+            var timeReg = /(\d+)\:(\d+) (\w+)/;
+            var parts = allowedTimes[0].match(timeReg);
+
+            var hours = /am/i.test(parts[3]) ?
+                function(am) {return am < 12 ? am : 0}(parseInt(parts[1], 10)) :
+                function(pm) {return pm < 12 ? pm + 12 : 12}(parseInt(parts[1], 10));
+
+            var minutes = parseInt(parts[2], 10);
+
+            minDate.setDate(minDate.getDate() + 1);
+            minDate.setHours(hours + leadTimeHours);
+            minDate.setMinutes(minutes + leadTimeMinutes);
+        }
+
+        timeToUse =  getTimeToUse(allowedTimes,minDate);
+        //need to check if stringDate falls on a blocked off day.  If so, increment days until we have an available day
+        var minDate = GetNextAvailableDate(dates, minDate);
+         //alert("NEXT DATE: " + minDate);
+
+        $("#mindate__" + id[1]).val("");
+        $("#showTimePicker__" + id[1]).val("");
+        $("#mindate__" + id[1]).val(minDate);
+        $("#showTimePicker__" + id[1]).val(showTimePicker);
+
+        var stringDate = (minDate.getFullYear()) + '-' + (minDate.getMonth() + 1) + '-' + minDate.getDate() + " " + timeToUse;
+        //need to check if stringDate falls on a blocked off day.var minDateNoTime = (minDate.getFullYear()) + '-' + (minDate.getMonth() + 1) + '-' + minDate.getDate();
+
+        var formatampm = formatAMPM(minDate);
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: '@Html.Raw(Url.Action("Calendar_DayChange", "Checkout"))',
+            data: { "date": moment(minDate).format('YYYY-MM-DD hh:mm A'), "warehouseId" : warehouseId, "pickup" : isPickup, "delivery" :isDelivery },
+            success: function (data) {
+                if (data.availableTimes) {
+                    nums = data.availableTimes.split(',');
+                    var startMinTime = new Date(minDate.getFullYear() + '-' + (minDate.getMonth() + 1) + '-' + minDate.getDate() + " " + formatampm);
+
+                    $("#" + timePickerId).empty();
+                    var isdrpdwnEmpty = true;
+                    $.each(nums, function (id, option) {
+                        var currentTime = new Date(minDate.getFullYear() + '-' + (minDate.getMonth() + 1) + '-' + minDate.getDate() + " " + option);
+                        //if (currentTime >= startMinTime) {
+                            isdrpdwnEmpty = false;
+                            $("#" + timePickerId).append($('<option></option>').val(option).html(option));
+                        //}
+                    });
+                    $("#" + timePickerId + " option:first").attr('selected', 'selected');
+
+                    if ((showTimePicker != "" || showTimePicker != null) && !showTimePicker) {
+                        $("#" + timePickerId).hide();
+                        $("#" + pickupTimeText).hide();
+                    }
+                    else {
+                        $("#" + timePickerId).show();
+                        $("#" + pickupTimeText).show();
+                    }
+
+                    if (isdrpdwnEmpty) {
+                        $("#" + timePickerId).append($('<option></option>').val("12:00 AM").html("12:00 AM"));
+                        $("#" + timePickerId).hide();
+                        $("#" + pickupTimeText).hide();
+                    }
+
+                    var date = minDate.dateFormat('YYYY-MM-DD');
+                    $("#" + picker).val(date);
+                }
+
+                else {
+                    $("#" + timePickerId).empty();
+                    $("#" + timePickerId).append($('<option></option>').val("12:00 AM").html("12:00 AM"));
+                    $("#" + timePickerId).hide();
+                    $("#" + pickupTimeText).hide();
+
+                    var date = minDate.dateFormat('YYYY-MM-DD');
+                    $("#" + picker).val(date);
+                }
+
+                //var selectedTime = (minDate.dateFormat('YYYY-MM-DD')) + " " + nums[0];
+
+                //$picker.datetimepicker({ value: selectedTime, allowTimes: nums, minTime: formatAMPM(minDate)});
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#" + timePickerId).empty();
+                $("#" + timePickerId).append($('<option></option>').val("12:00 AM").html("12:00 AM"));
+                $("#" + timePickerId).hide();
+                $("#" + pickupTimeText).hide();
+
+                var date = minDate.dateFormat('YYYY-MM-DD');
+                $("#" + picker).val(date);
+                //alert('Could not find available times For Pickup/Delivery.');
+
+            }
+        });
+
+      if (isUnbind) {
+            $("#" + picker).unbind();
+            $("#" + dateIcon).unbind();
+        }
+        var data ='@Model.IsMultipleShippingFeatureEnabled';
+        if (data != 'True') {
+            $A.bind(window, 'load', function () {
+                // Syntax : setCalendar( ID , TriggeringElement , TargetEditField , EnableComments , clickHandler , config )
+                $A.setCalendar('pickupCalendar_' + id[1], document.getElementById(dateIcon), document.getElementById(picker), false, function (ev, dc, targ) {
+                    targ.value = dc.range.current.year + '-' + ('0' + (dc.range.current.month + 1)).slice(-2) + '-' + ('0' + dc.range.current.mDay).slice(-2);
+                    dc.close();
+                    onDateChage(id[1]);
+                },
+                    {
+
+                        ajax: function (dc, save) {
+
+                            // Run before the datepicker renders
+
+                            if (!dc.firstResetDate) {
+                                // Store a variable in the dc object to ensure this only runs when the date picker first opens, and not every time such as when switching between months or years
+                                dc.firstResetDate = true;
+
+                                // Set current date variables
+                                //var cur = new Date();
+
+                                // Now configure a 'current' object that uses the date syntax within the datepicker JS instance
+                                // This will be used to merge into the datepicker before it opens
+                                var current =
+                                {
+                                    day: minDate.getDate(),
+                                    month: minDate.getMonth(),
+                                    year: minDate.getFullYear(),
+                                    weekDay: minDate.getDay()
+                                };
+
+                                // Now adjust the default date that the date picker first opens with using the previously set date object
+                                // Uses the 'current' object variables to set the dates within the calendar before it opens
+                                dc.range.current.month = current.month;
+                                dc.range.current.mDay = current.day;
+                                dc.range.current.wDay = current.weekDay;
+                                dc.range.current.year = current.year;
+
+                                // Now set a custom variable to store the disabled date range starting point
+                                dc.startDate =
+                                    {
+                                        day: minDate.getDate(),
+                                        month: minDate.getMonth(),
+                                        year: minDate.getFullYear(),
+                                        weekDay: minDate.getDay()
+                                    };
+                            }
+
+                            // Now dynamically adjust the disabled date range always starting with dc.startDate
+                            var current = dc.startDate;
+
+                            // Disable all dates prior to the current day
+                            if (current.year > dc.range.current.year
+                                || (current.year === dc.range.current.year && current.month > dc.range.current.month)) {
+                                dc.range[dc.range.current.month].disabled[dc.range.current.year] =
+                                    [
+                                        1,
+                                        2,
+                                        3,
+                                        4,
+                                        5,
+                                        6,
+                                        7,
+                                        8,
+                                        9,
+                                        10,
+                                        11,
+                                        12,
+                                        13,
+                                        14,
+                                        15,
+                                        16,
+                                        17,
+                                        18,
+                                        19,
+                                        20,
+                                        21,
+                                        22,
+                                        23,
+                                        24,
+                                        25,
+                                        26,
+                                        27,
+                                        28,
+                                        29,
+                                        30,
+                                        31
+                                    ];
+                            }
+
+                            if (current.year === dc.range.current.year && current.month === dc.range.current.month) {
+                                dc.range[dc.range.current.month].disabled[dc.range.current.year] = [];
+
+                                for (var day = 1; day < current.day; day++) {
+                                    dc.range[dc.range.current.month].disabled[dc.range.current.year].push(day);
+                                }
+                            }
+
+
+                            //disable excluded dates
+                            for (i = 0; i < dates.length; i++) {
+                                var dateParts = dates[i].split("-");
+                                var excludeDate = new Date(dateParts[0], (dateParts[1] - 1), dateParts[2]);
+                                if (excludeDate.getFullYear() == dc.range.current.year && excludeDate.getMonth() == dc.range.current.month) {
+                                    if (!dc.range[dc.range.current.month].disabled[dc.range.current.year])
+                                        dc.range[dc.range.current.month].disabled[dc.range.current.year] = [];
+                                    dc.range[dc.range.current.month].disabled[dc.range.current.year].push(excludeDate.getDate());
+                                }
+
+                            }
+
+
+                            //set max year
+                            var yearEnd = maxDate.getFullYear() + 1;
+                            if (dc.range.current.year > yearEnd) {
+                                dc.range[dc.range.current.month].disabled[dc.range.current.year] =
+                                    [
+                                        1,
+                                        2,
+                                        3,
+                                        4,
+                                        5,
+                                        6,
+                                        7,
+                                        8,
+                                        9,
+                                        10,
+                                        11,
+                                        12,
+                                        13,
+                                        14,
+                                        15,
+                                        16,
+                                        17,
+                                        18,
+                                        19,
+                                        20,
+                                        21,
+                                        22,
+                                        23,
+                                        24,
+                                        25,
+                                        26,
+                                        27,
+                                        28,
+                                        29,
+                                        30,
+                                        31
+                                    ];
+                            }
+                            dc.open();
+                        },
+
+                        //openOnFocus: true,
+                        openOnFocusHelpText: 'Press Down arrow to browse the calendar, or Escape to close.',
+                        inputDateFormat: 'YYYY-MM-DD',
+                        initialDate: minDate,
+                        // Always restore today's date as being selected when calendar is activated.
+                        //resetCurrent: false,
+                        highlightToday: true,
+                        //showEscBtn: true,
+                        //escBtnName: 'Close',
+                        //escBtnIcon: 'close',
+
+                        // Set CSS positioning calculation for the calendar
+                        autoPosition: 6,
+                        // Customize with positive or negative offsets
+                        offsetTop: 0,
+                        offsetLeft: 5,
+                        overrides:
+                        {
+                            allowCascade: true,
+                            runAfter: function (dc) {
+                                $A.remAttr($A.getEl('keyboardHints__' + id[1]), 'hidden');
+                            },
+                            runAfterClose: function (dc) {
+                                $A.setAttr($A.getEl('keyboardHints__' + id[1]), 'hidden', true);
+
+                            }
+                        }
+                    });
+            });
+        }
+
+    }
+
+    function formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+        return strTime;
+    }
+    function onDateChage(id) {
+        $("#dateIcons__" + id).attr('aria-pressed', true);
+        var minDate = new Date($("#mindate__" + id).val());
+        var showTimePicker = $("#showTimePicker__" + id).val();
+        var warehouseId = $("#StoreSelect__" + id).val();
+        var pickupTimeText = 'pickupTimeText__' + id;
+        var inputId = "requestedFulfillmentDate__" + id;
+        var timePickerId = "timePicker__" + id;
+        var selectedTime = $("#" + timePickerId + " option:selected").text();
+        clickCount++;
+        var current_date = $("#" + inputId).val();
+        current_time = current_date + " " + selectedTime;
+        displayAjaxLoading(true);
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: '@Html.Raw(Url.Action("Calendar_DayChange", "Checkout"))',
+                data: { "date": current_time, "warehouseId": warehouseId, "pickup": true, "delivery": false },
+                success: function (data) {
+                    if (data.availableTimes) {
+                        var nums = data.availableTimes.split(',');
+                        var startMinTime = new Date(minDate.getFullYear() + '-' + (minDate.getMonth() + 1) + '-' + minDate.getDate() + " " + formatAMPM(minDate));
+
+                        $("#" + timePickerId).empty();
+                        var isdrpdwnEmpty = true;
+                        $.each(nums, function (id, option) {
+                            var currentTime = new Date(minDate.getFullYear() + '-' + (minDate.getMonth() + 1) + '-' + minDate.getDate() + " " + option);
+                            //if (currentTime >= startMinTime) {
+                                isdrpdwnEmpty = false;
+                                $("#" + timePickerId).append($('<option></option>').val(option).html(option));
+                            //}
+                        });
+
+                        $("#" + timePickerId + " option:first").attr('selected', 'selected');
+
+                        if ((showTimePicker != "" || showTimePicker != null) && !showTimePicker) {
+                            $("#" + timePickerId).hide();
+                            $("#" + pickupTimeText).hide();
+                        }
+                        else {
+                            $("#" + timePickerId).show();
+                            $("#" + pickupTimeText).show();
+                        }
+
+                        if (isdrpdwnEmpty) {
+                            $("#" + timePickerId).append($('<option></option>').val("12:00 AM").html("12:00 AM"));
+                            $("#" + timePickerId).hide();
+                            $("#" + pickupTimeText).hide();
+                        }
+
+                        //var date = $("#" + inputId).val();
+                        //$("#" + inputId).val(date);
+                    }
+                    else {
+                        $("#" + timePickerId).empty();
+                        $("#" + timePickerId).append($('<option></option>').val("12:00 AM").html("12:00 AM"));
+                        $("#" + timePickerId).hide();
+                        $("#" + pickupTimeText).hide();
+
+                        //var date = $("#" + inputId).val();
+                        //$("#" + picker).val(date);
+                    }
+                    if (clickCount) {
+                        clickCount--;
+                    }
+                    if (clickCount == 0) {
+                        displayAjaxLoading();
+                    }
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#" + timePickerId).empty();
+                    $("#" + timePickerId).append($('<option></option>').val("12:00 AM").html("12:00 AM"));
+                    $("#" + timePickerId).hide();
+                    $("#" + pickupTimeText).hide();
+
+                    //$("#" + inputId).val($("#" + inputId).val());
+                    if (clickCount) {
+                        clickCount--;
+                    }
+                    if (clickCount == 0) {
+                        displayAjaxLoading();
+                    }
+
+                }
+        });
+
+
+        }
+
+    //#endregion DateTimePicker
+</script>
+<!-- #endregion -->
+<!-- #endregion -->

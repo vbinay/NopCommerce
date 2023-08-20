@@ -1,0 +1,662 @@
+﻿@model WarehouseModel
+
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+<!-- #region NU-86 -->
+<style>
+    .form-horizontal .k-autocomplete, .form-horizontal .k-combobox, .form-horizontal .k-datepicker,
+    .form-horizontal .k-timepicker, .form-horizontal .k-datetimepicker, .form-horizontal .k-colorpicker,
+    .form-horizontal .k-numerictextbox, .form-horizontal .k-dropdown, .form-horizontal .k-selectbox,
+    .form-horizontal .k-textbox, .form-horizontal .k-datetimepicker {
+        width: 100px !important;
+        max-width: 100%;
+        border-radius: 0;
+        border-color: #d2d6de;
+        height: 34px;
+    }
+
+
+
+    .div-table {
+        display: table;
+        width: auto;
+        background-color: #eee;
+        border: 1px solid #666666;
+        border-spacing: 5px; /*cellspacing:poor IE support for  this*/
+    }
+
+    .div-table-row {
+        display: table-row;
+        width: auto;
+        clear: both;
+    }
+
+    .div-table-col {
+        float: left; /*fix for  buggy browsers*/
+        display: table-column;
+        width: 100px;
+        padding-right: 2px;
+    }
+
+    .fa-asterisk:before {
+        font-size: 4px;
+    }
+</style>
+<!-- #endregion -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#@Html.FieldIdFor(model => model.AllowDeliveryTime)").change(toggleShowDeliveryTime);
+        $("#@Html.FieldIdFor(model => model.AllowPickupTime)").click(toggleShowPickupTime);
+        $("#@Html.FieldIdFor(model => model.IsPickup)").click(toggleShowPickupInfo);
+        $("#@Html.FieldIdFor(model => model.IsDelivery)").click(toggleShowDeliveryInfo);
+
+
+        toggleShowPickupInfo();
+        toggleShowDeliveryInfo();
+
+        toggleShowDeliveryTime();
+        toggleShowPickupTime();
+
+		// #region NU-86
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeMon)").kendoTimePicker();
+        var timepicker1 = $("#@Html.FieldIdFor(model => model.PickupOpenTimeMon)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeMon)").click(function () {
+            timepicker1.open();
+        });
+        timepicker1.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeTues)").kendoTimePicker();
+        var timepicker2 = $("#@Html.FieldIdFor(model => model.PickupOpenTimeTues)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeTues)").click(function () {
+            timepicker2.open();
+        });
+        timepicker2.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeWeds)").kendoTimePicker();
+        var timepicker3 = $("#@Html.FieldIdFor(model => model.PickupOpenTimeWeds)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeWeds)").click(function () {
+            timepicker3.open();
+        });
+        timepicker3.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeThurs)").kendoTimePicker();
+        var timepicker4 = $("#@Html.FieldIdFor(model => model.PickupOpenTimeThurs)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeThurs)").click(function () {
+            timepicker4.open();
+        });
+        timepicker4.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeFri)").kendoTimePicker();
+        var timepicker5 = $("#@Html.FieldIdFor(model => model.PickupOpenTimeFri)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeFri)").click(function () {
+            timepicker5.open();
+        });
+        timepicker5.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeSat)").kendoTimePicker();
+        var timepicker6 = $("#@Html.FieldIdFor(model => model.PickupOpenTimeSat)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeSat)").click(function () {
+            timepicker6.open();
+        });
+        timepicker6.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeSun)").kendoTimePicker();
+        var timepicker7 = $("#@Html.FieldIdFor(model => model.PickupOpenTimeSun)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupOpenTimeSun)").click(function () {
+            timepicker7.open();
+        });
+        timepicker7.readonly(true);
+
+
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeMon)").kendoTimePicker();
+        var timepicker11 = $("#@Html.FieldIdFor(model => model.PickupCloseTimeMon)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeMon)").click(function () {
+            timepicker11.open();
+        });
+        timepicker11.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeTues)").kendoTimePicker();
+        var timepicker22 = $("#@Html.FieldIdFor(model => model.PickupCloseTimeTues)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeTues)").click(function () {
+            timepicker22.open();
+        });
+        timepicker22.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeWeds)").kendoTimePicker();
+        var timepicker33 = $("#@Html.FieldIdFor(model => model.PickupCloseTimeWeds)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeWeds)").click(function () {
+            timepicker33.open();
+        });
+        timepicker33.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeThurs)").kendoTimePicker();
+        var timepicker44 = $("#@Html.FieldIdFor(model => model.PickupCloseTimeThurs)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeThurs)").click(function () {
+            timepicker44.open();
+        });
+        timepicker44.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeFri)").kendoTimePicker();
+        var timepicker55 = $("#@Html.FieldIdFor(model => model.PickupCloseTimeFri)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeFri)").click(function () {
+            timepicker55.open();
+        });
+        timepicker55.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeSat)").kendoTimePicker();
+        var timepicker66 = $("#@Html.FieldIdFor(model => model.PickupCloseTimeSat)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeSat)").click(function () {
+            timepicker66.open();
+        });
+        timepicker66.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeSun)").kendoTimePicker();
+        var timepicker77 = $("#@Html.FieldIdFor(model => model.PickupCloseTimeSun)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.PickupCloseTimeSun)").click(function () {
+            timepicker77.open();
+        });
+        timepicker77.readonly(true);
+
+
+
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeMon)").kendoTimePicker();
+        var timepicker111 = $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeMon)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeMon)").click(function () {
+            timepicker111.open();
+        });
+        timepicker111.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeTues)").kendoTimePicker();
+        var timepicker222 = $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeTues)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeTues)").click(function () {
+            timepicker222.open();
+        });
+        timepicker222.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeWeds)").kendoTimePicker();
+        var timepicker333 = $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeWeds)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeWeds)").click(function () {
+            timepicker333.open();
+        });
+        timepicker333.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeThurs)").kendoTimePicker();
+        var timepicker444 = $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeThurs)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeThurs)").click(function () {
+            timepicker444.open();
+        });
+        timepicker444.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeFri)").kendoTimePicker();
+        var timepicker555 = $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeFri)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeFri)").click(function () {
+            timepicker555.open();
+        });
+        timepicker555.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeSat)").kendoTimePicker();
+        var timepicker666 = $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeSat)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeSat)").click(function () {
+            timepicker666.open();
+        });
+        timepicker666.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeSun)").kendoTimePicker();
+        var timepicker777 = $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeSun)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryOpenTimeSun)").click(function () {
+            timepicker777.open();
+        });
+        timepicker777.readonly(true);
+
+
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeMon)").kendoTimePicker();
+        var timepicker1111 = $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeMon)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeMon)").click(function () {
+            timepicker1111.open();
+        });
+        timepicker1111.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeTues)").kendoTimePicker();
+        var timepicker2222 = $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeTues)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeTues)").click(function () {
+            timepicker2222.open();
+        });
+        timepicker2222.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeWeds)").kendoTimePicker();
+        var timepicker3333 = $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeWeds)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeWeds)").click(function () {
+            timepicker3333.open();
+        });
+        timepicker3333.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeThurs)").kendoTimePicker();
+        var timepicker4444 = $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeThurs)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeThurs)").click(function () {
+            timepicker4444.open();
+        });
+        timepicker4444.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeFri)").kendoTimePicker();
+        var timepicker5555 = $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeFri)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeFri)").click(function () {
+            timepicker5555.open();
+        });
+        timepicker5555.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeSat)").kendoTimePicker();
+        var timepicker6666 = $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeSat)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeSat)").click(function () {
+            timepicker6666.open();
+        });
+        timepicker6666.readonly(true);
+
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeSun)").kendoTimePicker();
+        var timepicker7777 = $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeSun)").data("kendoTimePicker");
+        $("#@Html.FieldIdFor(model => model.DeliveryCloseTimeSun)").click(function () {
+            timepicker7777.open();
+        });
+        timepicker7777.readonly(true);
+		// #endregion
+
+
+
+
+
+
+
+
+
+    });
+
+    function toggleShowDeliveryTime() {
+        if ($('#@Html.FieldIdFor(model => model.AllowDeliveryTime)').is(':checked')) {
+            $('#pnlDeliveryLabel').show();
+            $('#pnlDeliveryTimes').show();
+        } else {
+            $('#pnlDeliveryLabel').hide();
+            $('#pnlDeliveryTimes').hide();
+        }
+    }
+
+
+    function toggleShowPickupTime() {
+
+        if ($('#@Html.FieldIdFor(model => model.AllowPickupTime)').is(':checked')) {
+
+            $('#pnlPickupLabel').show();
+            $('#pnlPickupTimes').show();
+        } else {
+
+            $('#pnlPickupLabel').hide();
+            $('#pnlPickupTimes').hide();
+        }
+    }
+
+
+
+
+    function toggleShowDeliveryInfo() {
+        if ($('#@Html.FieldIdFor(model => model.IsDelivery)').is(':checked')) {
+            $('#pnlAllowDelivery').show();
+            toggleShowDeliveryTime();
+        } else {
+            $('#pnlAllowDelivery').hide();
+            $('#@Html.FieldIdFor(model => model.AllowDeliveryTime)').prop('checked', false);
+            toggleShowDeliveryTime();
+        }
+    }
+
+
+    function toggleShowPickupInfo() {
+        if ($('#@Html.FieldIdFor(model => model.IsPickup)').is(':checked')) {
+            $('#pnlAllowPickup').show();
+            toggleShowPickupTime();
+        } else {
+            $('#pnlAllowPickup').hide();
+            $('#@Html.FieldIdFor(model => model.AllowPickupTime)').prop('checked', false);
+            toggleShowPickupTime();
+        }
+    }
+
+
+
+</script>
+
+<div class="content">
+    <div class="form-horizontal">
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <p style="align-content:flex-end">* Required Fields</p>
+                        </div>
+                    </div>
+                    @if (Model.IsLoggedAs == "ADMIN")
+                    {
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.StoreId)	
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDropDownListFor(model => model.StoreId, Model.AvailableStores)	
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.VendorId)	
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDropDownListFor(model => model.VendorId, Model.AvailableVendors)	
+                            </div>
+                        </div>
+                    <!-- #endregion -->
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(model => model.StoreId);
+                        @Html.HiddenFor(model => model.VendorId);
+                    }
+                    <!-- #endregion -->
+                    <div class="form-group">
+                        <div class="col-md-3">
+                           <span style="float:left;margin-left: 175px;margin-top: 6px;">*</span> @Html.NopLabelFor(model => model.Name)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.Name)
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.AdminComment)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopTextAreaFor(model => model.AdminComment)
+                            @Html.ValidationMessageFor(model => model.AdminComment)
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.IsPickup)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.CheckBoxFor(model => model.IsPickup)
+                            @Html.ValidationMessageFor(model => model.IsPickup)
+                        </div>
+                    </div>
+
+
+                    <div id="pnlAllowPickup">
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.AllowPickupTime)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(model => model.AllowPickupTime)
+                                @Html.ValidationMessageFor(model => model.AllowPickupTime)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.PickupFee)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.PickupFee)
+                                @Html.ValidationMessageFor(model => model.PickupFee)
+                            </div>
+                        </div>
+                    </div>
+					<!-- #region NU-86 -->
+                    <div id="pnlPickupTimes">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                Pickup Business Hours
+                            </div>
+                            <div class="col-md-9">
+                                <div class="div-table">
+                                    <div class="div-table-row">
+                                        <div class="div-table-col" align="center" style="width:50px">&nbsp;</div>
+                                        <div class="div-table-col" align="center">Sat</div>
+                                        <div class="div-table-col" align="center">Sun</div>
+                                        <div class="div-table-col" align="center">Mon</div>
+                                        <div class="div-table-col" align="center">Tues</div>
+                                        <div class="div-table-col" align="center">Weds</div>
+                                        <div class="div-table-col" align="center">Thurs</div>
+                                        <div class="div-table-col" align="center">Fri</div>                                        
+                                    </div>
+                                    <div class="div-table-row">
+                                        <div class="div-table-col" style="width:50px">
+                                            Open
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupOpenTimeSat)
+                                            @Html.ValidationMessageFor(model => model.PickupOpenTimeSat)
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupOpenTimeSun)
+                                            @Html.ValidationMessageFor(model => model.PickupOpenTimeSun)
+
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupOpenTimeMon)
+                                            @Html.ValidationMessageFor(model => model.PickupOpenTimeMon)
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupOpenTimeTues)
+                                            @Html.ValidationMessageFor(model => model.PickupOpenTimeTues)
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupOpenTimeWeds)
+                                            @Html.ValidationMessageFor(model => model.PickupOpenTimeWeds)
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupOpenTimeThurs)
+                                            @Html.ValidationMessageFor(model => model.PickupOpenTimeThurs)
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupOpenTimeFri)
+                                            @Html.ValidationMessageFor(model => model.PickupOpenTimeFri)
+                                        </div>
+                                    </div>
+                                    <div class="div-table-row">
+                                        <div class="div-table-col" style="width:50px">
+                                            Close
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupCloseTimeSat)
+                                            @Html.ValidationMessageFor(model => model.PickupCloseTimeSat)
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupCloseTimeSun)
+                                            @Html.ValidationMessageFor(model => model.PickupCloseTimeSun)
+
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupCloseTimeMon)
+                                            @Html.ValidationMessageFor(model => model.PickupCloseTimeMon)
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupCloseTimeTues)
+                                            @Html.ValidationMessageFor(model => model.PickupCloseTimeTues)
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupCloseTimeWeds)
+                                            @Html.ValidationMessageFor(model => model.PickupCloseTimeWeds)
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupCloseTimeThurs)
+                                            @Html.ValidationMessageFor(model => model.PickupCloseTimeThurs)
+                                        </div>
+                                        <div class="div-table-col">
+                                            @Html.TextBoxFor(model => model.PickupCloseTimeFri)
+                                            @Html.ValidationMessageFor(model => model.PickupCloseTimeFri)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<!-- #endregion -->
+                    <div id="pnlDelivery">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.IsDelivery)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(model => model.IsDelivery)
+                                @Html.ValidationMessageFor(model => model.IsDelivery)
+                            </div>
+                        </div>
+                        <div id="pnlAllowDelivery">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    @Html.NopLabelFor(model => model.AllowDeliveryTime)
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.CheckBoxFor(model => model.AllowDeliveryTime)
+                                    @Html.ValidationMessageFor(model => model.AllowDeliveryTime)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    @Html.NopLabelFor(model => model.DeliveryFee)
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.NopEditorFor(model => model.DeliveryFee)
+                                    @Html.ValidationMessageFor(model => model.DeliveryFee)
+                                </div>
+                            </div>
+                        </div>
+						<!-- #region NU-86 -->
+                        <div id="pnlDeliveryTimes">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    Delivery Business Hours
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="div-table">
+                                        <div class="div-table-row">
+                                            <div class="div-table-col" align="center" style="width:50px">&nbsp;</div>
+                                            <div class="div-table-col" align="center">Sat</div>
+                                            <div class="div-table-col" align="center">Sun</div>
+                                            <div class="div-table-col" align="center">Mon</div>
+                                            <div class="div-table-col" align="center">Tues</div>
+                                            <div class="div-table-col" align="center">Weds</div>
+                                            <div class="div-table-col" align="center">Thurs</div>
+                                            <div class="div-table-col" align="center">Fri</div>                                         
+                                        </div>
+                                        <div class="div-table-row">
+                                            <div class="div-table-col" style="width:50px">
+                                                Open
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryOpenTimeSat)
+                                                @Html.ValidationMessageFor(model => model.DeliveryOpenTimeSat)
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryOpenTimeSun)
+                                                @Html.ValidationMessageFor(model => model.DeliveryOpenTimeSun)
+
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryOpenTimeMon)
+                                                @Html.ValidationMessageFor(model => model.DeliveryOpenTimeMon)
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryOpenTimeTues)
+                                                @Html.ValidationMessageFor(model => model.DeliveryOpenTimeTues)
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryOpenTimeWeds)
+                                                @Html.ValidationMessageFor(model => model.DeliveryOpenTimeWeds)
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryOpenTimeThurs)
+                                                @Html.ValidationMessageFor(model => model.DeliveryOpenTimeThurs)
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryOpenTimeFri)
+                                                @Html.ValidationMessageFor(model => model.DeliveryOpenTimeFri)
+                                            </div>
+                                        </div>
+                                        <div class="div-table-row">
+                                            <div class="div-table-col" style="width:50px">
+                                                Close
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryCloseTimeSat)
+                                                @Html.ValidationMessageFor(model => model.DeliveryCloseTimeSat)
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryCloseTimeSun)
+                                                @Html.ValidationMessageFor(model => model.DeliveryCloseTimeSun)
+
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryCloseTimeMon)
+                                                @Html.ValidationMessageFor(model => model.DeliveryCloseTimeMon)
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryCloseTimeTues)
+                                                @Html.ValidationMessageFor(model => model.DeliveryCloseTimeTues)
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryCloseTimeWeds)
+                                                @Html.ValidationMessageFor(model => model.DeliveryCloseTimeWeds)
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryCloseTimeThurs)
+                                                @Html.ValidationMessageFor(model => model.DeliveryCloseTimeThurs)
+                                            </div>
+                                            <div class="div-table-col">
+                                                @Html.TextBoxFor(model => model.DeliveryCloseTimeFri)
+                                                @Html.ValidationMessageFor(model => model.DeliveryCloseTimeFri)
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        @Html.EditorFor(x => x.Address, "Address")
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(model => model.KitchenPrinterURL)
+                        </div>
+                        <div class="col-md-9">
+                            @Html.NopEditorFor(model => model.KitchenPrinterURL)
+                        </div>
+                    </div>
+
+
+                </div>
+				<!-- #endregion -->
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#StoreId").click(function () {
+            $("#VendorId").val(-1);
+        });
+        $("#StoreId").removeAttr("data-val-required");
+
+
+        $("#VendorId").click(function () {
+            $("#StoreId").val(-1);
+        });
+        $("#VendorId").removeAttr("data-val-required");
+    </script>

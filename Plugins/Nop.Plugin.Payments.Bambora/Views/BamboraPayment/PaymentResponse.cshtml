@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "";
+}
+@model Nop.Plugin.Payments.Bambora.Models.PaymentInfoModel
+@using Nop.Web.Framework;
+
+
+@*<script type="text/javascript">
+        $('<style type="text/css">@@import url("/Plugins/Bitshift.Payments.FirstData/Content/style.css")</style>').appendTo("head");
+    </script>*@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+@{
+    if (Model.LoadConfirmOrder)
+    {
+        <div id="Success">Kindly wait while your payment is being processed.....</div>
+
+    }
+    else if (Model.LoadPayemntError)
+    {
+        <div id="payment-error" style="color:red; text-align:center">Your Payment has been @Model.ErrorMessage</div>
+    }
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var LoadconfirmOrder = '@Model.LoadConfirmOrder'
+        window.parent.$('#payment').css('height', '50px')
+        window.parent.$('#payment').css('width', '43%')
+        if (LoadconfirmOrder == 'True')
+            window.parent.$('#confirmOrder').trigger('click');
+    })
+</script>

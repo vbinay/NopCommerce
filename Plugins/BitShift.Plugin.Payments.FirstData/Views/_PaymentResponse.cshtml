@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "";
+}
+@model BitShift.Plugin.Payments.FirstData.Models.PaymentResponseModel
+<script src="/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        @if (Model.IsSuccess)
+        {
+            <text>
+                window.parent.$(".payment-info-next-step-button").click();
+            </text>
+        }
+        else
+        {
+            <text>
+                window.parent.$("#payment-error").html("@Model.ErrorMessage");
+                window.parent.$("#hostedPageFrame").attr('src', '/Plugins/FirstData/GetHostedPaymentForm');
+            </text>
+        }
+    });
+</script>

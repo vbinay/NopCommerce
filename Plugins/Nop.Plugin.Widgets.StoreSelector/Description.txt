@@ -1,0 +1,9 @@
+﻿Group: Widgets
+FriendlyName: Store Selector
+SystemName: Widgets.StoreSelector
+Version: 2.00
+SupportedVersions: 3.80
+Author: SodexoMyWay team
+DisplayOrder: 1
+FileName: Nop.Plugin.Widgets.StoreSelector.dll
+Description: This plugin allows you to change the contents of main page slider

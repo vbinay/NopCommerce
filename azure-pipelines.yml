@@ -1,0 +1,39 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  webProject: '**/Presentation/Nop.Web/Nop.Web.csproj'
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Install .NET Framework Developer Pack 4.5.1
+      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+      Invoke-WebRequest -Uri 'https://download.microsoft.com/download/9/6/0/96075294-6820-4F01-924A-474E0023E407/NDP451-KB2861696-x86-x64-DevPack.exe' -OutFile 'dotnet_devpack.exe'
+      Start-Process -FilePath 'dotnet_devpack.exe' -ArgumentList '/q /norestart' -Wait
+  displayName: 'Install .NET Framework Developer Pack'
+- task: VSBuild@1
+  inputs:
+    solution: '$(webProject)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)\$(Build.DefinitionName)" /p:OutputPath="$(build.artifactStagingDirectory)\$(Build.DefinitionName)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'

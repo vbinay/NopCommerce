@@ -1,0 +1,31 @@
+﻿@model Nop.Web.Models.Common.BannerHeadModel
+
+@{
+    /**/
+
+
+    var checkUrl = Request.Url.Host;
+
+}
+<style>
+    body.fs-page-lock:before {
+        opacity: 0 !important;
+    }
+    .administration {
+        color: white !important;
+    }
+</style>
+@if (Model.Header != "" && !checkUrl.Contains("coloradomesa"))
+{
+    @Html.Raw(Model.Header)
+}
+@if (Model.Header.Contains("cps") || Model.Header.Contains("loganlodge") || Model.Header.Contains("umwcatering") || Model.Header.Contains("armourhousecatering.sodexomyway.com") || Model.Header.Contains("conferences"))
+{
+    <script>
+        $(document).ready(function () {
+            // Change the width of the div
+            $(".header").css("height", "100px");
+        });
+    </script>
+
+}

@@ -1,0 +1,37 @@
+﻿@model HelpViewModel
+<script type="text/javascript">
+    alert("HI");
+    var tour = {
+        id: "@Model.TourId",
+        steps: @Html.Raw(Model.StepsJson),
+        onClose : @Model.OnClose,
+        onError : function (e){console.log(e);},
+        showPrevButton: false
+    };
+
+
+    var tour2 = {
+        id: "hello-hopscotch",
+        steps: [
+          {
+              title: "My Header",
+              content: "This is the header of my page.",
+              target: "product-edit",
+              placement: "right"
+          },
+          {
+              title: "My content",
+              content: "Here is where I put my content.",
+              target: document.querySelector("#content p"),
+              placement: "bottom"
+          }
+        ]
+    };
+
+
+    //See _Header.cshtml for the ID
+   // $('#page-help-button').click(function () {
+    hopscotch.startTour(tour2);
+    //});
+
+</script>

@@ -1,0 +1,9 @@
+﻿Group: Tax providers
+FriendlyName: Vertex tax rate provider
+SystemName: Tax.Vertex
+Version: 2.0
+SupportedVersions: 3.80
+Author: SodexoMyWay Team
+DisplayOrder: 1
+FileName: Nop.Plugin.Tax.Vertex.dll
+Description: This plugin allows getting tax rates by using Vertex service

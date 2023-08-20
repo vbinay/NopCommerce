@@ -1,0 +1,179 @@
+﻿@{
+    Layout = "";
+}
+@model BamboraStoreSettingModel
+@using Nop.Plugin.Payments.Bambora.Models;
+@using Nop.Web.Framework;
+
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="col-md-9">
+                    @if (Model.UseDefaultSettings)
+                    {
+                        <p>This store is using the default settings.  Complete the form and press Save to switch to store specific settings.</p>
+                    }
+                    else if (Model.StoreID != 0)
+                    {
+                        <p>This store is using specific settings.  Click here to revert to the default settings. </p>
+                        <button id="revertStoreSettings">@T("BitShift.Plugin.FirstData.Stores.Revert")</button>
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.StoreName)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopDisplayFor(model => model.StoreName)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.UseSandbox)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.UseSandbox)
+                    @Html.ValidationMessageFor(model => model.UseSandbox)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.MerchantId)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.MerchantId)
+                    @Html.ValidationMessageFor(model => model.MerchantId)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.PaymentApiKey)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.PaymentApiKey)
+                    @Html.ValidationMessageFor(model => model.PaymentApiKey)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.ReportingApiKey)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.ReportingApiKey)
+                    @Html.ValidationMessageFor(model => model.ReportingApiKey)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.ProfilesApiKey)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.ProfilesApiKey)
+                    @Html.ValidationMessageFor(model => model.ProfilesApiKey)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.HashKey)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.HashKey)
+                    @Html.ValidationMessageFor(model => model.HashKey)
+                </div>
+            </div>
+            @*<div class="form-group payment-page">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.PaymentPageID)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.PaymentPageID)
+                    @Html.ValidationMessageFor(model => model.PaymentPageID)
+                </div>
+            </div>
+            <div class="form-group payment-page">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.TransactionKey)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.TransactionKey)
+                    @Html.ValidationMessageFor(model => model.TransactionKey)
+                </div>
+            </div>
+            <div class="form-group payment-page">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.ResponseKey)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.ResponseKey)
+                    @Html.ValidationMessageFor(model => model.ResponseKey)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.AdditionalFee)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.AdditionalFee)
+                    @Html.ValidationMessageFor(model => model.AdditionalFee)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.AdditionalFeePercentage)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.AdditionalFeePercentage)
+                    @Html.ValidationMessageFor(model => model.AdditionalFeePercentage)
+                </div>
+            </div>
+            <div class="form-group direct-payment">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.EnableRecurringPayments)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.EnableRecurringPayments)
+                    @Html.ValidationMessageFor(model => model.EnableRecurringPayments)
+                </div>
+            </div>
+            <div class="form-group direct-payment">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.EnableCardSaving)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.EnableCardSaving)
+                    @Html.ValidationMessageFor(model => model.EnableCardSaving)
+                </div>
+            </div>
+            <div class="form-group direct-payment">
+                <div class="col-md-2">
+                    @Html.NopLabelFor(model => model.EnablePurchaseOrderNumber)
+                </div>
+                <div class="col-md-9">
+                    @Html.NopEditorFor(model => model.EnablePurchaseOrderNumber)
+                    @Html.ValidationMessageFor(model => model.EnablePurchaseOrderNumber)
+                </div>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $("#TransactModeId").change(changeTransactMode);
+    //    changeTransactMode();
+    //});
+
+    //function changeTransactMode()
+    //{
+    //    if ($("#TransactModeId").val() == "4") {
+    //        $(".direct-payment").hide();
+    //        $(".payment-page").show();
+    //    }
+    //    else {
+    //        $(".direct-payment").show();
+    //        $(".payment-page").hide();
+    //    }
+    //}
+</script>
